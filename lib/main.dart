@@ -2,45 +2,84 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyFirstWidget(),
+    if (kDebugMode) {
+      print('Context ::: ${fetchContextType(context)}');
+    }
+    return const MaterialApp(
+      title: 'My first widget',
+      home: MyFirstStatefullWidget(),
     );
+  }
+
+  Type fetchContextType(BuildContext context) {
+    return context.runtimeType;
   }
 }
 
-class MyFirstWidget extends StatefulWidget {
-
-  const MyFirstWidget({Key? key}) : super(key: key);
-
-  @override
-  State<MyFirstWidget> createState() => _MyFirstWidgetState();
-}
-
-class _MyFirstWidgetState extends State<MyFirstWidget> {
+class MyFirstStatelessWidget extends StatelessWidget {
+  MyFirstStatelessWidget({Key? key}) : super(key: key);
   int counter = 0;
 
   @override
   Widget build(BuildContext context) {
-    counter++;
     if (kDebugMode) {
+      print('Context ::: ${fetchContextType(context)}');
       print('Build create ::: $counter');
     }
+
+    counter++;
+
     return Container(
       child: const Center(
         child: Text('Hello'),
       ),
     );
+  }
+
+  Type fetchContextType(BuildContext context) {
+    return context.runtimeType;
+  }
+}
+
+class MyFirstStatefullWidget extends StatefulWidget {
+  const MyFirstStatefullWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyFirstStatefullWidget> createState() => _MyFirstStatefullWidgetState();
+}
+
+class _MyFirstStatefullWidgetState extends State<MyFirstStatefullWidget> {
+  int counter = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('Context ::: ${fetchContextType(context)}');
+      print('Build create ::: $counter');
+    }
+    counter++;
+
+    return Container(
+      child: const Center(
+        child: Text('Hello'),
+      ),
+    );
+  }
+
+  Type fetchContextType(BuildContext context) {
+    return context.runtimeType;
   }
 }
