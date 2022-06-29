@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:places/ui/screeen/sight_list_screen.dart';
+import 'package:places/ui/screen/sight_list_screen.dart';
 
 void main() {
   runApp(const App());
@@ -16,8 +15,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SightListScreen(),
+    return MaterialApp(
+      theme: ThemeData(fontFamily: 'Roboto'),
+      home: const SightListScreen(),
     );
   }
 }
