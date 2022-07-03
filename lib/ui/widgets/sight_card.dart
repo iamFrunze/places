@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/res/app_resources.dart';
 
 class SightCard extends StatelessWidget {
   final Sight sight;
@@ -20,27 +22,26 @@ class SightCard extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-                color: Colors.greenAccent,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: marginInsets, right: marginInsets, left: marginInsets),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      sight.type,
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
-                    ),
-                    Container(
-                      height: 30,
-                      width: 30,
-                      color: Colors.red,
-                    ),
-                  ],
+            child: Hero(
+              tag: 'imageHero',
+              child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+                  color: Colors.greenAccent,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: marginInsets, right: marginInsets, left: marginInsets),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        sight.type.toLowerCase(),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
+                      ),
+                      SvgPicture.asset(AppAssets.heart, color: Colors.white,),
+                    ],
+                  ),
                 ),
               ),
             ),

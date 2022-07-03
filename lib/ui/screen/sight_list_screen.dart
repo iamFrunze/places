@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
-import 'package:places/ui/screen/sight_card.dart';
+import 'package:places/res/app_resources.dart';
+import 'package:places/ui/widgets/sight_card.dart';
 
 class SightListScreen extends StatefulWidget {
   const SightListScreen({Key? key}) : super(key: key);
@@ -12,6 +14,8 @@ class SightListScreen extends StatefulWidget {
 class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
+    final cards = mocks.map((sight) => SightCard(sight: sight)).toList();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -19,7 +23,7 @@ class _SightListScreenState extends State<SightListScreen> {
         flexibleSpace: Container(
           margin: const EdgeInsets.only(left: 16, right: 16, top: 64),
           child: const Text(
-            'Список\nинтересных мест',
+            AppStrings.interestingPlaces,
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 32,
@@ -31,16 +35,11 @@ class _SightListScreenState extends State<SightListScreen> {
         elevation: 0,
       ),
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Column(
-          children: [
-            SightCard(
-              sight: mocks[0],
-            ),
-            SightCard(
-              sight: mocks[1],
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: cards,
+          ),
         ),
       ),
     );
