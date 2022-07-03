@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:places/mocks.dart';
+import 'package:places/ui/screen/sight_card.dart';
 
 class SightListScreen extends StatefulWidget {
   const SightListScreen({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: customAppBar(),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: const Size.fromHeight(kToolbarHeight + 64).height,
         flexibleSpace: Container(
@@ -31,55 +33,16 @@ class _SightListScreenState extends State<SightListScreen> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('Hello'),
-            TextField(),
+          children: [
+            SightCard(
+              sight: mocks[0],
+            ),
+            SightCard(
+              sight: mocks[1],
+            ),
           ],
         ),
       ),
     );
   }
-
-  PreferredSizeWidget customAppBar() => AppBar(
-        toolbarHeight: const Size.fromHeight(kToolbarHeight + 64).height,
-        flexibleSpace: Container(
-          margin: const EdgeInsets.only(left: 16, right: 16, top: 64),
-          child: RichText(
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-              ),
-              children: [
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'С',
-                      style: TextStyle(
-                        color: Colors.green,
-                      ),
-                    ),
-                    TextSpan(text: 'писок\n'),
-                  ],
-                ),
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'и',
-                      style: TextStyle(
-                        color: Colors.yellow,
-                      ),
-                    ),
-                    TextSpan(text: 'нтересных мест'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      );
 }
