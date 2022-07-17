@@ -32,20 +32,21 @@ class _SightListScreenState extends State<SightListScreen> {
 
 class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 64);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + AppDimensions.margin64);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       flexibleSpace: Container(
-        margin: const EdgeInsets.only(left: 16, right: 16, top: 64),
+        margin: const EdgeInsets.only(
+          left: AppDimensions.margin16,
+          right: AppDimensions.margin16,
+          top: AppDimensions.margin64,
+        ),
         child: const Text(
           AppStrings.interestingPlaces,
           textAlign: TextAlign.start,
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.w700,
-          ),
+          style: AppTypography.textText32Bold,
         ),
       ),
       backgroundColor: Colors.transparent,

@@ -18,16 +18,33 @@ class SightDetailsScreen extends StatelessWidget {
               Stack(
                 children: [
                   Hero(
-                    tag: 'imageHero',
-                    child: Container(
-                      height: 400,
-                      color: Colors.blue,
+                    tag: AppStrings.heroTagCard,
+                    child: Image.network(
+                      sight.url,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress == null
+                            ? child
+                            : Container(
+                                height: 400,
+                                alignment: Alignment.center,
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                      },
+                      fit: BoxFit.cover,
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 36, left: 16),
+                    margin: const EdgeInsets.only(
+                      top: AppDimensions.margin32,
+                      left: AppDimensions.margin16,
+                    ),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(Radius.circular(AppDimensions.cornerRadius10)),
                       color: Colors.white,
                     ),
                     child: IconButton(
@@ -39,16 +56,16 @@ class SightDetailsScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimensions.margin16,
+                  vertical: AppDimensions.margin24,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       sight.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: AppTypography.textText24Bold,
                     ),
                     const SizedBox(
                       height: 2,
@@ -57,20 +74,15 @@ class SightDetailsScreen extends StatelessWidget {
                       children: [
                         Text(
                           sight.type.toLowerCase(),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: AppTypography.textText14Bold,
                         ),
                         const SizedBox(
                           width: 16,
                         ),
                         Text(
                           'закрыто до 09:00'.toLowerCase(),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff7c7e92),
+                          style: AppTypography.textText14Regular.copyWith(
+                            color: AppColors.workingHoursColor,
                           ),
                         ),
                       ],
@@ -80,10 +92,7 @@ class SightDetailsScreen extends StatelessWidget {
                     ),
                     Text(
                       sight.details,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
+                      style: AppTypography.textText14Regular,
                     ),
                     const SizedBox(
                       height: 24,
@@ -101,7 +110,7 @@ class SightDetailsScreen extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(Colors.green),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(AppDimensions.cornerRadius12),
                             ),
                           ),
                         ),

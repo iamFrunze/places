@@ -10,20 +10,26 @@ class SightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const marginInsets = 16.0;
-
     return AspectRatio(
-      aspectRatio: 3 / 2,
+      aspectRatio: AppDimensions.aspectRatio3to2,
       child: Container(
-        margin: const EdgeInsets.only(left: marginInsets, right: marginInsets, top: marginInsets),
+        margin: const EdgeInsets.only(
+          left: AppDimensions.margin16,
+          right: AppDimensions.margin16,
+          top: AppDimensions.margin16,
+        ),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          color: Color(0xfff5f5f5),
+          borderRadius: BorderRadius.all(
+            Radius.circular(
+              AppDimensions.cornerRadius16,
+            ),
+          ),
+          color: AppColors.cardColor,
         ),
         child: Column(
           children: [
-            _ImageCardWidget(sight: sight),
-            _TextCardWidget(sight: sight),
+            Expanded(child: _ImageCardWidget(sight: sight)),
+            Expanded(child: _TextCardWidget(sight: sight)),
           ],
         ),
       ),
@@ -38,43 +44,54 @@ class _ImageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const marginInsets = 16.0;
-
     return Hero(
-      tag: 'imageHero',
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
+      tag: AppStrings.heroTagCard,
+      child: SizedBox(
+        child: Stack(fit: StackFit.expand, children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(
+                AppDimensions.cornerRadius16,
+              ),
+              topRight: Radius.circular(
+                AppDimensions.cornerRadius16,
+              ),
+            ),
+            child: Image.network(
+              sight.url,
+              loadingBuilder: (context, child, loadingProgress) {
+                return loadingProgress == null
+                    ? child
+                    : Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+              },
+              fit: BoxFit.cover,
+            ),
           ),
-          color: Colors.greenAccent,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: marginInsets,
-            right: marginInsets,
-            left: marginInsets,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                sight.type.toLowerCase(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
+          Padding(
+            padding: const EdgeInsets.all(AppDimensions.margin16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  sight.type.toLowerCase(),
+                  style: AppTypography.textText14Bold.copyWith(color: Colors.white),
                 ),
-              ),
-              SvgPicture.asset(
-                AppAssets.heart,
-                color: Colors.white,
-              ),
-            ],
+                SvgPicture.asset(
+                  AppAssets.heart,
+                  color: Colors.white,
+                ),
+              ],
+            ),
           ),
-        ),
+        ]),
       ),
     );
   }
@@ -96,20 +113,15 @@ class _TextCardWidget extends StatelessWidget {
         children: [
           Text(
             sight.name,
-            maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
-            ),
+            style: AppTypography.textText16Medium,
           ),
           Text(
             sight.details,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Color(0xff7C7E92),
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
+            maxLines: 4,
+            style: AppTypography.textText14Regular.copyWith(
+              color: AppColors.detailsCardColor,
             ),
           ),
         ],
