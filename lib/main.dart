@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/mocks.dart';
-import 'package:places/ui/screen/sight_details_screen.dart';
-import 'package:places/ui/screen/sight_list_screen.dart';
+import 'package:places/ui/screen/visiting_screen.dart';
 
 void main() {
   runApp(const App());
@@ -21,7 +19,14 @@ class _AppState extends State<App> {
       theme: ThemeData(
         fontFamily: 'Roboto',
       ),
-      home: SightDetailsScreen(sight: mocks[1]),
+      home: const MainScreen(),
     );
   }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => VisitingScreen();
 }

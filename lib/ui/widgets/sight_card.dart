@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/res/app_resources.dart';
+import 'package:places/res/app_colors.dart';
+import 'package:places/res/app_dimensions.dart';
+import 'package:places/res/app_strings.dart';
+import 'package:places/res/app_typography.dart';
 
 class SightCard extends StatelessWidget {
   final Sight sight;
+  final List<Widget> actions;
+  final List<Widget> details;
 
-  const SightCard({Key? key, required this.sight}) : super(key: key);
+  const SightCard({
+    Key? key,
+    required this.sight,
+    required this.actions,
+    required this.details,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +36,19 @@ class SightCard extends StatelessWidget {
           color: AppColors.cardColor,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _ImageCardWidget(sight: sight)),
-            Expanded(child: _TextCardWidget(sight: sight)),
+            Expanded(
+              child: _ImageCardWidget(
+                sight: sight,
+                actions: actions,
+              ),
+            ),
+            Expanded(
+              child: _TextCardWidget(
+                details: details,
+              ),
+            ),
           ],
         ),
       ),
@@ -39,8 +58,9 @@ class SightCard extends StatelessWidget {
 
 class _ImageCardWidget extends StatelessWidget {
   final Sight sight;
+  final List<Widget> actions;
 
-  const _ImageCardWidget({Key? key, required this.sight}) : super(key: key);
+  const _ImageCardWidget({Key? key, required this.sight, required this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +104,9 @@ class _ImageCardWidget extends StatelessWidget {
                   sight.type.toLowerCase(),
                   style: AppTypography.textText14Bold.copyWith(color: Colors.white),
                 ),
-                SvgPicture.asset(
-                  AppAssets.heart,
-                  color: Colors.white,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: actions,
                 ),
               ],
             ),
@@ -98,33 +118,20 @@ class _ImageCardWidget extends StatelessWidget {
 }
 
 class _TextCardWidget extends StatelessWidget {
-  final Sight sight;
+  final List<Widget> details;
 
-  const _TextCardWidget({Key? key, required this.sight}) : super(key: key);
+  const _TextCardWidget({
+    Key? key,
+    required this.details,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const marginInsets = 16.0;
-
     return Padding(
-      padding: const EdgeInsets.all(marginInsets),
+      padding: const EdgeInsets.all(AppDimensions.margin16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            sight.name,
-            overflow: TextOverflow.ellipsis,
-            style: AppTypography.textText16Medium,
-          ),
-          Text(
-            sight.details,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-            style: AppTypography.textText14Regular.copyWith(
-              color: AppColors.detailsCardColor,
-            ),
-          ),
-        ],
+        children: details,
       ),
     );
   }
