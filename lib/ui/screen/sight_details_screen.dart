@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/res/app_resources.dart';
+import 'package:places/res/app_assets.dart';
+import 'package:places/res/app_colors.dart';
+import 'package:places/res/app_dimensions.dart';
+import 'package:places/res/app_strings.dart';
+import 'package:places/res/app_typography.dart';
 
 class SightDetailsScreen extends StatelessWidget {
   final Sight sight;
@@ -82,7 +86,7 @@ class SightDetailsScreen extends StatelessWidget {
                         Text(
                           'закрыто до 09:00'.toLowerCase(),
                           style: AppTypography.textText14Regular.copyWith(
-                            color: AppColors.workingHoursColor,
+                            color: AppColors.grey,
                           ),
                         ),
                       ],
