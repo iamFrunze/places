@@ -10,4 +10,6 @@ class AppDimensions {
   static const cornerRadius10 = 10.0;
 
   static const aspectRatio3to2 = 3 / 2;
+
+  static const iconSize = 24.0;
 }
