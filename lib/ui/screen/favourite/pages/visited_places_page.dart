@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:places/mocks.dart';
 import 'package:places/res/app_assets.dart';
-import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
-import 'package:places/res/app_typography.dart';
+import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 
 class VisitedPlacesPage extends StatelessWidget {
@@ -21,41 +19,33 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SingleChildScrollView(
       child: Column(
         children: mocks
             .map(
               (sight) => SightCard(
                 sight: sight,
-                actions: [
-                  SvgPicture.asset(
-                    AppAssets.calendar,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    width: AppDimensions.margin16,
-                  ),
-                  SvgPicture.asset(
-                    AppAssets.close,
-                    color: Colors.white,
-                  ),
+                actions: const [
+                  IconSvg(icon: AppAssets.calendar),
+                  SizedBox(width: AppDimensions.margin16),
+                  IconSvg(icon: AppAssets.close),
                 ],
                 details: [
                   Text(
                     sight.name,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTypography.textText16Medium,
+                    style: theme.textTheme.subtitle1,
                   ),
                   Text(
                     'Цель достигнута 12 окт. 2020',
-                    style: AppTypography.textText14Regular.copyWith(color: Colors.grey),
+                    style: theme.textTheme.bodyText2,
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+                  const SizedBox(height: AppDimensions.margin16),
                   Text(
                     'закрыто до 09:00',
-                    style: AppTypography.textText14Regular.copyWith(color: AppColors.grey),
+                    style: theme.textTheme.bodyText2,
                   ),
                 ],
               ),
