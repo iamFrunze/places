@@ -4,7 +4,6 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/res/app_typography.dart';
 
 class EmptyPage extends StatelessWidget {
   final bool isVisited;
@@ -13,25 +12,27 @@ class EmptyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (isVisited)
           SvgPicture.asset(
             AppAssets.go,
+            color: AppColors.inactiveColorKit,
           )
         else
           SvgPicture.asset(
             AppAssets.card,
+            color: AppColors.inactiveColorKit,
           ),
         const SizedBox(
           height: AppDimensions.margin16,
         ),
         Text(
           AppStrings.empty,
-          style: AppTypography.textText18Medium.copyWith(
-            color: AppColors.grey,
-          ),
+          style: theme.textTheme.headline6,
         ),
         const SizedBox(
           height: AppDimensions.margin16,
@@ -40,17 +41,13 @@ class EmptyPage extends StatelessWidget {
           Text(
             AppStrings.completeRoute,
             textAlign: TextAlign.center,
-            style: AppTypography.textText14Regular.copyWith(
-              color: AppColors.grey,
-            ),
+            style: theme.textTheme.bodyText1?.copyWith(color: AppColors.inactiveColorKit),
           )
         else
           Text(
             AppStrings.markFavouritePlaces,
             textAlign: TextAlign.center,
-            style: AppTypography.textText14Regular.copyWith(
-              color: AppColors.grey,
-            ),
+            style: theme.textTheme.bodyText1?.copyWith(color: AppColors.inactiveColorKit),
           ),
       ],
     );
