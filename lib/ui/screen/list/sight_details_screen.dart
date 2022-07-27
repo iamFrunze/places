@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/res/app_assets.dart';
-import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/res/app_typography.dart';
+import 'package:places/ui/widgets/icon_svg.dart';
+import 'package:places/ui/widgets/planning_text_button.dart';
+import 'package:places/ui/widgets/svg_picture_colors.dart';
 
 class SightDetailsScreen extends StatelessWidget {
   final Sight sight;
@@ -14,6 +14,8 @@ class SightDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: SizedBox(
         child: SingleChildScrollView(
@@ -47,14 +49,18 @@ class SightDetailsScreen extends StatelessWidget {
                       top: AppDimensions.margin32,
                       left: AppDimensions.margin16,
                     ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(AppDimensions.cornerRadius10)),
-                      color: Colors.white,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(AppDimensions.cornerRadius10),
+                      ),
+                      color: theme.primaryColor,
                     ),
                     child: IconButton(
-                      iconSize: 24,
                       onPressed: () {},
-                      icon: const Icon(Icons.arrow_back_ios_new),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: theme.colorScheme.onPrimary,
+                      ),
                     ),
                   ),
                 ],
@@ -69,38 +75,28 @@ class SightDetailsScreen extends StatelessWidget {
                   children: [
                     Text(
                       sight.name,
-                      style: AppTypography.textText24Bold,
+                      style: theme.textTheme.headline5,
                     ),
-                    const SizedBox(
-                      height: 2,
-                    ),
+                    const SizedBox(height: 2),
                     Row(
                       children: [
                         Text(
                           sight.type.toLowerCase(),
-                          style: AppTypography.textText14Bold,
+                          style: theme.textTheme.subtitle2,
                         ),
-                        const SizedBox(
-                          width: 16,
-                        ),
+                        const SizedBox(width: 16),
                         Text(
                           'закрыто до 09:00'.toLowerCase(),
-                          style: AppTypography.textText14Regular.copyWith(
-                            color: AppColors.grey,
-                          ),
+                          style: theme.textTheme.bodyText2,
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 24,
-                    ),
+                    const SizedBox(height: 24),
                     Text(
                       sight.details,
-                      style: AppTypography.textText14Regular,
+                      style: theme.textTheme.bodyText1,
                     ),
-                    const SizedBox(
-                      height: 24,
-                    ),
+                    const SizedBox(height: 24),
                     SizedBox(
                       height: 48,
                       width: double.maxFinite,
@@ -109,39 +105,27 @@ class SightDetailsScreen extends StatelessWidget {
                         label: const Text(
                           AppStrings.btnRoute,
                         ),
-                        icon: SvgPicture.asset(AppAssets.route),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.green),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppDimensions.cornerRadius12),
-                            ),
-                          ),
+                        icon: IconSvg(
+                          icon: AppAssets.route,
+                          color:
+                              theme.extension<SvgPictureColors>()!.elevatedBtnActiveColor.toColor(),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 24,
-                    ),
+                    const SizedBox(height: 24),
                     const Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        TextButton.icon(
+                        const PlanningTextButton(
                           onPressed: null,
-                          style: TextButton.styleFrom(primary: Colors.black),
-                          label: const Text(
-                            AppStrings.plan,
-                          ),
-                          icon: SvgPicture.asset(AppAssets.calendar),
+                          icon: AppAssets.calendar,
+                          label: AppStrings.plan,
                         ),
-                        TextButton.icon(
+                        PlanningTextButton(
                           onPressed: () {},
-                          style: TextButton.styleFrom(primary: Colors.black),
-                          label: const Text(
-                            AppStrings.addToFavourite,
-                          ),
-                          icon: SvgPicture.asset(AppAssets.heart),
+                          icon: AppAssets.heart,
+                          label: AppStrings.addToFavourite,
                         ),
                       ],
                     ),

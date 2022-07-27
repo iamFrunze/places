@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
@@ -19,6 +18,8 @@ class SightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AspectRatio(
       aspectRatio: AppDimensions.aspectRatio3to2,
       child: Container(
@@ -27,13 +28,13 @@ class SightCard extends StatelessWidget {
           right: AppDimensions.margin16,
           top: AppDimensions.margin16,
         ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
             Radius.circular(
               AppDimensions.cornerRadius16,
             ),
           ),
-          color: AppColors.cardColor,
+          color: theme.colorScheme.surface,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +61,11 @@ class _ImageCardWidget extends StatelessWidget {
   final Sight sight;
   final List<Widget> actions;
 
-  const _ImageCardWidget({Key? key, required this.sight, required this.actions}) : super(key: key);
+  const _ImageCardWidget({
+    Key? key,
+    required this.sight,
+    required this.actions,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

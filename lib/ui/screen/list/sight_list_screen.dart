@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:places/mocks.dart';
 import 'package:places/res/app_assets.dart';
-import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/res/app_typography.dart';
+import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 
 class SightListScreen extends StatefulWidget {
@@ -18,29 +16,26 @@ class SightListScreen extends StatefulWidget {
 class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final cards = mocks
         .map(
           (sight) => SightCard(
             sight: sight,
-            actions: [
-              SvgPicture.asset(
-                AppAssets.heart,
-                color: Colors.white,
-              ),
+            actions: const [
+              IconSvg(icon: AppAssets.heart),
             ],
             details: [
               Text(
                 sight.name,
                 overflow: TextOverflow.ellipsis,
-                style: AppTypography.textText16Medium,
+                style: theme.textTheme.subtitle1,
               ),
               Text(
                 sight.details,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
-                style: AppTypography.textText14Regular.copyWith(
-                  color: AppColors.grey,
-                ),
+                style: theme.textTheme.bodyText2,
               ),
             ],
           ),
@@ -48,7 +43,6 @@ class _SightListScreenState extends State<SightListScreen> {
         .toList();
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: _AppBarWidget(),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -69,20 +63,20 @@ class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      flexibleSpace: Container(
+      toolbarHeight: preferredSize.height,
+      centerTitle: false,
+      elevation: 0,
+      title: Container(
         margin: const EdgeInsets.only(
           left: AppDimensions.margin16,
           right: AppDimensions.margin16,
-          top: AppDimensions.margin64,
         ),
-        child: const Text(
+        child: Text(
           AppStrings.interestingPlaces,
           textAlign: TextAlign.start,
-          style: AppTypography.textText32Bold,
+          style: Theme.of(context).textTheme.headline4,
         ),
       ),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
     );
   }
 }

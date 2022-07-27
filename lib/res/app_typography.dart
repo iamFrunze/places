@@ -22,11 +22,41 @@ class AppTypography {
     fontSize: 18.0,
     fontWeight: FontWeight.w500,
   );
-  static const textText16Medium = TextStyle(
+
+  static const headline4Bold = TextStyle(
+    fontSize: 32.0,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const headline5Bold = TextStyle(
+    fontSize: 24.0,
+    fontWeight: FontWeight.w700,
+  );
+  static const headline6Medium = TextStyle(
+    fontSize: 18.0,
+    fontWeight: FontWeight.w500,
+  );
+  static const subtitle1Medium = TextStyle(
     fontSize: 16.0,
     fontWeight: FontWeight.w500,
   );
-  static const textText14Regular = TextStyle(
+  static const subtitle2Bold = TextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+  );
+  static const body1Regular = TextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+  );
+  static const body2Regular = TextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+  );
+  static const elevatedButton = TextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w700,
+  );
+  static const textButton = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w400,
   );

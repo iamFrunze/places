@@ -5,13 +5,6 @@ import 'package:places/ui/screen/favourite/favourite_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
 
 class VisitingScreen extends State with SingleTickerProviderStateMixin {
-  final _barItems = [
-    BottomNavigationBarItem(icon: SvgPicture.asset(AppAssets.list), label: ''),
-    BottomNavigationBarItem(icon: SvgPicture.asset(AppAssets.map), label: ''),
-    BottomNavigationBarItem(icon: SvgPicture.asset(AppAssets.heartFill), label: ''),
-    BottomNavigationBarItem(icon: SvgPicture.asset(AppAssets.settings), label: ''),
-  ];
-
   late TabController _tabController;
 
   @override
@@ -22,6 +15,8 @@ class VisitingScreen extends State with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final currentIndex = _tabController.index;
+
     return Scaffold(
       body: TabBarView(
         controller: _tabController,
@@ -37,13 +32,46 @@ class VisitingScreen extends State with SingleTickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: _barItems,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              currentIndex == 0 ? AppAssets.listFill : AppAssets.list,
+              color: _itemColor(currentIndex == 0),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              currentIndex == 1 ? AppAssets.mapFill : AppAssets.map,
+              color: _itemColor(currentIndex == 1),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              currentIndex == 2 ? AppAssets.heartFill : AppAssets.heart,
+              color: _itemColor(currentIndex == 2),
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              currentIndex == 3 ? AppAssets.settingsFill : AppAssets.settings,
+              color: _itemColor(currentIndex == 3),
+            ),
+            label: '',
+          ),
+        ],
         currentIndex: _tabController.index,
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  Color? _itemColor(bool current) {
+    return current
+        ? Theme.of(context).bottomNavigationBarTheme.selectedItemColor
+        : Theme.of(context).bottomNavigationBarTheme.unselectedItemColor;
   }
 
   void _onItemTapped(int currentIndex) {
