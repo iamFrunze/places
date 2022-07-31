@@ -31,7 +31,7 @@ class _PlanningTextButtonState extends State<PlanningTextButton> {
               icon: widget.icon,
               color: theme.extension<SvgPictureColors>()!.textBtnActiveColor.toColor(),
             ),
-            label: Text(widget.label, style: theme.textTheme.bodyText1),
+            label: Text(widget.label, style: theme.textTheme.bodyMedium),
           )
         : TextButton.icon(
             onPressed: null,

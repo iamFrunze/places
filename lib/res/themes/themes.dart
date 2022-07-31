@@ -21,4 +21,6 @@ abstract class AppTheme with ThemeDataExt {
   TextButtonThemeData buildTextButtonTheme();
 
   IconThemeData buildIconTheme();
+
+  SliderThemeData buildSliderTheme();
 }

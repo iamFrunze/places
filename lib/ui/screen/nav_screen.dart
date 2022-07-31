@@ -3,8 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/ui/screen/favourite/favourite_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
+import 'package:places/ui/screen/settings/settings.dart';
 
-class VisitingScreen extends State with SingleTickerProviderStateMixin {
+class NavScreen extends State with SingleTickerProviderStateMixin {
+  final _pages = [
+    const SightListScreen(),
+    const Center(
+      child: Text('Map'),
+    ),
+    FavouriteScreen(),
+    const SettingsScreen(),
+  ];
   late TabController _tabController;
 
   @override
@@ -18,19 +27,7 @@ class VisitingScreen extends State with SingleTickerProviderStateMixin {
     final currentIndex = _tabController.index;
 
     return Scaffold(
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          const SightListScreen(),
-          const Center(
-            child: Text('Map'),
-          ),
-          FavouriteScreen(),
-          const Center(
-            child: Text('Settings'),
-          ),
-        ],
-      ),
+      body: _pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(

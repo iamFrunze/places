@@ -20,34 +20,45 @@ class SightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return AspectRatio(
-      aspectRatio: AppDimensions.aspectRatio3to2,
-      child: Container(
-        margin: const EdgeInsets.only(
-          left: AppDimensions.margin16,
-          right: AppDimensions.margin16,
-          top: AppDimensions.margin16,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(
-              AppDimensions.cornerRadius16,
-            ),
+    return Container(
+      margin: const EdgeInsets.only(top: AppDimensions.margin16),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius16,
           ),
-          color: theme.colorScheme.surface,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        color: theme.colorScheme.surface,
+      ),
+      child: AspectRatio(
+        aspectRatio: AppDimensions.aspectRatio3to2,
+        child: Stack(
           children: [
-            Expanded(
-              child: _ImageCardWidget(
-                sight: sight,
-                actions: actions,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _ImageCardWidget(
+                    sight: sight,
+                    actions: actions,
+                  ),
+                ),
+                Expanded(
+                  child: _TextCardWidget(
+                    details: details,
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: _TextCardWidget(
-                details: details,
+            Positioned.fill(
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(Radius.circular(AppDimensions.margin16)),
+                  onTap: () {
+                    debugPrint("card click");
+                  },
+                ),
               ),
             ),
           ],
@@ -82,6 +93,9 @@ class _ImageCardWidget extends StatelessWidget {
                 AppDimensions.cornerRadius16,
               ),
             ),
+            // child: ImageLoader(
+            //   imgUrl: sight.url,
+            // ),
             child: Image.network(
               sight.url,
               loadingBuilder: (context, child, loadingProgress) {
@@ -107,7 +121,7 @@ class _ImageCardWidget extends StatelessWidget {
               children: [
                 Text(
                   sight.type.toLowerCase(),
-                  style: AppTypography.textText14Bold.copyWith(color: Colors.white),
+                  style: AppTypography.bodyLarge.copyWith(color: Colors.white),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

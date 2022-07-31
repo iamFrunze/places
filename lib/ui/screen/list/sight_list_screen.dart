@@ -22,20 +22,25 @@ class _SightListScreenState extends State<SightListScreen> {
         .map(
           (sight) => SightCard(
             sight: sight,
-            actions: const [
-              IconSvg(icon: AppAssets.heart),
+            actions: [
+              InkWell(
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Tap on heart')),
+                ),
+                child: const IconSvg(icon: AppAssets.heart),
+              ),
             ],
             details: [
               Text(
                 sight.name,
                 overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.subtitle1,
+                style: theme.textTheme.titleSmall,
               ),
               Text(
                 sight.details,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodySmall,
               ),
             ],
           ),
@@ -46,7 +51,8 @@ class _SightListScreenState extends State<SightListScreen> {
       appBar: _AppBarWidget(),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
-        child: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: AppDimensions.margin16),
           child: Column(
             children: cards,
           ),
@@ -74,7 +80,7 @@ class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         child: Text(
           AppStrings.interestingPlaces,
           textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
     );

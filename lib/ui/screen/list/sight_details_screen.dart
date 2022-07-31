@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
@@ -45,6 +46,8 @@ class SightDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    height: AppDimensions.iconBorderSize,
+                    width: AppDimensions.iconBorderSize,
                     margin: const EdgeInsets.only(
                       top: AppDimensions.margin32,
                       left: AppDimensions.margin16,
@@ -53,13 +56,15 @@ class SightDetailsScreen extends StatelessWidget {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(AppDimensions.cornerRadius10),
                       ),
-                      color: theme.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: theme.colorScheme.onPrimary,
+                    child: InkWell(
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Tap on back')),
+                      ),
+                      child: SvgPicture.asset(
+                        AppAssets.back,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -75,33 +80,35 @@ class SightDetailsScreen extends StatelessWidget {
                   children: [
                     Text(
                       sight.name,
-                      style: theme.textTheme.headline5,
+                      style: theme.textTheme.headlineSmall,
                     ),
                     const SizedBox(height: 2),
                     Row(
                       children: [
                         Text(
                           sight.type.toLowerCase(),
-                          style: theme.textTheme.subtitle2,
+                          style: theme.textTheme.bodyLarge,
                         ),
                         const SizedBox(width: 16),
                         Text(
                           'закрыто до 09:00'.toLowerCase(),
-                          style: theme.textTheme.bodyText2,
+                          style: theme.textTheme.bodySmall,
                         ),
                       ],
                     ),
                     const SizedBox(height: 24),
                     Text(
                       sight.details,
-                      style: theme.textTheme.bodyText1,
+                      style: theme.textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 24),
                     SizedBox(
-                      height: 48,
-                      width: double.maxFinite,
+                      height: AppDimensions.elevatedBtnHeight,
+                      width: AppDimensions.elevatedBtnWidth,
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Tap on route')),
+                        ),
                         label: const Text(
                           AppStrings.btnRoute,
                         ),
@@ -117,13 +124,17 @@ class SightDetailsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const PlanningTextButton(
-                          onPressed: null,
+                        PlanningTextButton(
+                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Tap on plan')),
+                          ),
                           icon: AppAssets.calendar,
                           label: AppStrings.plan,
                         ),
                         PlanningTextButton(
-                          onPressed: () {},
+                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Tap on favourite')),
+                          ),
                           icon: AppAssets.heart,
                           label: AppStrings.addToFavourite,
                         ),

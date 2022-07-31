@@ -22,35 +22,49 @@ class _Card extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
-      child: Column(
-        children: mocks
-            .map(
-              (sight) => SightCard(
-                sight: sight,
-                actions: const [
-                  IconSvg(icon: AppAssets.calendar),
-                  SizedBox(width: AppDimensions.margin16),
-                  IconSvg(icon: AppAssets.close),
-                ],
-                details: [
-                  Text(
-                    sight.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.subtitle1,
-                  ),
-                  Text(
-                    'Запланировано на 12 окт. 2020',
-                    style: theme.textTheme.bodyText2?.copyWith(color: theme.colorScheme.tertiary),
-                  ),
-                  const SizedBox(height: AppDimensions.margin16),
-                  Text(
-                    'закрыто до 09:00',
-                    style: theme.textTheme.bodyText2,
-                  ),
-                ],
-              ),
-            )
-            .toList(),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: AppDimensions.margin16),
+        child: Column(
+          children: mocks
+              .map(
+                (sight) => SightCard(
+                  sight: sight,
+                  actions: [
+                    InkWell(
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Tap on calendar')),
+                      ),
+                      child: const IconSvg(icon: AppAssets.calendar),
+                    ),
+                    const SizedBox(width: AppDimensions.margin16),
+                    InkWell(
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Tap on close')),
+                      ),
+                      child: const IconSvg(icon: AppAssets.close),
+                    ),
+                  ],
+                  details: [
+                    Text(
+                      sight.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall,
+                    ),
+                    Text(
+                      'Запланировано на 12 окт. 2020',
+                      style:
+                          theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.tertiary),
+                    ),
+                    const SizedBox(height: AppDimensions.margin16),
+                    Text(
+                      'закрыто до 09:00',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }

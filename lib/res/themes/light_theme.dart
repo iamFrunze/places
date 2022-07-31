@@ -13,6 +13,8 @@ class LightThemeData extends AppTheme {
   @override
   ThemeData buildTheme() {
     return base.copyWith(
+      brightness: Brightness.light,
+      useMaterial3: true,
       primaryColor: AppColors.lmPrimaryColor,
       scaffoldBackgroundColor: AppColors.lmBackgroundColor,
       disabledColor: AppColors.inactiveColorKit,
@@ -25,6 +27,7 @@ class LightThemeData extends AppTheme {
       elevatedButtonTheme: buildElevatedButtonTheme(),
       textButtonTheme: buildTextButtonTheme(),
       iconTheme: buildIconTheme(),
+      sliderTheme: buildSliderTheme(),
       extensions: extensions,
     );
   }
@@ -32,26 +35,29 @@ class LightThemeData extends AppTheme {
   @override
   TextTheme buildTextTheme() {
     return base.textTheme.copyWith(
-      headline4: AppTypography.headline4Bold.apply(
+      headlineMedium: AppTypography.headlineMedium.apply(
+        color: AppColors.lmMainColorKit,
+      ),
+      headlineSmall: AppTypography.headlineSmall.apply(
         color: AppColors.lmSecondaryColorKit,
       ),
-      headline5: AppTypography.headline5Bold.apply(
-        color: AppColors.lmSecondaryColorKit,
-      ),
-      headline6: AppTypography.headline6Medium.apply(
+      titleMedium: AppTypography.titleMedium.apply(
         color: AppColors.inactiveColorKit,
       ),
-      subtitle1: AppTypography.subtitle1Medium.apply(
+      titleSmall: AppTypography.titleSmall.apply(
         color: AppColors.lmSecondaryColorKit,
       ),
-      subtitle2: AppTypography.subtitle2Bold.apply(
+      bodyLarge: AppTypography.bodyLarge.apply(
         color: AppColors.lmSecondaryColorKit,
       ),
-      bodyText1: AppTypography.body1Regular.apply(
+      bodyMedium: AppTypography.bodyMedium.apply(
         color: AppColors.lmSecondaryColorKit,
       ),
-      bodyText2: AppTypography.body2Regular.apply(
+      bodySmall: AppTypography.bodySmall.apply(
         color: AppColors.lmSecondary2ColorKit,
+      ),
+      labelMedium: AppTypography.labelMedium.apply(
+        color: AppColors.lmPrimaryColor,
       ),
     );
   }
@@ -92,7 +98,7 @@ class LightThemeData extends AppTheme {
   ElevatedButtonThemeData buildElevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(AppTypography.elevatedButton),
+        textStyle: MaterialStateProperty.all(AppTypography.labelMedium),
         foregroundColor: MaterialStateProperty.resolveWith(
           (states) {
             return states.contains(MaterialState.disabled)
@@ -120,7 +126,7 @@ class LightThemeData extends AppTheme {
   TextButtonThemeData buildTextButtonTheme() {
     return TextButtonThemeData(
       style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(AppTypography.textButton),
+        textStyle: MaterialStateProperty.all(AppTypography.bodyMedium),
         overlayColor: MaterialStateProperty.all(AppColors.lmSurfaceColor),
       ),
     );
@@ -133,9 +139,9 @@ class LightThemeData extends AppTheme {
         borderRadius: BorderRadius.circular(AppDimensions.cornerRadius40),
         color: AppColors.lmSecondaryColorKit,
       ),
-      labelStyle: AppTypography.textText14Bold,
+      labelStyle: AppTypography.bodyLarge,
       labelColor: AppColors.lmPrimaryColor,
-      unselectedLabelStyle: AppTypography.textText14Bold,
+      unselectedLabelStyle: AppTypography.bodyLarge,
       unselectedLabelColor: AppColors.inactiveColorKit,
     );
   }
@@ -145,6 +151,14 @@ class LightThemeData extends AppTheme {
     return base.iconTheme.copyWith(
       color: AppColors.lmPrimaryColor,
       size: AppDimensions.iconSize,
+    );
+  }
+
+  @override
+  SliderThemeData buildSliderTheme() {
+    return const SliderThemeData(
+      activeTrackColor: AppColors.lmGreenColorKit,
+      inactiveTrackColor: AppColors.inactiveColorKit,
     );
   }
 }

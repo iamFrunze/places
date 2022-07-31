@@ -1,7 +1,9 @@
 class AppDimensions {
+  static const margin12 = 12.0;
   static const margin16 = 16.0;
   static const margin24 = 24.0;
   static const margin32 = 32.0;
+  static const margin48 = 48.0;
   static const margin64 = 64.0;
 
   static const cornerRadius40 = 40.0;
@@ -11,5 +13,10 @@ class AppDimensions {
 
   static const aspectRatio3to2 = 3 / 2;
 
+  static const elevatedBtnHeight = 48.0;
+  static const elevatedBtnWidth = double.infinity;
+
   static const iconSize = 24.0;
+  static const iconBorderSize = 32.0;
+  static const chipSize = 64.0;
 }
