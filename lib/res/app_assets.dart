@@ -15,7 +15,7 @@ class AppAssets {
   static const go = 'res/svg/go_icon.svg';
   static const back = 'res/svg/back_icon.svg';
 
-  /// category screen
+  /// filter screen
   static const cafe = 'res/svg/chips/cafe_icon.svg';
   static const hotel = 'res/svg/chips/hotel_icon.svg';
   static const museum = 'res/svg/chips/museum_icon.svg';

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/ui/screen/favourite/favourite_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
-import 'package:places/ui/screen/settings/settings.dart';
+import 'package:places/ui/screen/settings/settings_screen.dart';
 
 class NavScreen extends State with SingleTickerProviderStateMixin {
   final _pages = [

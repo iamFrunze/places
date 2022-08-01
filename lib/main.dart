@@ -1,17 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
+import 'package:places/ui/screen/filter/filter_screen.dart';
 import 'package:places/ui/screen/nav_screen.dart';
 import 'package:places/utils/app_settings.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => AppSettingsModel(),
-    child: const App(),
-  ));
+void main() async {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AppSettingsModel(),
+      child: const App(),
+    ),
+  );
+  final location = Location();
+
+  bool serviceEnabled;
+  PermissionStatus permissionGranted;
+
+  serviceEnabled = await location.serviceEnabled();
+  if (!serviceEnabled) {
+    serviceEnabled = await location.requestService();
+    if (!serviceEnabled) {
+      return;
+    }
+  }
+
+  permissionGranted = await location.hasPermission();
+  if (permissionGranted == PermissionStatus.denied) {
+    permissionGranted = await location.requestPermission();
+    if (permissionGranted != PermissionStatus.granted) {
+      return;
+    }
+  }
 }
 
 class App extends StatefulWidget {
@@ -24,27 +48,33 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppSettingsModel>(builder: (context, model, child) {
-      final isDarkMode = model.isDarkMode;
-      final systemUiOverlayStyle = !isDarkMode
-          ? SystemUiOverlayStyle.light.copyWith(
-              systemNavigationBarColor: AppColors.lmPrimaryColor,
-              statusBarColor: Colors.transparent,
-            )
-          : SystemUiOverlayStyle.dark.copyWith(
-              systemNavigationBarColor: AppColors.dmMainColorKit,
-              statusBarColor: Colors.transparent,
-            );
+    return Consumer<AppSettingsModel>(
+      builder: (context, model, child) {
+        final isDarkMode = model.isDarkMode;
+        final systemUiOverlayStyle = !isDarkMode
+            ? SystemUiOverlayStyle.light.copyWith(
+                systemNavigationBarColor: AppColors.lmPrimaryColor,
+                statusBarColor: Colors.transparent,
+              )
+            : SystemUiOverlayStyle.dark.copyWith(
+                systemNavigationBarColor: AppColors.dmMainColorKit,
+                statusBarColor: Colors.transparent,
+              );
 
-      return MaterialApp(
-        theme: !isDarkMode ? LightThemeData().buildTheme() : DarkThemeData().buildTheme(),
-        // home: SightDetailsScreen(sight: mocks[1],),
-        home: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: systemUiOverlayStyle,
-          child: const MainScreen(),
-        ),
-      );
-    });
+        return MaterialApp(
+          theme: !isDarkMode ? LightThemeData().buildTheme() : DarkThemeData().buildTheme(),
+          // home: SightDetailsScreen(sight: mocks[1],),
+          home: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: systemUiOverlayStyle,
+            child: const FilterScreen(),
+          ),
+          // home: AnnotatedRegion<SystemUiOverlayStyle>(
+          //   value: systemUiOverlayStyle,
+          //   child: const MainScreen(),
+          // ),
+        );
+      },
+    );
   }
 }
 

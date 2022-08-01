@@ -27,7 +27,7 @@ class _SightListScreenState extends State<SightListScreen> {
                 onTap: () => ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Tap on heart')),
                 ),
-                child: const IconSvg(icon: AppAssets.heart),
+                child: Ink(child: const IconSvg(icon: AppAssets.heart)),
               ),
             ],
             details: [
@@ -39,7 +39,7 @@ class _SightListScreenState extends State<SightListScreen> {
               Text(
                 sight.details,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 4,
+                maxLines: 3,
                 style: theme.textTheme.bodySmall,
               ),
             ],

@@ -3,13 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 
-class CustomChip extends StatefulWidget {
+class FilterCustomChip extends StatefulWidget {
   final String label;
   final String icon;
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  const CustomChip({
+  const FilterCustomChip({
     Key? key,
     required this.label,
     required this.icon,
@@ -18,10 +18,10 @@ class CustomChip extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CustomChip> createState() => _CustomChipState();
+  State<FilterCustomChip> createState() => _FilterCustomChipState();
 }
 
-class _CustomChipState extends State<CustomChip> {
+class _FilterCustomChipState extends State<FilterCustomChip> {
   @override
   Widget build(BuildContext context) {
     final value = widget.value;
