@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:location/location.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
@@ -16,26 +15,6 @@ void main() async {
       child: const App(),
     ),
   );
-  final location = Location();
-
-  bool serviceEnabled;
-  PermissionStatus permissionGranted;
-
-  serviceEnabled = await location.serviceEnabled();
-  if (!serviceEnabled) {
-    serviceEnabled = await location.requestService();
-    if (!serviceEnabled) {
-      return;
-    }
-  }
-
-  permissionGranted = await location.hasPermission();
-  if (permissionGranted == PermissionStatus.denied) {
-    permissionGranted = await location.requestPermission();
-    if (permissionGranted != PermissionStatus.granted) {
-      return;
-    }
-  }
 }
 
 class App extends StatefulWidget {

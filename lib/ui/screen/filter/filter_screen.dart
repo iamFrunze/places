@@ -87,11 +87,13 @@ class _FilterScreenState extends State<FilterScreen> {
                   children: [
                     Text(
                       AppStrings.distance,
-                      style: theme.textTheme.bodyMedium?.copyWith(fontSize: 16.0),
+                      style:
+                          theme.textTheme.bodyMedium?.copyWith(fontSize: 16.0),
                     ),
                     Text(
                       '${AppStrings.from} ${_sliderValue.start.toInt()} ${AppStrings.to} ${_sliderValue.end.toInt()} ${AppStrings.km}',
-                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 16.0),
+                      style:
+                          theme.textTheme.bodySmall?.copyWith(fontSize: 16.0),
                     ),
                   ],
                 ),
@@ -103,6 +105,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     end: value.end,
                   ),
                   onChanged: (value) async {
+                    await model.changArea(
+                      start: value.start,
+                      end: value.end,
+                    );
                     setState(() {
                       _sliderValue = value;
                     });

@@ -1,6 +1,8 @@
 import 'package:places/data/sight.dart';
 import 'package:places/res/app_strings.dart';
 
+const mockLat = 48.590539702478225;
+const mockLot = 45.71223457198511;
 final List<Sight> mocks = [sight1, sight2, sight3, sight4, sight5, sight6];
 final sight1 = Sight(
   name: 'КОФЕЙНОЕ МЕСТО ',
