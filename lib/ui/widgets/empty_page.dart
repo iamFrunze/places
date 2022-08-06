@@ -32,7 +32,7 @@ class EmptyPage extends StatelessWidget {
         ),
         Text(
           AppStrings.empty,
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.titleMedium,
         ),
         const SizedBox(
           height: AppDimensions.margin16,
@@ -41,13 +41,13 @@ class EmptyPage extends StatelessWidget {
           Text(
             AppStrings.completeRoute,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText1?.copyWith(color: AppColors.inactiveColorKit),
+            style: theme.textTheme.bodySmall,
           )
         else
           Text(
             AppStrings.markFavouritePlaces,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText1?.copyWith(color: AppColors.inactiveColorKit),
+            style: theme.textTheme.bodySmall,
           ),
       ],
     );

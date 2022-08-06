@@ -3,6 +3,9 @@ import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/favourite/pages/visited_places_page.dart';
 import 'package:places/ui/screen/favourite/pages/want_to_visit_places_page.dart';
+import 'package:places/ui/widgets/appbar.dart';
+
+const _tabBarHeight = 52.0;
 
 class FavouriteScreen extends StatelessWidget {
   final _tabs = [
@@ -23,10 +26,11 @@ class FavouriteScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: _AppBarWidget(),
-        body: Column(
-          children: [
-            Container(
+        appBar: AppBarWidget(
+          title: AppStrings.favourite,
+          bottomWidget: PreferredSize(
+            preferredSize: const Size.fromHeight(_tabBarHeight),
+            child: Container(
               margin: const EdgeInsets.symmetric(
                 horizontal: AppDimensions.margin16,
               ),
@@ -35,35 +39,24 @@ class FavouriteScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppDimensions.cornerRadius40),
               ),
               child: TabBar(
+                splashBorderRadius: const BorderRadius.all(
+                  Radius.circular(AppDimensions.cornerRadius40),
+                ),
                 tabs: _tabs,
               ),
             ),
-            const Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: AppDimensions.margin16),
-                child: TabBarView(
-                  children: [
-                    WantToVisitPage(),
-                    VisitedPlacesPage(),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
+        ),
+        body: const Padding(
+          padding: EdgeInsets.only(top: AppDimensions.margin16),
+          child: TabBarView(
+            children: [
+              WantToVisitPage(),
+              VisitedPlacesPage(),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: const Text(AppStrings.favourite),
     );
   }
 }
