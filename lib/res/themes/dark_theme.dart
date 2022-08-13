@@ -10,11 +10,54 @@ class DarkThemeData extends AppTheme {
   @override
   Iterable<ThemeExtension> get extensions => extDark;
 
+  OutlineInputBorder get _errorBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.dmErrorBorderColor,
+        ),
+      );
+
+  OutlineInputBorder get _focusedErrorBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.dmErrorBorderColor,
+          width: AppDimensions.textFieldFocusBorderWidth2,
+        ),
+      );
+
+  OutlineInputBorder get _focusedBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.dmFocusedBorderColor,
+          width: AppDimensions.textFieldFocusBorderWidth2,
+        ),
+      );
+
+  OutlineInputBorder get _enabledBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(color: AppColors.inactiveColorKit),
+      );
+
   @override
   ThemeData buildTheme() {
     return base.copyWith(
       brightness: Brightness.dark,
-      useMaterial3: true,
       primaryColor: AppColors.dmPrimaryColor,
       scaffoldBackgroundColor: AppColors.dmBackgroundColor,
       disabledColor: AppColors.inactiveColorKit,
@@ -29,6 +72,8 @@ class DarkThemeData extends AppTheme {
       iconTheme: buildIconTheme(),
       sliderTheme: buildSliderTheme(),
       extensions: extensions,
+      inputDecorationTheme: buildInputDecorationTheme(),
+      textSelectionTheme: buildTextSelectionTheme(),
     );
   }
 
@@ -48,7 +93,7 @@ class DarkThemeData extends AppTheme {
         color: AppColors.dmWhiteColorKit,
       ),
       bodyLarge: AppTypography.bodyLarge.apply(
-        color: AppColors.dmSecondary2ColorKit,
+        color: AppColors.secondary2ColorKit,
       ),
       bodyMedium: AppTypography.bodyMedium.apply(
         color: AppColors.dmWhiteColorKit,
@@ -110,7 +155,7 @@ class DarkThemeData extends AppTheme {
         backgroundColor: MaterialStateProperty.resolveWith(
           (states) {
             return states.contains(MaterialState.disabled)
-                ? AppColors.backgroundColorKit
+                ? AppColors.dmSurfaceColor
                 : AppColors.dmGreenColorKit;
           },
         ),
@@ -143,7 +188,7 @@ class DarkThemeData extends AppTheme {
       labelStyle: AppTypography.bodyLarge,
       labelColor: AppColors.dmSecondaryColorKit,
       unselectedLabelStyle: AppTypography.bodyLarge,
-      unselectedLabelColor: AppColors.dmSecondary2ColorKit,
+      unselectedLabelColor: AppColors.secondary2ColorKit,
     );
   }
 
@@ -163,4 +208,23 @@ class DarkThemeData extends AppTheme {
       thumbColor: AppColors.dmWhiteColorKit,
     );
   }
+
+  @override
+  InputDecorationTheme buildInputDecorationTheme() {
+    return base.inputDecorationTheme.copyWith(
+      errorStyle: const TextStyle(height: 0),
+      enabledBorder: _enabledBorder,
+      focusedBorder: _focusedBorder,
+      focusedErrorBorder: _focusedErrorBorder,
+      errorBorder: _errorBorder,
+    );
+  }
+
+  @override
+  TextSelectionThemeData buildTextSelectionTheme() {
+    return base.textSelectionTheme.copyWith(
+      cursorColor: AppColors.dmOnPrimaryColor,
+    );
+  }
+
 }

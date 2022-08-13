@@ -10,11 +10,54 @@ class LightThemeData extends AppTheme {
   @override
   Iterable<ThemeExtension> get extensions => extLight;
 
+  OutlineInputBorder get _errorBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.lmErrorBorderColor,
+        ),
+      );
+
+  OutlineInputBorder get _focusedErrorBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.lmErrorBorderColor,
+          width: AppDimensions.textFieldFocusBorderWidth2,
+        ),
+      );
+
+  OutlineInputBorder get _focusedBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(
+          color: AppColors.lmFocusedBorderColor,
+          width: AppDimensions.textFieldFocusBorderWidth2,
+        ),
+      );
+
+  OutlineInputBorder get _enabledBorder => const OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            AppDimensions.cornerRadius8,
+          ),
+        ),
+        borderSide: BorderSide(color: AppColors.inactiveColorKit),
+      );
+
   @override
   ThemeData buildTheme() {
     return base.copyWith(
       brightness: Brightness.light,
-      useMaterial3: true,
       primaryColor: AppColors.lmPrimaryColor,
       scaffoldBackgroundColor: AppColors.lmBackgroundColor,
       disabledColor: AppColors.inactiveColorKit,
@@ -29,6 +72,8 @@ class LightThemeData extends AppTheme {
       iconTheme: buildIconTheme(),
       sliderTheme: buildSliderTheme(),
       extensions: extensions,
+      inputDecorationTheme: buildInputDecorationTheme(),
+      textSelectionTheme: buildTextSelectionTheme(),
     );
   }
 
@@ -54,7 +99,7 @@ class LightThemeData extends AppTheme {
         color: AppColors.lmSecondaryColorKit,
       ),
       bodySmall: AppTypography.bodySmall.apply(
-        color: AppColors.lmSecondary2ColorKit,
+        color: AppColors.secondary2ColorKit,
       ),
       labelMedium: AppTypography.labelMedium.apply(
         color: AppColors.lmPrimaryColor,
@@ -98,7 +143,8 @@ class LightThemeData extends AppTheme {
   ElevatedButtonThemeData buildElevatedButtonTheme() {
     return ElevatedButtonThemeData(
       style: ButtonStyle(
-        textStyle: MaterialStateProperty.all(AppTypography.labelMedium),
+        textStyle:
+            MaterialStateProperty.all(AppTypography.labelMedium.copyWith()),
         foregroundColor: MaterialStateProperty.resolveWith(
           (states) {
             return states.contains(MaterialState.disabled)
@@ -159,6 +205,24 @@ class LightThemeData extends AppTheme {
     return const SliderThemeData(
       activeTrackColor: AppColors.lmGreenColorKit,
       inactiveTrackColor: AppColors.inactiveColorKit,
+    );
+  }
+
+  @override
+  InputDecorationTheme buildInputDecorationTheme() {
+    return base.inputDecorationTheme.copyWith(
+      errorStyle: const TextStyle(height: 0),
+      enabledBorder: _enabledBorder,
+      focusedBorder: _focusedBorder,
+      focusedErrorBorder: _focusedErrorBorder,
+      errorBorder: _errorBorder,
+    );
+  }
+
+  @override
+  TextSelectionThemeData buildTextSelectionTheme() {
+    return base.textSelectionTheme.copyWith(
+      cursorColor: AppColors.lmOnPrimaryColor,
     );
   }
 }

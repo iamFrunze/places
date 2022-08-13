@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight.dart';
+import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
-import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
 
 class SightCard extends StatelessWidget {
-  final Sight sight;
+  final SightModel sight;
   final List<Widget> actions;
   final List<Widget> details;
 
@@ -85,7 +84,7 @@ class SightCard extends StatelessWidget {
 }
 
 class _ImageCardWidget extends StatelessWidget {
-  final Sight sight;
+  final SightModel sight;
 
   const _ImageCardWidget({
     Key? key,
@@ -94,38 +93,35 @@ class _ImageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: AppStrings.heroTagCard,
-      child: SizedBox(
-        width: double.infinity,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(
-              AppDimensions.cornerRadius16,
-            ),
-            topRight: Radius.circular(
-              AppDimensions.cornerRadius16,
-            ),
+    return SizedBox(
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(
+            AppDimensions.cornerRadius16,
           ),
-          // child: ImageLoader(
-          //   imgUrl: sight.url,
-          // ),
-          child: Image.network(
-            sight.url,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              return loadingProgress == null
-                  ? child
-                  : Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-            },
+          topRight: Radius.circular(
+            AppDimensions.cornerRadius16,
           ),
+        ),
+        // child: ImageLoader(
+        //   imgUrl: sight.url,
+        // ),
+        child: Image.network(
+          sight.url,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            return loadingProgress == null
+                ? child
+                : Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+          },
         ),
       ),
     );

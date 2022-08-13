@@ -1,91 +1,108 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:places/data/sight.dart';
+import 'package:places/data/callback_state.dart';
+import 'package:places/data/category_model.dart';
+import 'package:places/data/sight_model.dart';
+import 'package:places/domain/interactors/mock_data/mock_interactor_impl.dart';
 import 'package:places/mocks.dart';
+import 'package:places/utils/app_settings.dart';
+import 'package:places/utils/distance_calc.dart';
 
 class FilterSettings extends ChangeNotifier {
-  final _selectedItem = List.generate(6, (index) => false);
-  final _sights = mocks;
-  int countNearSights = mocks.length;
-  double _start = 0;
-  double _end = 10;
+  final _mockRepo = MockInteractorImpl();
+  final _booleanListOfCategories = List.generate(6, (index) => false);
+  final _selectedCategories = AppSettings.categories;
 
-  Future selectSight({
+  CallbackState currentState = CallbackState.loading;
+
+  int get countNearSights => _countNearSights;
+
+  RangeValues get rangeValue => _rangeValue;
+
+  List<CategoryModel> get selectedCategories => _selectedCategories;
+
+  int _countNearSights = 0;
+
+  var _rangeValue = AppSettings.range;
+
+  late List<SightModel> _sights;
+
+  Future initData() async {
+    final callback = _mockRepo.fetchSightsFromMock();
+    if (callback != null) {
+      if (callback.isNotEmpty) {
+        _sights = callback;
+        _countNearSights = callback.where(_isNear).toList().length;
+      } else {
+        currentState = CallbackState.empty;
+      }
+    } else {
+      currentState = CallbackState.error;
+    }
+  }
+
+  void selectSight({
     required int index,
     required String type,
     required bool value,
-  }) async {
-    _selectedItem[index] = value;
+  }) {
+    _selectedCategories[index].value = value;
+    _booleanListOfCategories[index] = value;
     _sights
         .where((element) => element.type == type)
         .map((e) => e.isSelect = value)
         .toList();
-    await _fetchNearSights();
+
+    final selectedSights =
+        _sights.where((element) => element.isSelect).toList();
+
+    _fetchNearSights(selectedSights: selectedSights);
   }
 
-  Future changArea({
+  void changeArea({
     required double start,
     required double end,
-  }) async {
-    _start = start;
-    _end = end;
-    await _fetchNearSights();
+  }) {
+    _rangeValue = RangeValues(start, end);
+    final selectedSights =
+        _sights.where((element) => element.isSelect).toList();
+    _fetchNearSights(selectedSights: selectedSights);
   }
 
-  Future clearData() async {
-    _sights.map((e) => e.isSelect = false).toList();
-    _selectedItem.where((element) => element).map((e) => false).toList();
-    await _fetchNearSights();
+  void clearData() {
+    _selectedCategories.map((e) => e.value = false).toList();
+    _rangeValue = AppSettings.range;
+    _fetchNearSights(selectedSights: _sights);
   }
 
-  Future<List<Sight>> _fetchNearSights() async {
-    final area = (_end - _start) * 1000;
-    final mapSights = <Sight>[];
+  List<SightModel> _fetchNearSights({
+    required List<SightModel> selectedSights,
+  }) {
+    final mapSights = <SightModel>[];
 
-    if (_selectedItem.contains(true)) {
-      mapSights.addAll(_sights.where((element) => element.isSelect));
+    if (_booleanListOfCategories.contains(true)) {
+      mapSights.addAll(selectedSights);
     } else {
       mapSights.addAll(_sights);
     }
 
-    final nearSights = mapSights.where((sight) {
-      final dist = _distanceBetween(
-        mockLat,
-        mockLot,
-        sight.lat,
-        sight.lon,
-      );
+    final nearSights = mapSights.where(_isNear).toList();
 
-      return dist < area;
-    }).toList();
-
-    countNearSights = nearSights.length;
+    _countNearSights = nearSights.length;
     notifyListeners();
 
-    return nearSights;
+    return mapSights;
   }
 
-  double _distanceBetween(
-    double startLatitude,
-    double startLongitude,
-    double endLatitude,
-    double endLongitude,
-  ) {
-    const earthRadius = 6378137.0;
-    final dLat = _toRadians(endLatitude - startLatitude);
-    final dLon = _toRadians(endLongitude - startLongitude);
+  bool _isNear(SightModel sight) {
+    final area = (_rangeValue.end - _rangeValue.start) * 1000;
 
-    final a = pow(sin(dLat / 2), 2) +
-        pow(sin(dLon / 2), 2) *
-            cos(_toRadians(startLatitude)) *
-            cos(_toRadians(endLatitude));
-    final c = 2 * asin(sqrt(a));
+    final dist = distanceBetween(
+      mockLat,
+      mockLot,
+      sight.lat,
+      sight.lon,
+    );
 
-    return earthRadius * c;
-  }
-
-  double _toRadians(double degree) {
-    return degree * pi / 180;
+    return dist < area;
   }
 }

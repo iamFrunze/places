@@ -1,12 +1,13 @@
-class Sight {
+class SightModel {
   final String name;
-  final double lat, lon;
+  final double lat;
+  final double lon;
   final String url;
   final String details;
   final String type;
   bool isSelect;
 
-  Sight({
+  SightModel({
     required this.name,
     required this.lat,
     required this.lon,
@@ -18,9 +19,9 @@ class Sight {
 
   @override
   String toString() {
-    return "\n"
-        "name ::: $name \n"
-        "type ::: $type \n"
+    return '\n'
+        'name ::: $name \n'
+        'type ::: $type \n'
         'isSelect ::: $isSelect';
   }
 }

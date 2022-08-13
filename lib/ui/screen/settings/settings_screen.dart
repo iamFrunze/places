@@ -18,7 +18,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Provider.of<AppSettingsModel>(context, listen: true).isDarkMode;
+    final isDarkMode = Provider.of<AppSettings>(context, listen: true).isDarkMode;
 
     final theme = Theme.of(context);
 
@@ -41,7 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 CupertinoSwitch(
                   value: isDarkMode,
-                  onChanged: (value) => Provider.of<AppSettingsModel>(context, listen: false)
+                  onChanged: (value) => Provider.of<AppSettings>(context, listen: false)
                       .changeAppMode(value: value),
                 ),
               ],
