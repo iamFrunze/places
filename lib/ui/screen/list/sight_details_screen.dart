@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/data/sight.dart';
+import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
@@ -9,7 +9,7 @@ import 'package:places/ui/widgets/planning_text_button.dart';
 import 'package:places/ui/widgets/svg_picture_colors.dart';
 
 class SightDetailsScreen extends StatelessWidget {
-  final Sight sight;
+  final SightModel sight;
 
   const SightDetailsScreen({Key? key, required this.sight}) : super(key: key);
 
