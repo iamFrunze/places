@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/category_model.dart';
+import 'package:places/data/repository/mock_data/mock_interactor_impl.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/interactors/mock_data/mock_interactor_impl.dart';
+import 'package:places/domain/app_settings.dart';
 import 'package:places/mocks.dart';
-import 'package:places/utils/app_settings.dart';
 import 'package:places/utils/distance_calc.dart';
 
 class FilterSettings extends ChangeNotifier {

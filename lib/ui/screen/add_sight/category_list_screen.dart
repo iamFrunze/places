@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/data/category_model.dart';
+import 'package:places/domain/app_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/widgets/appbar.dart';
-import 'package:places/utils/app_settings.dart';
 
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({Key? key}) : super(key: key);

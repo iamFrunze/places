@@ -5,10 +5,15 @@ import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 
-class EmptyPage extends StatelessWidget {
-  final bool isVisited;
+enum EmptyPageState {
+  wantToVisitSights,
+  visitedSights,
+}
 
-  const EmptyPage({Key? key, required this.isVisited}) : super(key: key);
+class EmptyPage extends StatelessWidget {
+  final EmptyPageState state;
+
+  const EmptyPage({Key? key, required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class EmptyPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (isVisited)
+        if (state == EmptyPageState.visitedSights)
           SvgPicture.asset(
             AppAssets.go,
             color: AppColors.inactiveColorKit,
@@ -37,7 +42,7 @@ class EmptyPage extends StatelessWidget {
         const SizedBox(
           height: AppDimensions.margin16,
         ),
-        if (isVisited)
+        if (state == EmptyPageState.visitedSights)
           Text(
             AppStrings.completeRoute,
             textAlign: TextAlign.center,

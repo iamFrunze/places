@@ -5,7 +5,7 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/widgets/appbar.dart';
-import 'package:places/utils/app_settings.dart';
+import 'package:places/domain/app_settings.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {

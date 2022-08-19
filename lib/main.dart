@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:places/domain/app_settings.dart';
+import 'package:places/domain/favourite_settings.dart';
 import 'package:places/domain/filter_settings.dart';
 import 'package:places/domain/search_settings.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
 import 'package:places/ui/screen/nav_screen.dart';
-import 'package:places/utils/app_settings.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -21,6 +22,9 @@ void main() async {
         ),
         ChangeNotifierProvider<AppSettings>(
           create: (context) => AppSettings(),
+        ),
+        ChangeNotifierProvider<FavouriteSettings>(
+          create: (context) => FavouriteSettings(),
         ),
       ],
       child: const App(),

@@ -8,7 +8,7 @@ import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/filter/widgets/filter_custom_chip.dart';
 import 'package:places/ui/widgets/appbar.dart';
-import 'package:places/utils/app_settings.dart';
+import 'package:places/domain/app_settings.dart';
 import 'package:provider/provider.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -74,8 +74,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       shrinkWrap: true,
                       crossAxisCount: 3,
                       children: AppSettings.categories.map((category) {
-                        final index =
-                            AppSettings.categories.indexOf(category);
+                        final index = AppSettings.categories.indexOf(category);
 
                         return FilterCustomChip(
                           label: category.type,
