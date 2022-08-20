@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:places/domain/app_settings.dart';
-import 'package:places/domain/favourite_settings.dart';
-import 'package:places/domain/filter_settings.dart';
-import 'package:places/domain/search_settings.dart';
+import 'package:places/app_settings.dart';
+import 'package:places/data/repository/mock_data/mock_sights.dart';
+import 'package:places/data/repository/mock_data/mock_visited_sights.dart';
+import 'package:places/data/repository/mock_data/mock_want_visit_sights.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
+import 'package:places/ui/screen/favourite/favourite_settings.dart';
+import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/nav_screen.dart';
+import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  final mockSights = MockSights();
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<AppSettings>(
+          create: (_) => AppSettings(),
+        ),
         ChangeNotifierProvider<FilterSettings>(
-          create: (context) => FilterSettings(),
+          create: (_) => FilterSettings(repository: mockSights),
         ),
         ChangeNotifierProvider<SearchSettings>(
-          create: (context) => SearchSettings(),
-        ),
-        ChangeNotifierProvider<AppSettings>(
-          create: (context) => AppSettings(),
+          create: (_) => SearchSettings(repository: mockSights),
         ),
         ChangeNotifierProvider<FavouriteSettings>(
-          create: (context) => FavouriteSettings(),
+          create: (_) => FavouriteSettings(
+            visitedSightsRepository: MockVisitedSights(),
+            wantToVisitSightsRepository: MockWantVisitSights(),
+          ),
         ),
       ],
       child: const App(),

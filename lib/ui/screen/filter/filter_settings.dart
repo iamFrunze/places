@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:places/app_settings.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/category_model.dart';
-import 'package:places/data/repository/mock_data/mock_interactor_impl.dart';
+import 'package:places/data/repository/sights_repository.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/app_settings.dart';
 import 'package:places/mocks.dart';
 import 'package:places/utils/distance_calc.dart';
 
 class FilterSettings extends ChangeNotifier {
-  final _mockRepo = MockInteractorImpl();
+  final SightRepository repository;
   final _booleanListOfCategories = List.generate(6, (index) => false);
   final _selectedCategories = AppSettings.categories;
 
-  CallbackState currentState = CallbackState.loading;
+  ScreenState currentState = ScreenState.loading;
 
   int get countNearSights => _countNearSights;
 
@@ -26,17 +26,21 @@ class FilterSettings extends ChangeNotifier {
 
   late List<SightModel> _sights;
 
+  FilterSettings({
+    required this.repository,
+  });
+
   Future initData() async {
-    final callback = _mockRepo.fetchSightsFromMock();
+    final callback = repository.fetchSights();
     if (callback != null) {
       if (callback.isNotEmpty) {
         _sights = callback;
         _countNearSights = callback.where(_isNear).toList().length;
       } else {
-        currentState = CallbackState.empty;
+        currentState = ScreenState.empty;
       }
     } else {
-      currentState = CallbackState.error;
+      currentState = ScreenState.error;
     }
   }
 

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/filter_model.dart';
-import 'package:places/domain/filter_settings.dart';
+import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/filter/widgets/filter_custom_chip.dart';
 import 'package:places/ui/widgets/appbar.dart';
-import 'package:places/domain/app_settings.dart';
+import 'package:places/app_settings.dart';
 import 'package:provider/provider.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _FilterScreenState extends State<FilterScreen> {
     final theme = Theme.of(context);
 
     return Consumer<FilterSettings>(builder: (context, model, child) {
-      return model.currentState == CallbackState.error
+      return model.currentState == ScreenState.error
           ? Center(child: Text('Error'))
           : Scaffold(
               appBar: AppBarWidget(

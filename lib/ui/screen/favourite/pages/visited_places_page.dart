@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/favourite_settings.dart';
+import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/widgets/empty_page.dart';
@@ -27,17 +27,17 @@ class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
   Widget build(BuildContext context) {
     return Consumer<FavouriteSettings>(builder: (context, model, child) {
       switch (model.currentState) {
-        case CallbackState.success:
+        case ScreenState.success:
           return _Card(
             sights: model.visitedSights,
           );
-        case CallbackState.loading:
+        case ScreenState.loading:
           return const Center(
             child: CircularProgressIndicator(
               color: Colors.green,
             ),
           );
-        case CallbackState.empty:
+        case ScreenState.empty:
           return const EmptyPage(state: EmptyPageState.visitedSights);
         default:
           return const Center(
@@ -56,6 +56,7 @@ class _Card extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final provider = Provider.of<FavouriteSettings>(context, listen: false);
 
     return SingleChildScrollView(
       child: Container(
@@ -76,9 +77,7 @@ class _Card extends StatelessWidget {
                     ),
                     const SizedBox(width: AppDimensions.margin16),
                     InkWell(
-                      onTap: () =>
-                          Provider.of<FavouriteSettings>(context, listen: false)
-                              .removeVisitedSight(sight),
+                      onTap: () => provider.removeVisitedSight(sight),
                       child: const IconSvg(icon: AppAssets.close),
                     ),
                   ],

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/repository/mock_data/mock_interactor_impl.dart';
+import 'package:places/data/repository/visited_sights_repository.dart';
+import 'package:places/data/repository/want_visit_sights_repository.dart';
 import 'package:places/data/sight_model.dart';
 
 class FavouriteSettings extends ChangeNotifier {
-  final _mockRepo = MockInteractorImpl();
-  CallbackState currentState = CallbackState.empty;
+  final VisitedSightsRepository visitedSightsRepository;
+  final WantToVisitSightsRepository wantToVisitSightsRepository;
+  ScreenState currentState = ScreenState.loading;
 
   List<SightModel> get wantToVisit => _wantToVisit;
 
@@ -14,40 +16,45 @@ class FavouriteSettings extends ChangeNotifier {
   late List<SightModel> _wantToVisit;
   late List<SightModel> _visitedSights;
 
+  FavouriteSettings({
+    required this.visitedSightsRepository,
+    required this.wantToVisitSightsRepository,
+  });
+
   Future initWantToVisitData() async {
-    final callbackWantToVisit = _mockRepo.fetchWantToVisitSightsFromMock();
+    final callbackWantToVisit = wantToVisitSightsRepository.fetchSights();
     if (callbackWantToVisit != null) {
       _wantToVisit = callbackWantToVisit;
-      currentState = CallbackState.success;
+      currentState = ScreenState.success;
     } else {
-      currentState = CallbackState.error;
+      currentState = ScreenState.error;
     }
   }
 
   Future initVisitedData() async {
-    final callbackVisitedSights = _mockRepo.fetchVisitedSightsFromMock();
+    final callbackVisitedSights = visitedSightsRepository.fetchSights();
     if (callbackVisitedSights != null) {
       _visitedSights = callbackVisitedSights;
-      currentState = CallbackState.success;
+      currentState = ScreenState.success;
     } else {
-      currentState = CallbackState.error;
+      currentState = ScreenState.error;
     }
   }
 
   void removeWantToVisitData(SightModel sight) {
     _wantToVisit.remove(sight);
-    _mockRepo.removeWantToVisitSight(sight);
+    wantToVisitSightsRepository.removeSight(sight);
     if (_wantToVisit.isEmpty) {
-      currentState = CallbackState.empty;
+      currentState = ScreenState.empty;
     }
     notifyListeners();
   }
 
   void removeVisitedSight(SightModel sight) {
     _visitedSights.remove(sight);
-    _mockRepo.removeVisitedSight(sight);
+    visitedSightsRepository.removeSight(sight);
     if (_visitedSights.isEmpty) {
-      currentState = CallbackState.empty;
+      currentState = ScreenState.empty;
     }
     notifyListeners();
   }
