@@ -1,16 +1,16 @@
+import 'package:places/data/repository/sights_repository.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/interactors/mock_data/mock_interactor.dart';
 import 'package:places/mocks.dart';
 
-class MockInteractorImpl extends MockInteractor {
+class MockSights extends SightRepository {
   @override
   void clearHistory() => historyMock.clear();
 
   @override
-  List<String>? fetchHistoryMock() => historyMock;
+  List<String>? fetchHistory() => historyMock;
 
   @override
-  List<SightModel>? fetchSightsFromMock() => mocks;
+  List<SightModel>? fetchSights() => mocks;
 
   @override
   void removeSight(SightModel sight) => mocks.remove(sight);
@@ -20,10 +20,10 @@ class MockInteractorImpl extends MockInteractor {
       historyMock.remove(nameSight);
 
   @override
-  void updateHistoryMock(List<String> sights) => historyMock
+  void updateHistory(List<String> sights) => historyMock
     ..clear()
     ..addAll(sights);
 
   @override
-  void addSightToHistoryMock(String sight) => historyMock.add(sight);
+  void addSightToHistory(String sight) => historyMock.add(sight);
 }

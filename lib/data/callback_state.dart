@@ -1,4 +1,4 @@
-enum CallbackState {
+enum ScreenState {
   loading,
   empty,
   error,

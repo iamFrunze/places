@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
+import 'package:places/data/repository/sights_repository.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/interactors/mock_data/mock_interactor_impl.dart';
 import 'package:places/mocks.dart';
 import 'package:places/utils/distance_calc.dart';
 
 class SearchSettings extends ChangeNotifier {
   final searchController = TextEditingController();
   final foundSights = <SightModel>[];
-  final _mockRepo = MockInteractorImpl();
+  final SightRepository repository;
 
-  CallbackState currentState = CallbackState.empty;
+  ScreenState currentState = ScreenState.empty;
 
   List<SightModel> get sight => _sights;
 
@@ -19,14 +19,18 @@ class SearchSettings extends ChangeNotifier {
   late List<SightModel> _sights;
   late List<String> _historySights;
 
+  SearchSettings({
+    required this.repository,
+  });
+
   Future initData() async {
-    final callback = _mockRepo.fetchSightsFromMock();
-    final callbackHistory = _mockRepo.fetchHistoryMock();
+    final callback = repository.fetchSights();
+    final callbackHistory = repository.fetchHistory();
     if (callback != null) {
       _sights = callback;
       debugPrint('sight $_sights');
     } else {
-      currentState = CallbackState.error;
+      currentState = ScreenState.error;
     }
     _historySights = callbackHistory != null && callbackHistory.isNotEmpty
         ? callbackHistory
@@ -36,7 +40,7 @@ class SearchSettings extends ChangeNotifier {
   Future fetchSight({
     String text = '',
   }) async {
-    currentState = CallbackState.loading;
+    currentState = ScreenState.loading;
     notifyListeners();
     //TODO имитация загрузки данных
     await Future.delayed(Duration(seconds: 5), () {});
@@ -44,7 +48,7 @@ class SearchSettings extends ChangeNotifier {
     if (text.isEmpty) {
       _fetchHistorySight();
     } else {
-      _mockRepo.addSightToHistoryMock(text);
+      repository.addSightToHistory(text);
       historySights.add(text);
       foundSights
         ..clear()
@@ -60,20 +64,20 @@ class SearchSettings extends ChangeNotifier {
       debugPrint('sights $foundSights');
 
       if (foundSights.isEmpty) {
-        currentState = CallbackState.empty;
+        currentState = ScreenState.empty;
 
         return;
       }
-      currentState = CallbackState.success;
+      currentState = ScreenState.success;
       notifyListeners();
     }
   }
 
   void removeSightFromHistory(String text) {
     _historySights.remove(text);
-    _mockRepo.removeSightFromHistory(text);
+    repository.removeSightFromHistory(text);
     if (_historySights.isEmpty) {
-      currentState = CallbackState.empty;
+      currentState = ScreenState.empty;
       notifyListeners();
     }
     notifyListeners();
@@ -81,24 +85,24 @@ class SearchSettings extends ChangeNotifier {
 
   void clearHistory() {
     _historySights.clear();
-    _mockRepo.clearHistory();
-    currentState = CallbackState.empty;
+    repository.clearHistory();
+    currentState = ScreenState.empty;
     notifyListeners();
   }
 
   void clearSearchBar() {
     searchController.clear();
-    currentState = CallbackState.history;
+    currentState = ScreenState.history;
     notifyListeners();
   }
 
   void _fetchHistorySight() {
-    final callback = _mockRepo.fetchHistoryMock();
+    final callback = repository.fetchHistory();
     if (callback != null && callback.isNotEmpty) {
-      currentState = CallbackState.history;
+      currentState = ScreenState.history;
       _historySights = callback;
     } else {
-      currentState = CallbackState.empty;
+      currentState = ScreenState.empty;
       _historySights = [];
     }
     notifyListeners();

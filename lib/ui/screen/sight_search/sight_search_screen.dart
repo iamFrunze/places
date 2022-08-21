@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/domain/search_settings.dart';
+import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
@@ -38,19 +38,19 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
       body: Consumer<SearchSettings>(
         builder: (context, model, child) {
           switch (model.currentState) {
-            case CallbackState.success:
+            case ScreenState.success:
               return _Body(
                 sights: model.foundSights,
               );
-            case CallbackState.history:
+            case ScreenState.history:
               return _BodyHistory(
                 history: model.historySights,
               );
-            case CallbackState.error:
+            case ScreenState.error:
               return const Center(
                 child: Text('Error'),
               );
-            case CallbackState.empty:
+            case ScreenState.empty:
               return const _BodyEmptyList();
             default:
               return const Center(
