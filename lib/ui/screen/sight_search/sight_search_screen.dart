@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
 import 'package:places/ui/screen/list/sight_details_screen.dart';
+import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/ui/screen/sight_search/widgets/history_list_tile.dart';
 import 'package:places/ui/screen/sight_search/widgets/search_list_tile.dart';
 import 'package:places/ui/widgets/appbar.dart';
@@ -23,12 +23,6 @@ class SightSearchScreen extends StatefulWidget {
 }
 
 class _SightSearchScreenState extends State<SightSearchScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<SearchSettings>(context, listen: false).initData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,26 +74,25 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<SearchSettings>();
+
     return AppBarWidget(
       title: AppStrings.interestingPlaces,
       bottomWidget: SearchBarWidget(
-        onTapSuffix: () => Provider.of<SearchSettings>(context, listen: false)
-            .clearSearchBar(),
+        onTapSuffix: () => provider.clearSearchBar(),
         onChanged: (value) {
           if (value.contains(' ')) {
-            Provider.of<SearchSettings>(context, listen: false)
-                .fetchSight(text: value);
+            provider.fetchSight(text: value);
           }
         },
         onFieldSubmitted: (value) {
           FocusScope.of(context).unfocus();
-          Provider.of<SearchSettings>(context, listen: false)
-              .fetchSight(text: value);
+          provider.fetchSight(text: value);
         },
         controller: controller,
         suffixIcon: Theme.of(context).brightness == Brightness.light
-            ? AppAssets.clearWhite
-            : AppAssets.clearDark,
+            ? AppAssets.clearDark
+            : AppAssets.clearWhite,
       ),
     );
   }
@@ -120,16 +113,14 @@ class _BodyHistory extends StatefulWidget {
 class _BodyHistoryState extends State<_BodyHistory> {
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<SearchSettings>();
+
     final tiles = widget.history
         .map(
           (e) => HistoryListTile(
             title: e,
-            onClearTap: () =>
-                Provider.of<SearchSettings>(context, listen: false)
-                    .removeSightFromHistory(e),
-            onTap: () => Provider.of<SearchSettings>(context, listen: false)
-                .searchController
-                .text = e,
+            onClearTap: () => provider.removeSightFromHistory(e),
+            onTap: () => provider.searchController.text = e,
           ),
         )
         .toList();
@@ -163,8 +154,7 @@ class _BodyHistoryState extends State<_BodyHistory> {
             height: AppDimensions.margin16,
           ),
           TextButton(
-            onPressed: () => Provider.of<SearchSettings>(context, listen: false)
-                .clearHistory(),
+            onPressed: provider.clearHistory,
             child: Text(
               AppStrings.clearHistory,
               style: AppTypography.textMedium16.copyWith(

@@ -23,8 +23,9 @@ class AppDimensions {
   static const tileLeadingSize = 56.0;
   static const iconBorderSize = 32.0;
   static const chipSize = 64.0;
+  static const imagePickerSize = 72.0;
 
-  static const textFieldFocusBorderWidth2 = 2.0;
+  static const borderWidth2 = 2.0;
 
   static const searchBarHeight60 = 50.0;
 }

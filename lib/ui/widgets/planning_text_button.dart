@@ -29,7 +29,10 @@ class _PlanningTextButtonState extends State<PlanningTextButton> {
             onPressed: widget.onPressed,
             icon: IconSvg(
               icon: widget.icon,
-              color: theme.extension<SvgPictureColors>()!.textBtnActiveColor.toColor(),
+              color: theme
+                  .extension<SvgPictureColors>()!
+                  .textBtnActiveColor
+                  .toColor(),
             ),
             label: Text(widget.label, style: theme.textTheme.bodyMedium),
           )
@@ -37,7 +40,10 @@ class _PlanningTextButtonState extends State<PlanningTextButton> {
             onPressed: null,
             icon: IconSvg(
               icon: widget.icon,
-              color: theme.extension<SvgPictureColors>()!.textBtnInactiveColor.toColor(),
+              color: theme
+                  .extension<SvgPictureColors>()!
+                  .textBtnInactiveColor
+                  .toColor(),
             ),
             label: Text(
               widget.label,

@@ -29,7 +29,7 @@ class LightThemeData extends AppTheme {
         ),
         borderSide: BorderSide(
           color: AppColors.lmErrorBorderColor,
-          width: AppDimensions.textFieldFocusBorderWidth2,
+          width: AppDimensions.borderWidth2,
         ),
       );
 
@@ -41,7 +41,7 @@ class LightThemeData extends AppTheme {
         ),
         borderSide: BorderSide(
           color: AppColors.lmFocusedBorderColor,
-          width: AppDimensions.textFieldFocusBorderWidth2,
+          width: AppDimensions.borderWidth2,
         ),
       );
 

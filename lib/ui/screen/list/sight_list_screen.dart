@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/mocks.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
@@ -8,6 +7,7 @@ import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
 import 'package:places/ui/screen/filter/filter_screen.dart';
+import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/sight_search/sight_search_screen.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
@@ -27,29 +27,32 @@ class _SightListScreenState extends State<SightListScreen> {
 
     final cards = mocks
         .map(
-          (sight) => SightCard(
-            sight: sight,
-            actions: [
-              InkWell(
-                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Tap on heart')),
+          (sight) => Padding(
+            padding: const EdgeInsets.only(top: AppDimensions.margin16),
+            child: SightCard(
+              sight: sight,
+              actions: [
+                InkWell(
+                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tap on heart')),
+                  ),
+                  child: Ink(child: const IconSvg(icon: AppAssets.heart)),
                 ),
-                child: Ink(child: const IconSvg(icon: AppAssets.heart)),
-              ),
-            ],
-            details: [
-              Text(
-                sight.name,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleSmall,
-              ),
-              Text(
-                sight.details,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
+              ],
+              details: [
+                Text(
+                  sight.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall,
+                ),
+                Text(
+                  sight.details,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
         )
         .toList();

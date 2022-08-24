@@ -11,7 +11,7 @@ class NavScreen extends State with SingleTickerProviderStateMixin {
     const Center(
       child: Text('Map'),
     ),
-    FavouriteScreen(),
+    const FavouriteScreen(),
     const SettingsScreen(),
   ];
   late TabController _tabController;

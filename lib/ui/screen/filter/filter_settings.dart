@@ -12,6 +12,7 @@ class FilterSettings extends ChangeNotifier {
   final _booleanListOfCategories = List.generate(6, (index) => false);
   final _selectedCategories = AppSettings.categories;
 
+  bool initializedSights = false;
   ScreenState currentState = ScreenState.loading;
 
   int get countNearSights => _countNearSights;
@@ -26,22 +27,14 @@ class FilterSettings extends ChangeNotifier {
 
   late List<SightModel> _sights;
 
-  FilterSettings({
-    required this.repository,
-  });
-
-  Future initData() async {
-    final callback = repository.fetchSights();
-    if (callback != null) {
-      if (callback.isNotEmpty) {
-        _sights = callback;
-        _countNearSights = callback.where(_isNear).toList().length;
-      } else {
-        currentState = ScreenState.empty;
-      }
-    } else {
-      currentState = ScreenState.error;
-    }
+  FilterSettings({required this.repository}) {
+    _initData();
+    currentState = initializedSights
+        ? _sights.isNotEmpty
+            ? ScreenState.success
+            : ScreenState.empty
+        : ScreenState.error;
+    notifyListeners();
   }
 
   void selectSight({
@@ -108,5 +101,14 @@ class FilterSettings extends ChangeNotifier {
     );
 
     return dist < area;
+  }
+
+  Future _initData() async {
+    final callback = repository.fetchSights();
+    if (callback != null) {
+      _sights = callback;
+      _countNearSights = callback.where(_isNear).toList().length;
+      initializedSights = true;
+    }
   }
 }

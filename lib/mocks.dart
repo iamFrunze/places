@@ -10,8 +10,8 @@ const rangeEnd = 10.0;
 const range = RangeValues(rangeStart, rangeEnd);
 
 final mocks = [sight1, sight2, sight3, sight4, sight5, sight6];
-final visitedSights = [sight1, sight2, sight3, sight4, sight5, sight6];
-final wantToVisitSights = [sight1, sight2, sight3, sight4, sight5, sight6];
+final visitedSightsMock = [sight1, sight2, sight3, sight4, sight5, sight6];
+final wantToVisitSightsMock = [sight1, sight2, sight3, sight4, sight5, sight6];
 final historyMock = <String>[];
 
 final sight1 = SightModel(

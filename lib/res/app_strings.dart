@@ -54,6 +54,7 @@ class AppStrings {
   static const clearHistory = 'Очистить историю';
   static const notFound = 'Ничего не найдено.';
   static const tryChangeSearchParams = 'Попробуйте изменить параметры поиска';
+  static const remove = 'Удалить';
 
   static String show(int value) => 'показать ($value)';
 }

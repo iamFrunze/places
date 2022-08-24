@@ -10,6 +10,7 @@ class SearchSettings extends ChangeNotifier {
   final foundSights = <SightModel>[];
   final SightRepository repository;
 
+  bool initializedSights = false;
   ScreenState currentState = ScreenState.empty;
 
   List<SightModel> get sight => _sights;
@@ -19,22 +20,13 @@ class SearchSettings extends ChangeNotifier {
   late List<SightModel> _sights;
   late List<String> _historySights;
 
-  SearchSettings({
-    required this.repository,
-  });
-
-  Future initData() async {
-    final callback = repository.fetchSights();
-    final callbackHistory = repository.fetchHistory();
-    if (callback != null) {
-      _sights = callback;
-      debugPrint('sight $_sights');
-    } else {
-      currentState = ScreenState.error;
-    }
-    _historySights = callbackHistory != null && callbackHistory.isNotEmpty
-        ? callbackHistory
-        : [];
+  SearchSettings({required this.repository}) {
+    _initData();
+    currentState = initializedSights
+        ? _sights.isNotEmpty
+            ? ScreenState.success
+            : ScreenState.empty
+        : ScreenState.error;
   }
 
   Future fetchSight({
@@ -42,9 +34,6 @@ class SearchSettings extends ChangeNotifier {
   }) async {
     currentState = ScreenState.loading;
     notifyListeners();
-    //TODO имитация загрузки данных
-    await Future.delayed(Duration(seconds: 5), () {});
-    debugPrint('text $text');
     if (text.isEmpty) {
       _fetchHistorySight();
     } else {
@@ -61,7 +50,6 @@ class SearchSettings extends ChangeNotifier {
               )
               .toList(),
         );
-      debugPrint('sights $foundSights');
 
       if (foundSights.isEmpty) {
         currentState = ScreenState.empty;
@@ -119,5 +107,15 @@ class SearchSettings extends ChangeNotifier {
     );
 
     return dist < area;
+  }
+
+  Future _initData() async {
+    final callback = repository.fetchSights();
+    final callbackHistory = repository.fetchHistory();
+    if (callback != null) {
+      _sights = callback;
+      initializedSights = true;
+    }
+    _historySights = callbackHistory ?? [];
   }
 }

@@ -8,6 +8,29 @@ import 'package:places/ui/widgets/appbar.dart';
 const _tabBarHeight = 52.0;
 
 class FavouriteScreen extends StatelessWidget {
+  const FavouriteScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: _AppBar(),
+        body: const Padding(
+          padding: EdgeInsets.all(AppDimensions.margin16),
+          child: TabBarView(
+            children: [
+              WantToVisitPage(),
+              VisitedPlacesPage(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   final _tabs = [
     const Tab(
       text: AppStrings.wantToVisit,
@@ -17,43 +40,33 @@ class FavouriteScreen extends StatelessWidget {
     ),
   ];
 
-  FavouriteScreen({Key? key}) : super(key: key);
+  @override
+  Size get preferredSize =>
+      const Size.fromHeight(_tabBarHeight + kToolbarHeight);
+
+  _AppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBarWidget(
-          title: AppStrings.favourite,
-          bottomWidget: PreferredSize(
-            preferredSize: const Size.fromHeight(_tabBarHeight),
-            child: Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.margin16,
-              ),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(AppDimensions.cornerRadius40),
-              ),
-              child: TabBar(
-                splashBorderRadius: const BorderRadius.all(
-                  Radius.circular(AppDimensions.cornerRadius40),
-                ),
-                tabs: _tabs,
-              ),
-            ),
+    return AppBarWidget(
+      title: AppStrings.favourite,
+      bottomWidget: PreferredSize(
+        preferredSize: preferredSize,
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.margin16,
           ),
-        ),
-        body: const Padding(
-          padding: EdgeInsets.only(top: AppDimensions.margin16),
-          child: TabBarView(
-            children: [
-              WantToVisitPage(),
-              VisitedPlacesPage(),
-            ],
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(AppDimensions.cornerRadius40),
+          ),
+          child: TabBar(
+            splashBorderRadius: const BorderRadius.all(
+              Radius.circular(AppDimensions.cornerRadius40),
+            ),
+            tabs: _tabs,
           ),
         ),
       ),

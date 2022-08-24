@@ -29,7 +29,7 @@ class DarkThemeData extends AppTheme {
         ),
         borderSide: BorderSide(
           color: AppColors.dmErrorBorderColor,
-          width: AppDimensions.textFieldFocusBorderWidth2,
+          width: AppDimensions.borderWidth2,
         ),
       );
 
@@ -41,7 +41,7 @@ class DarkThemeData extends AppTheme {
         ),
         borderSide: BorderSide(
           color: AppColors.dmFocusedBorderColor,
-          width: AppDimensions.textFieldFocusBorderWidth2,
+          width: AppDimensions.borderWidth2,
         ),
       );
 
@@ -226,5 +226,4 @@ class DarkThemeData extends AppTheme {
       cursorColor: AppColors.dmOnPrimaryColor,
     );
   }
-
 }
