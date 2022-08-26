@@ -1,5 +1,4 @@
 class AppAssets {
-
   /// Nav icons
   static const list = 'res/svg/list_icon.svg';
   static const listFill = 'res/svg/list_fill_icon.svg';
@@ -9,7 +8,6 @@ class AppAssets {
   static const heartFill = 'res/svg/heart_fill_icon.svg';
   static const settings = 'res/svg/settings_icon.svg';
   static const settingsFill = 'res/svg/settings_fill_icon.svg';
-
 
   static const calendar = 'res/svg/calendar_icon.svg';
   static const route = 'res/svg/route_icon.svg';
@@ -36,9 +34,11 @@ class AppAssets {
   static const tick = 'res/svg/tick_icon.svg';
   static const plus = 'res/svg/plus_icon.svg';
 
-  static const clearDark = 'res/svg/clear_dark_icon.svg';
   static const clearWhite = 'res/svg/clear_white_icon.svg';
+  static const clearDark = 'res/svg/clear_dark_icon.svg';
 
   static const filter = 'res/svg/filter_icon.svg';
   static const search = 'res/svg/search_icon.svg';
+  static const dismissible = 'res/svg/dismissible_icon.svg';
+  static const bucket = 'res/svg/bucket_icon.svg';
 }

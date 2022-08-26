@@ -19,8 +19,7 @@ class SightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      margin: const EdgeInsets.only(top: AppDimensions.margin16),
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(
@@ -51,8 +50,17 @@ class SightCard extends StatelessWidget {
             Positioned.fill(
               child: Material(
                 type: MaterialType.transparency,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(
+                    AppDimensions.cornerRadius16,
+                  ),
+                ),
                 child: InkWell(
-                  borderRadius: const BorderRadius.all(Radius.circular(AppDimensions.margin16)),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(
+                      AppDimensions.cornerRadius16,
+                    ),
+                  ),
                   onTap: () {
                     debugPrint('card click');
                   },
@@ -67,7 +75,8 @@ class SightCard extends StatelessWidget {
                 children: [
                   Text(
                     sight.type.toLowerCase(),
-                    style: AppTypography.bodyLarge.copyWith(color: Colors.white),
+                    style:
+                        AppTypography.bodyLarge.copyWith(color: Colors.white),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,9 +113,6 @@ class _ImageCardWidget extends StatelessWidget {
             AppDimensions.cornerRadius16,
           ),
         ),
-        // child: ImageLoader(
-        //   imgUrl: sight.url,
-        // ),
         child: Image.network(
           sight.url,
           fit: BoxFit.cover,

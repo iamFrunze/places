@@ -35,7 +35,8 @@ class SightDetailsScreen extends StatelessWidget {
                                 height: 400,
                                 alignment: Alignment.center,
                                 child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
                                       ? loadingProgress.cumulativeBytesLoaded /
                                           loadingProgress.expectedTotalBytes!
                                       : null,
@@ -106,7 +107,8 @@ class SightDetailsScreen extends StatelessWidget {
                       height: AppDimensions.elevatedBtnHeight,
                       width: AppDimensions.elevatedBtnWidth,
                       child: ElevatedButton.icon(
-                        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                        onPressed: () =>
+                            ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Tap on route')),
                         ),
                         label: const Text(
@@ -114,8 +116,10 @@ class SightDetailsScreen extends StatelessWidget {
                         ),
                         icon: IconSvg(
                           icon: AppAssets.route,
-                          color:
-                              theme.extension<SvgPictureColors>()!.elevatedBtnActiveColor.toColor(),
+                          color: theme
+                              .extension<SvgPictureColors>()!
+                              .elevatedBtnActiveColor
+                              .toColor(),
                         ),
                       ),
                     ),
@@ -125,14 +129,16 @@ class SightDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         PlanningTextButton(
-                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                          onPressed: () =>
+                              ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Tap on plan')),
                           ),
                           icon: AppAssets.calendar,
                           label: AppStrings.plan,
                         ),
                         PlanningTextButton(
-                          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                          onPressed: () =>
+                              ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Tap on favourite')),
                           ),
                           icon: AppAssets.heart,

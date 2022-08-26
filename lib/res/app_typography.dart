@@ -52,4 +52,9 @@ class AppTypography {
     fontSize: 16.0,
     fontWeight: FontWeight.w500,
   );
+  static const dismissibleText12 = TextStyle(
+    fontSize: 12.0,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  );
 }

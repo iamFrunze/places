@@ -1,3 +1,4 @@
+/// Модель для формирования экрана фильтрации (создание Chips)
 class CategoryModel {
   final String type;
   final String icon;

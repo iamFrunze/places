@@ -1,12 +1,19 @@
-import 'package:places/data/repository/sights_repository.dart';
 import 'package:places/data/repository/visited_sights_repository.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/mocks.dart';
 
 class MockVisitedSights extends VisitedSightsRepository {
   @override
-  List<SightModel>? fetchSights() => mocks;
+  List<SightModel>? fetchSights() => visitedSightsMock;
 
   @override
-  void removeSight(SightModel sight) => mocks.remove(sight);
+  void remove(SightModel sight) => visitedSightsMock.remove(sight);
+
+  @override
+  void removeAt(int index) => visitedSightsMock.removeAt(index);
+
+  @override
+  void updateSights(List<SightModel> sights) => visitedSightsMock
+    ..clear()
+    ..addAll(sights);
 }

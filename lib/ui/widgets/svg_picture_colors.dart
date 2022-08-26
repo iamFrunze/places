@@ -26,8 +26,10 @@ class SvgPictureColors extends ThemeExtension<SvgPictureColors> {
     return SvgPictureColors(
       textBtnActiveColor: textBtnActiveColor ?? this.textBtnActiveColor,
       textBtnInactiveColor: textBtnInactiveColor ?? this.textBtnInactiveColor,
-      elevatedBtnActiveColor: elevatedBtnActiveColor ?? this.elevatedBtnActiveColor,
-      elevatedBtnInactiveColor: elevatedBtnInactiveColor ?? this.elevatedBtnInactiveColor,
+      elevatedBtnActiveColor:
+          elevatedBtnActiveColor ?? this.elevatedBtnActiveColor,
+      elevatedBtnInactiveColor:
+          elevatedBtnInactiveColor ?? this.elevatedBtnInactiveColor,
       greenColor: greenColor ?? this.greenColor,
     );
   }
@@ -37,18 +39,35 @@ class SvgPictureColors extends ThemeExtension<SvgPictureColors> {
     return other is! SvgPictureColors
         ? this
         : SvgPictureColors(
-            textBtnActiveColor: HSVColor.lerp(textBtnActiveColor, other.textBtnActiveColor, t) ??
+            textBtnActiveColor: HSVColor.lerp(
+                  textBtnActiveColor,
+                  other.textBtnActiveColor,
+                  t,
+                ) ??
                 HSVColor.fromColor(Colors.transparent),
-            textBtnInactiveColor:
-                HSVColor.lerp(textBtnInactiveColor, other.textBtnInactiveColor, t) ??
-                    HSVColor.fromColor(Colors.transparent),
-            elevatedBtnActiveColor:
-                HSVColor.lerp(elevatedBtnActiveColor, other.elevatedBtnActiveColor, t) ??
-                    HSVColor.fromColor(Colors.transparent),
-            elevatedBtnInactiveColor:
-                HSVColor.lerp(elevatedBtnInactiveColor, other.elevatedBtnInactiveColor, t) ??
-                    HSVColor.fromColor(Colors.transparent),
-            greenColor: HSVColor.lerp(greenColor, other.greenColor, t) ??
+            textBtnInactiveColor: HSVColor.lerp(
+                  textBtnInactiveColor,
+                  other.textBtnInactiveColor,
+                  t,
+                ) ??
+                HSVColor.fromColor(Colors.transparent),
+            elevatedBtnActiveColor: HSVColor.lerp(
+                  elevatedBtnActiveColor,
+                  other.elevatedBtnActiveColor,
+                  t,
+                ) ??
+                HSVColor.fromColor(Colors.transparent),
+            elevatedBtnInactiveColor: HSVColor.lerp(
+                  elevatedBtnInactiveColor,
+                  other.elevatedBtnInactiveColor,
+                  t,
+                ) ??
+                HSVColor.fromColor(Colors.transparent),
+            greenColor: HSVColor.lerp(
+                  greenColor,
+                  other.greenColor,
+                  t,
+                ) ??
                 HSVColor.fromColor(Colors.transparent),
           );
   }

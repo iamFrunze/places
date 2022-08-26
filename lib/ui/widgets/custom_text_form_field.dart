@@ -62,8 +62,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             onTap: () => widget.controller.text = '',
             child: SvgPicture.asset(
               Theme.of(context).brightness != Brightness.dark
-                  ? AppAssets.clearWhite
-                  : AppAssets.clearDark,
+                  ? AppAssets.clearDark
+                  : AppAssets.clearWhite,
             ),
           ),
         ),

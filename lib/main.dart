@@ -7,6 +7,7 @@ import 'package:places/data/repository/mock_data/mock_want_visit_sights.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
+import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/nav_screen.dart';
@@ -30,8 +31,11 @@ void main() async {
         ChangeNotifierProvider<FavouriteSettings>(
           create: (_) => FavouriteSettings(
             visitedSightsRepository: MockVisitedSights(),
-            wantToVisitSightsRepository: MockWantVisitSights(),
+            wantVisitSightsRepository: MockWantVisitSights(),
           ),
+        ),
+        ChangeNotifierProvider<AddSightSettings>(
+          create: (_) => AddSightSettings(repository: mockSights),
         ),
       ],
       child: const App(),
