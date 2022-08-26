@@ -17,7 +17,7 @@ class SearchBarWidget extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(
-        AppDimensions.searchBarHeight60,
+        AppDimensions.searchBarHeight50,
       );
 
   const SearchBarWidget({
@@ -48,9 +48,8 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: AppDimensions.margin16,
-        vertical: AppDimensions.margin6,
       ),
-      height: widget.preferredSize.height,
+      padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
         autofocus: true,
         readOnly: widget.readOnly,

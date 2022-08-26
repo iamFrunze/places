@@ -7,7 +7,6 @@ import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
 import 'package:places/ui/screen/filter/filter_screen.dart';
-import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/sight_search/sight_search_screen.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
@@ -58,18 +57,16 @@ class _SightListScreenState extends State<SightListScreen> {
         .toList();
 
     return Scaffold(
-      appBar: _AppBarWidget(),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.margin16,
-        ),
-        child: ListView.builder(
-          itemCount: cards.length,
-          itemBuilder: (context, index) {
-            return cards[index];
-          },
-        ),
+      body: CustomScrollView(
+        slivers: [
+          const _SliverAppBar(),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => cards[index],
+              childCount: cards.length,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: const _FAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -77,24 +74,36 @@ class _SightListScreenState extends State<SightListScreen> {
   }
 }
 
-class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(
-        kToolbarHeight +
-            AppDimensions.margin64 +
-            AppDimensions.searchBarHeight60,
-      );
+class _SliverAppBar extends StatelessWidget {
+  const _SliverAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      toolbarHeight: preferredSize.height,
-      elevation: 0,
+    return SliverAppBar(
+      pinned: true,
+      expandedHeight: kToolbarHeight +
+          AppDimensions.margin64 +
+          AppDimensions.searchBarHeight50,
+      flexibleSpace: FlexibleSpaceBar(
+        expandedTitleScale: 2,
+        centerTitle: true,
+        titlePadding: const EdgeInsets.only(
+          bottom: AppDimensions.searchBarHeight50 + 30,
+          left: 16,
+          right: 16,
+        ),
+        title: Text(
+          AppStrings.interestingPlaces,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ),
       bottom: SearchBarWidget(
         readOnly: true,
         onTapSuffix: () => Navigator.push(
           context,
-          MaterialPageRoute<FilterSettings>(
+          MaterialPageRoute<FilterScreen>(
             builder: (context) => const FilterScreen(),
           ),
         ),
@@ -105,17 +114,6 @@ class _AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         suffixIcon: AppAssets.filter,
-      ),
-      title: Container(
-        margin: const EdgeInsets.only(
-          left: AppDimensions.margin16,
-          right: AppDimensions.margin16,
-        ),
-        child: Text(
-          AppStrings.interestingPlaces,
-          textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
       ),
     );
   }
