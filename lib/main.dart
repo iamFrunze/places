@@ -10,7 +10,9 @@ import 'package:places/res/themes/light_theme.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
-import 'package:places/ui/screen/nav_screen.dart';
+import 'package:places/ui/screen/list/sight_details_settings.dart';
+import 'package:places/ui/screen/onboarding/onboarding_screen.dart';
+import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +38,12 @@ void main() async {
         ),
         ChangeNotifierProvider<AddSightSettings>(
           create: (_) => AddSightSettings(repository: mockSights),
+        ),
+        ChangeNotifierProvider<SightDetailsSettings>(
+          create: (_) => SightDetailsSettings(),
+        ),
+        ChangeNotifierProvider<OnBoardingSettings>(
+          create: (_) => OnBoardingSettings(),
         ),
       ],
       child: const App(),
@@ -72,7 +80,7 @@ class _AppState extends State<App> {
               : DarkThemeData().buildTheme(),
           home: AnnotatedRegion<SystemUiOverlayStyle>(
             value: systemUiOverlayStyle,
-            child: const MainScreen(),
+            child: const OnBoardingScreen(),
           ),
         );
       },
@@ -80,9 +88,4 @@ class _AppState extends State<App> {
   }
 }
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => NavScreen();
-}

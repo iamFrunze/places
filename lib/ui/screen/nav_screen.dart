@@ -5,6 +5,13 @@ import 'package:places/ui/screen/favourite/favourite_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
 import 'package:places/ui/screen/settings/settings_screen.dart';
 
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => NavScreen();
+}
+
 class NavScreen extends State with SingleTickerProviderStateMixin {
   final _pages = [
     const SightListScreen(),

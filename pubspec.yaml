@@ -28,6 +28,7 @@ flutter:
   assets:
     - res/svg/
     - res/svg/chips/
+    - res/svg/onboarding/
   fonts:
     - family: Roboto
       fonts:
