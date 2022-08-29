@@ -82,10 +82,9 @@ class _Page extends StatelessWidget {
         )
         .toList();
 
-    return SingleChildScrollView(
-      child: Column(
-        children: sightWidgets,
-      ),
+    return ListView.builder(
+      itemCount: sightWidgets.length,
+      itemBuilder: (context, index) => sightWidgets[index],
     );
   }
 }

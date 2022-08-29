@@ -47,39 +47,37 @@ class _PicturesState extends State<Pictures> {
         .toList();
 
     return SizedBox(
-      height: 100,
-      child: SingleChildScrollView(
+      height: AppDimensions.imagePickerSize,
+      child: ListView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            GestureDetector(
-              onTap: provider.addImage,
-              child: Container(
-                height: AppDimensions.imagePickerSize,
-                width: AppDimensions.imagePickerSize,
-                margin: const EdgeInsets.only(right: AppDimensions.margin16),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: theme.colorScheme.tertiary.withOpacity(0.48),
-                    width: AppDimensions.borderWidth2,
-                  ),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(AppDimensions.cornerRadius12),
-                  ),
+        children: [
+          GestureDetector(
+            onTap: provider.addImage,
+            child: Container(
+              height: AppDimensions.imagePickerSize,
+              width: AppDimensions.imagePickerSize,
+              margin: const EdgeInsets.only(right: AppDimensions.margin16),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: theme.colorScheme.tertiary.withOpacity(0.48),
+                  width: AppDimensions.borderWidth2,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppDimensions.margin16),
-                  child: SvgPicture.asset(
-                    AppAssets.plus,
-                    fit: BoxFit.fitWidth,
-                    color: theme.colorScheme.tertiary,
-                  ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(AppDimensions.cornerRadius12),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(AppDimensions.margin16),
+                child: SvgPicture.asset(
+                  AppAssets.plus,
+                  fit: BoxFit.fitWidth,
+                  color: theme.colorScheme.tertiary,
                 ),
               ),
             ),
-            ...imageWidgets,
-          ],
-        ),
+          ),
+          ...imageWidgets,
+        ],
       ),
     );
   }
@@ -111,6 +109,14 @@ class _Image extends StatelessWidget {
               fit: BoxFit.cover,
               colorBlendMode: BlendMode.colorBurn,
               color: const Color(0xFF252849).withOpacity(0.24),
+              errorBuilder: (context, image, stackTrace) => const ColoredBox(
+                color: Colors.red,
+                child: Text(
+                  '404',
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               loadingBuilder: (context, child, loadingProgress) {
                 return loadingProgress == null
                     ? child

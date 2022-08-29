@@ -27,5 +27,5 @@ class AppDimensions {
 
   static const borderWidth2 = 2.0;
 
-  static const searchBarHeight60 = 50.0;
+  static const searchBarHeight50 = 50.0;
 }

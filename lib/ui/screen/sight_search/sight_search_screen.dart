@@ -64,7 +64,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(
-        kToolbarHeight + AppDimensions.searchBarHeight60,
+        kToolbarHeight + AppDimensions.searchBarHeight50,
       );
 
   const _AppBar({
@@ -79,7 +79,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBarWidget(
       title: AppStrings.interestingPlaces,
       bottomWidget: SearchBarWidget(
-        onTapSuffix: () => provider.clearSearchBar(),
+        onTapSuffix: provider.clearSearchBar,
         onChanged: (value) {
           if (value.contains(' ')) {
             provider.fetchSight(text: value);
