@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_typography.dart';
+import 'package:places/ui/screen/list/sight_details_screen.dart';
 
 class SightCard extends StatelessWidget {
   final SightModel sight;
@@ -61,9 +62,13 @@ class SightCard extends StatelessWidget {
                       AppDimensions.cornerRadius16,
                     ),
                   ),
-                  onTap: () {
-                    debugPrint('card click');
-                  },
+                  onTap: () => Navigator.of(context).push<SightDetailsScreen>(
+                    MaterialPageRoute(
+                      builder: (context) => SightDetailsScreen(
+                        sight: sight,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

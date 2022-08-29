@@ -1,5 +1,6 @@
 class AppDimensions {
   static const margin6 = 6.0;
+  static const margin8 = 8.0;
   static const margin12 = 12.0;
   static const margin14 = 14.0;
   static const margin16 = 16.0;
