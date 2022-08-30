@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/ui/screen/list/sight_details_screen.dart';
+import 'package:places/ui/sight_details/sight_details_screen.dart';
 
 class SightCard extends StatelessWidget {
   final SightModel sight;

@@ -10,10 +10,10 @@ import 'package:places/res/themes/light_theme.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
-import 'package:places/ui/screen/list/sight_details_settings.dart';
 import 'package:places/ui/screen/onboarding/onboarding_screen.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
+import 'package:places/ui/sight_details/sight_details_settings.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -87,5 +87,3 @@ class _AppState extends State<App> {
     );
   }
 }
-
-
