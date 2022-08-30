@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
-import 'package:places/ui/sight_details/widgets/header/sliver_app_bar_delegate.dart';
+import 'package:places/ui/screen/sight_details/widgets/header/sliver_app_bar_delegate.dart';
 
 class SliverSubHeader extends StatelessWidget {
   final SightModel sight;
@@ -22,7 +22,10 @@ class SliverSubHeader extends StatelessWidget {
         maxHeight: 95,
         child: Container(
           color: theme.colorScheme.primary,
-          padding: const EdgeInsets.symmetric(horizontal: AppDimensions.margin16, vertical: AppDimensions.margin24),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.margin16,
+            vertical: AppDimensions.margin24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

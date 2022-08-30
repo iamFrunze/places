@@ -49,4 +49,8 @@ class AppColors {
   static const btnLinearGradientEnd = Color(0xffFCDD3D);
 
   static const secondary2Kit = Color(0xff7C7E92);
+
+  /// splash gradient
+  static const startGradientSplashColor = Color(0xff4CAF50);
+  static const endGradientSplashColor = Color(0xffFCDD3D);
 }

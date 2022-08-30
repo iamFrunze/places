@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
-import 'package:places/ui/sight_details/sight_details_settings.dart';
+import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:provider/provider.dart';
 
 class PageViewImageWidget extends StatelessWidget {

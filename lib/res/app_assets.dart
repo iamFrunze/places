@@ -46,4 +46,7 @@ class AppAssets {
   static const page1 = 'res/svg/onboarding/page_one_icon.svg';
   static const page2 = 'res/svg/onboarding/page_two_icon.svg';
   static const page3 = 'res/svg/onboarding/page_three_icon.svg';
+
+  /// Splash
+  static const splash = 'res/svg/splash_icon.svg';
 }
