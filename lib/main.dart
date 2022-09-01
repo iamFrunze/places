@@ -10,10 +10,11 @@ import 'package:places/res/themes/light_theme.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
-import 'package:places/ui/screen/onboarding/onboarding_screen.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
+import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
-import 'package:places/ui/sight_details/sight_details_settings.dart';
+import 'package:places/ui/screen/splash/splash_screen.dart';
+import 'package:places/ui/screen/splash/splash_settings.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -44,6 +45,9 @@ void main() async {
         ),
         ChangeNotifierProvider<OnBoardingSettings>(
           create: (_) => OnBoardingSettings(),
+        ),
+        ChangeNotifierProvider<SplashSettings>(
+          create: (_) => SplashSettings(),
         ),
       ],
       child: const App(),
@@ -80,7 +84,7 @@ class _AppState extends State<App> {
               : DarkThemeData().buildTheme(),
           home: AnnotatedRegion<SystemUiOverlayStyle>(
             value: systemUiOverlayStyle,
-            child: const OnBoardingScreen(),
+            child: const SplashScreen(),
           ),
         );
       },

@@ -3,7 +3,7 @@ import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/sight_details/widgets/body/bottom_buttons.dart';
+import 'package:places/ui/screen/sight_details/widgets/body/bottom_buttons.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/svg_picture_colors.dart';
 
