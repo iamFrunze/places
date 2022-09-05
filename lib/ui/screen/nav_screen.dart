@@ -4,6 +4,8 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/ui/screen/favourite/favourite_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
 import 'package:places/ui/screen/settings/settings_screen.dart';
+import 'package:places/utils/routes/list_menu.dart';
+import 'package:places/utils/routes/routes.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,7 +16,8 @@ class MainScreen extends StatefulWidget {
 
 class NavScreen extends State with SingleTickerProviderStateMixin {
   final _pages = [
-    const SightListScreen(),
+    // const SightListScreen(),
+    ListMenu(),
     const Center(
       child: Text('Map'),
     ),

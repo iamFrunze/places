@@ -7,12 +7,12 @@ import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/ui/screen/sight_details/sight_details_screen.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/ui/screen/sight_search/widgets/history_list_tile.dart';
 import 'package:places/ui/screen/sight_search/widgets/search_list_tile.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:places/ui/widgets/search_bar.dart';
+import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 class SightSearchScreen extends StatefulWidget {
@@ -186,13 +186,10 @@ class _BodyState extends State<_Body> {
     final tiles = widget.sights
         .map(
           (e) => SearchListTileWidget(
-            onTap: () => Navigator.push(
+            onTap: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute<SightDetailsScreen>(
-                builder: (context) => SightDetailsScreen(
-                  sight: e,
-                ),
-              ),
+              Routes.toDetails,
+              arguments: e,
             ),
             url: e.url,
             title: e.name,

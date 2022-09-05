@@ -30,7 +30,7 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
     return Scaffold(
       appBar: AppBarWidget(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
           icon: SvgPicture.asset(AppAssets.back),
         ),
         title: AppStrings.category,
@@ -91,5 +91,5 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
     );
   }
 
-  void saveCategory() => Navigator.of(context).pop(_selectCategory);
+  void saveCategory() => Navigator.pop(context, _selectCategory);
 }
