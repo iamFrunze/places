@@ -7,6 +7,7 @@ import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/nav_screen.dart';
 import 'package:places/ui/screen/onboarding/onboarding_model.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
+import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 final onBoarding = [
@@ -106,11 +107,9 @@ class _SkipBtn extends StatelessWidget {
             right: AppDimensions.margin16,
           ),
           child: TextButton(
-            onPressed: () => Navigator.pushAndRemoveUntil(
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute<MainScreen>(
-                builder: (context) => const MainScreen(),
-              ),
+              Routes.toMain,
               (route) => false,
             ),
             child: Text(
@@ -150,11 +149,9 @@ class _OnStartBtn extends StatelessWidget {
             vertical: AppDimensions.margin8,
           ),
           child: ElevatedButton(
-            onPressed: () => Navigator.pushAndRemoveUntil(
+            onPressed: () => Navigator.pushNamedAndRemoveUntil(
               context,
-              MaterialPageRoute<MainScreen>(
-                builder: (context) => const MainScreen(),
-              ),
+              Routes.toMain,
               (route) => false,
             ),
             child: Text(AppStrings.onStart.toUpperCase()),

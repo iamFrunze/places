@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
@@ -18,19 +19,21 @@ class SliverSubHeader extends StatelessWidget {
     return SliverPersistentHeader(
       pinned: true,
       delegate: SliverAppBarDelegate(
-        minHeight: 95,
-        maxHeight: 95,
+        minHeight: 110,
+        maxHeight: 120,
         child: Container(
           color: theme.colorScheme.primary,
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimensions.margin16,
-            vertical: AppDimensions.margin24,
+            vertical: AppDimensions.margin16,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 sight.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.headlineSmall,
               ),
               const SizedBox(height: 2),

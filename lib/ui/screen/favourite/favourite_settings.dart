@@ -10,8 +10,8 @@ class FavouriteSettings extends ChangeNotifier {
   ScreenState currentStateWantVisit = ScreenState.loading;
   ScreenState currentStateVisited = ScreenState.loading;
 
-  bool initializedWantVisitDone = false;
-  bool initializedVisitedDone = false;
+  bool isInitializedWantVisitDone = false;
+  bool isInitializedVisitedDone = false;
 
   List<SightModel> get wantVisitSights => _wantVisitSights;
 
@@ -26,12 +26,12 @@ class FavouriteSettings extends ChangeNotifier {
   }) {
     _initVisitedData();
     _initWantVisitData();
-    currentStateWantVisit = initializedWantVisitDone
+    currentStateWantVisit = isInitializedWantVisitDone
         ? _wantVisitSights.isNotEmpty
             ? ScreenState.success
             : ScreenState.empty
         : ScreenState.error;
-    currentStateVisited = initializedVisitedDone
+    currentStateVisited = isInitializedVisitedDone
         ? _visitedSights.isNotEmpty
             ? ScreenState.success
             : ScreenState.empty
@@ -102,7 +102,7 @@ class FavouriteSettings extends ChangeNotifier {
     final callbackWantToVisit = wantVisitSightsRepository.fetchSights();
     if (callbackWantToVisit != null) {
       _wantVisitSights = callbackWantToVisit;
-      initializedWantVisitDone = true;
+      isInitializedWantVisitDone = true;
     }
   }
 
@@ -110,7 +110,7 @@ class FavouriteSettings extends ChangeNotifier {
     final callbackVisitedSights = visitedSightsRepository.fetchSights();
     if (callbackVisitedSights != null) {
       _visitedSights = callbackVisitedSights;
-      initializedVisitedDone = true;
+      isInitializedVisitedDone = true;
     }
   }
 }

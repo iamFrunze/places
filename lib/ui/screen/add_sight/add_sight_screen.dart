@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:places/data/category_model.dart';
 import 'package:places/data/sight_model.dart';
@@ -14,6 +16,7 @@ import 'package:places/ui/screen/add_sight/widgets/name_sight.dart';
 import 'package:places/ui/screen/add_sight/widgets/pictures.dart';
 import 'package:places/ui/screen/add_sight/widgets/show_on_map.dart';
 import 'package:places/ui/widgets/appbar.dart';
+import 'package:places/utils/routes/routes.dart';
 
 class AddSightScreen extends StatefulWidget {
   const AddSightScreen({Key? key}) : super(key: key);
@@ -56,11 +59,9 @@ class _AddSightScreenState extends State<AddSightScreen> {
                     ? selectedCategory!.type
                     : AppStrings.notSelected,
                 onTap: () async {
-                  final callback =
-                      await Navigator.of(context).push<CategoryModel>(
-                    MaterialPageRoute(
-                      builder: (context) => const CategoryListScreen(),
-                    ),
+                  final callback = await Navigator.pushNamed<CategoryModel>(
+                    context,
+                    Routes.toCategoriesList,
                   );
                   setState(() {
                     selectedCategory = callback;
@@ -114,6 +115,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
                     : () {
                         mocks.add(
                           SightModel(
+                            id: Random.secure().nextInt(100),
                             name: nameSightController.text,
                             lat: double.parse(latController.text),
                             lon: double.parse(lonController.text),
@@ -168,7 +170,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBarWidget(
       leading: TextButton(
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => Navigator.pop(context),
         child: const Text(
           AppStrings.cancel,
           style: AppTypography.leadingText,

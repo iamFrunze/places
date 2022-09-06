@@ -9,17 +9,17 @@ const rangeStart = 0.0;
 const rangeEnd = 10.0;
 const range = RangeValues(rangeStart, rangeEnd);
 
-final mocks = [sight1, sight2, sight3, sight4, sight5, sight6];
-final visitedSightsMock = [sight1, sight2, sight3, sight4, sight5, sight6];
-final wantToVisitSightsMock = [sight1, sight2, sight3, sight4, sight5, sight6];
+final mocks = [sight1, sight2, sight3, sight4, sight5];
+final visitedSightsMock = [sight1, sight2, sight3, sight4, sight5];
+final wantToVisitSightsMock = [sight1, sight2, sight3, sight4, sight5];
 final historyMock = <String>[];
 
 final sight1 = SightModel(
+  id: 1,
   name: 'КОФЕЙНОЕ МЕСТО ',
   lat: 48.59288,
   lon: 45.71948,
-  url:
-      'https://lh5.googleusercontent.com/p/AF1QipMibb54mBg1-vl6_j83NIDudzFxI4SiF0EE13en=w408-h459-k-no',
+  url: 'https://10619-2.s.cdn12.com/rests/small/w285/109_511274391.jpg',
   details: '«Кофейное место» - варим ароматный кофе из свежеобжаренных зёрен!'
       'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '
       'которая 3 ноября 1957-го совершила первый орбитальный полет вокруг Земли. '
@@ -48,20 +48,21 @@ final sight1 = SightModel(
   type: AppStrings.cafe,
 );
 final sight2 = SightModel(
+  id: 2,
   name: 'Городской стадион',
   lat: 48.6152,
   lon: 45.71297,
   url:
-      'https://lh5.googleusercontent.com/p/AF1QipOk2jgn0YB2qdnGF0ppEXJsZeQkxOhCBXESx8c6=w426-h240-k-no',
+      'https://elastomer.org/upload/iblock/5be/5be664a9db5df35bdafe1f15cf5ba8ed.jpg',
   details: 'Место для отдыха и спорта',
   type: AppStrings.specialPlace,
 );
 final sight3 = SightModel(
+  id: 3,
   name: 'Памятник "Штык"',
   lat: 48.58375351090282,
   lon: 45.74011366780456,
-  url:
-      'https://lh5.googleusercontent.com/p/AF1QipPLxOUk4b_p4YfLrADGGjMSO6zR3ATyohILYdSk=w600-h450-p-k-no',
+  url: 'http://www.volh.in/wp-content/uploads/2017/07/DSCN9324.jpg',
   details:
       'Монументальное изваяние, являющееся логическим и планировочным завершением аллеи космонавтов, '
       'в простонародии именуемой как "солдатский парк", '
@@ -70,6 +71,7 @@ final sight3 = SightModel(
 );
 
 final sight4 = SightModel(
+  id: 4,
   name: 'Солдатский парк',
   lat: 48.585827159018315,
   lon: 45.72909714394517,
@@ -83,25 +85,27 @@ final sight4 = SightModel(
 );
 
 final sight5 = SightModel(
+  id: 5,
   name: 'Памятник собакам - покорителям космоса',
   lat: 48.58180578565603,
   lon: 45.732913116277835,
-  url:
-      'https://lh5.googleusercontent.com/p/AF1QipNgw69yX5EZ6gcOFcQVFaa3LA12ToSjSEJ1LlAH=w408-h272-k-no',
+  url: 'https://www.tury.ru/img.php?gid=334010&pid=2682761&v=1200',
   details:
+      'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '
+      'которая 3 ноября 1957-го совершила первый орбитальный полет вокруг Земли. '
+      'Эта тихая и очень ласковая собака стала также первым хвостатым космонавтом, чье имя было "рассекречено" и стало известно всему миру. '
+      'Однако долгое время о ее полете не сообщали всей правды, поскольку она была очень грустной. '
+      'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '
+      'которая 3 ноября 1957-го совершила первый орбитальный полет вокруг Земли. '
+      'Эта тихая и очень ласковая собака стала также первым хвостатым космонавтом, чье имя было "рассекречено" и стало известно всему миру. '
+      'Однако долгое время о ее полете не сообщали всей правды, поскольку она была очень грустной. '
+      'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '
+      'которая 3 ноября 1957-го совершила первый орбитальный полет вокруг Земли. '
+      'Эта тихая и очень ласковая собака стала также первым хвостатым космонавтом, чье имя было "рассекречено" и стало известно всему миру. '
+      'Однако долгое время о ее полете не сообщали всей правды, поскольку она была очень грустной. '
       'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '
       'которая 3 ноября 1957-го совершила первый орбитальный полет вокруг Земли. '
       'Эта тихая и очень ласковая собака стала также первым хвостатым космонавтом, чье имя было "рассекречено" и стало известно всему миру. '
       'Однако долгое время о ее полете не сообщали всей правды, поскольку она была очень грустной. ',
   type: AppStrings.park,
-);
-
-final sight6 = SightModel(
-  name: 'Филиал музея РВСН',
-  lat: 48.58567699912131,
-  lon: 45.73384875432933,
-  url:
-      'https://lh5.googleusercontent.com/p/AF1QipMsTF88bM9QxaalFhJqgzlTfbaulr_CtXtGda4P=w426-h240-k-no',
-  details: 'Отличный музей военной техники',
-  type: AppStrings.museum,
 );

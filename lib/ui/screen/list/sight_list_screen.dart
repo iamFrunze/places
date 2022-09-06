@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/mocks.dart';
@@ -5,12 +6,10 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
-import 'package:places/ui/screen/filter/filter_screen.dart';
-import 'package:places/ui/screen/sight_search/sight_search_screen.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
+import 'package:places/utils/routes/routes.dart';
 
 class SightListScreen extends StatefulWidget {
   const SightListScreen({Key? key}) : super(key: key);
@@ -61,16 +60,18 @@ class _SightListScreenState extends State<SightListScreen> {
         .toList();
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const _SliverAppBar(),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => cards[index],
-              childCount: cards.length,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            const _SliverAppBar(),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => cards[index],
+                childCount: cards.length,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: const _FAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -96,8 +97,9 @@ class _SliverAppBar extends StatelessWidget {
           left: 16,
           right: 16,
         ),
-        title: Text(
+        title: AutoSizeText(
           AppStrings.interestingPlaces,
+          maxLines: 2,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -105,18 +107,11 @@ class _SliverAppBar extends StatelessWidget {
       ),
       bottom: SearchBarWidget(
         readOnly: true,
-        onTapSuffix: () => Navigator.push(
+        onTapSuffix: () => Navigator.of(
           context,
-          MaterialPageRoute<FilterScreen>(
-            builder: (context) => const FilterScreen(),
-          ),
-        ),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute<SightSearchScreen>(
-            builder: (context) => const SightSearchScreen(),
-          ),
-        ),
+          rootNavigator: true,
+        ).pushNamed(Routes.toFilters),
+        onTap: () => Navigator.pushNamed(context, Routes.toSearch),
         suffixIcon: AppAssets.filter,
       ),
     );
@@ -145,11 +140,8 @@ class _FABState extends State<_FAB> {
           ),
           padding: MaterialStateProperty.all(EdgeInsets.zero),
         ),
-        onPressed: () => Navigator.of(context).push<AddSightScreen>(
-          MaterialPageRoute(
-            builder: (context) => const AddSightScreen(),
-          ),
-        ),
+        onPressed: () => Navigator.of(context, rootNavigator: true)
+            .pushNamed(Routes.toAddSight),
         child: Container(
           constraints: const BoxConstraints(minWidth: 177, minHeight: 48.0),
           decoration: const BoxDecoration(

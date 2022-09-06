@@ -15,6 +15,8 @@ import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/ui/screen/splash/splash_screen.dart';
 import 'package:places/ui/screen/splash/splash_settings.dart';
+import 'package:places/utils/routes/router.dart';
+import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -41,7 +43,7 @@ void main() async {
           create: (_) => AddSightSettings(repository: mockSights),
         ),
         ChangeNotifierProvider<SightDetailsSettings>(
-          create: (_) => SightDetailsSettings(),
+          create: (_) => SightDetailsSettings(repository: mockSights),
         ),
         ChangeNotifierProvider<OnBoardingSettings>(
           create: (_) => OnBoardingSettings(),
@@ -78,14 +80,14 @@ class _AppState extends State<App> {
                 statusBarColor: Colors.transparent,
               );
 
+        SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+
         return MaterialApp(
           theme: !isDarkMode
               ? LightThemeData().buildTheme()
               : DarkThemeData().buildTheme(),
-          home: AnnotatedRegion<SystemUiOverlayStyle>(
-            value: systemUiOverlayStyle,
-            child: const SplashScreen(),
-          ),
+          onGenerateRoute: RouterFactory.generateRoute,
+          initialRoute: Routes.toSplash,
         );
       },
     );
