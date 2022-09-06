@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/data/sight_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/utils/routes/routes.dart';
+import 'package:places/ui/screen/sight_details/sight_details_screen.dart';
 
 class SightCard extends StatelessWidget {
   final SightModel sight;
@@ -62,12 +62,17 @@ class SightCard extends StatelessWidget {
                       AppDimensions.cornerRadius16,
                     ),
                   ),
-                  onTap: () => Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).pushNamed(
-                    Routes.toDetails,
-                    arguments: sight.id,
+                  onTap: () => showModalBottomSheet<SightDetailsScreen>(
+                    context: context,
+                    useRootNavigator: true,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppDimensions.cornerRadius16),
+                        topRight: Radius.circular(AppDimensions.cornerRadius16),
+                      ),
+                    ),
+                    builder: (context) => SightDetailsScreen(id: sight.id),
                   ),
                 ),
               ),

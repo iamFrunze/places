@@ -74,6 +74,10 @@ class LightThemeData extends AppTheme {
       extensions: extensions,
       inputDecorationTheme: buildInputDecorationTheme(),
       textSelectionTheme: buildTextSelectionTheme(),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.transparent,
+        modalBackgroundColor: Colors.transparent,
+      ),
     );
   }
 

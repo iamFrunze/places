@@ -21,6 +21,7 @@ class AppDimensions {
   static const elevatedBtnWidth = double.infinity;
 
   static const iconSize = 24.0;
+  static const iconCloseSize = 40.0;
   static const tileLeadingSize = 56.0;
   static const iconBorderSize = 32.0;
   static const chipSize = 64.0;

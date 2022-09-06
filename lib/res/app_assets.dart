@@ -49,4 +49,6 @@ class AppAssets {
 
   /// Splash
   static const splash = 'res/svg/splash_icon.svg';
+
+  static const minimize = 'res/svg/minimize_icon.svg';
 }
