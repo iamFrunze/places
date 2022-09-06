@@ -57,4 +57,9 @@ class AppTypography {
     fontWeight: FontWeight.w500,
     color: Colors.white,
   );
+  static const cupertinoBottomSheet = TextStyle(
+    fontSize: 16.0,
+    fontWeight: FontWeight.w400,
+    color: AppColors.secondary2ColorKit,
+  );
 }

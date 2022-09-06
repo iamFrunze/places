@@ -51,4 +51,9 @@ class AppAssets {
   static const splash = 'res/svg/splash_icon.svg';
 
   static const minimize = 'res/svg/minimize_icon.svg';
+
+  /// Cupertino action sheet
+  static const file = 'res/svg/file_icon.svg';
+  static const picture = 'res/svg/picture_icon.svg';
+  static const camera = 'res/svg/camera_icon.svg';
 }
