@@ -140,6 +140,7 @@ class LightThemeData extends AppTheme {
       surface: AppColors.lmSurfaceColor,
       onSurface: AppColors.lmOnSurfaceColor,
       tertiary: AppColors.lmGreenColorKit,
+      secondary: AppColors.lmSecondaryColorKit,
     );
   }
 

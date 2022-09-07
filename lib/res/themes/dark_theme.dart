@@ -141,6 +141,7 @@ class DarkThemeData extends AppTheme {
       surface: AppColors.dmSurfaceColor,
       onSurface: AppColors.dmOnSurfaceColor,
       tertiary: AppColors.dmGreenColorKit,
+      secondary: AppColors.dmSecondaryColorKit,
     );
   }
 

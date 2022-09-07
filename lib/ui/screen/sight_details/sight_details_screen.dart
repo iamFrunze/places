@@ -23,26 +23,30 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   Widget build(BuildContext context) {
     final sight = context.read<SightDetailsSettings>().fetchSight(widget.id);
 
-    return DraggableScrollableSheet(
-      maxChildSize: 0.9,
-      initialChildSize: 0.7,
-      builder: (_, scrollController) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(AppDimensions.cornerRadius16),
-            topRight: Radius.circular(AppDimensions.cornerRadius16),
-          ),
-        ),
-        child: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            HeaderImageWidget(sight: sight),
-            SliverSubHeader(sight: sight),
-            BodyTextWidget(sight: sight),
-          ],
-        ),
-      ),
-    );
+    return sight != null
+        ? DraggableScrollableSheet(
+            maxChildSize: 0.9,
+            initialChildSize: 0.9,
+            minChildSize: 0.5,
+            builder: (_, scrollController) => DecoratedBox(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppDimensions.cornerRadius16),
+                  topRight: Radius.circular(AppDimensions.cornerRadius16),
+                ),
+              ),
+              child: CustomScrollView(
+                shrinkWrap: true,
+                controller: scrollController,
+                slivers: [
+                  HeaderImageWidget(sight: sight),
+                  SliverSubHeader(sight: sight),
+                  BodyTextWidget(sight: sight),
+                ],
+              ),
+            ),
+          )
+        : const Center(child: Text('Error fetch data'));
   }
 }

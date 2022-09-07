@@ -6,13 +6,17 @@ import 'package:places/ui/widgets/svg_picture_colors.dart';
 class PlanningTextButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final String icon;
+  final Color color;
   final String label;
+  final TextStyle? labelStyle;
 
   const PlanningTextButton({
     Key? key,
     required this.onPressed,
     required this.icon,
     required this.label,
+    required this.color,
+    required this.labelStyle,
   }) : super(key: key);
 
   @override
@@ -29,12 +33,12 @@ class _PlanningTextButtonState extends State<PlanningTextButton> {
             onPressed: widget.onPressed,
             icon: IconSvg(
               icon: widget.icon,
-              color: theme
-                  .extension<SvgPictureColors>()!
-                  .textBtnActiveColor
-                  .toColor(),
+              color: widget.color,
             ),
-            label: Text(widget.label, style: theme.textTheme.bodyMedium),
+            label: Text(
+              widget.label,
+              style: widget.labelStyle,
+            ),
           )
         : TextButton.icon(
             onPressed: null,

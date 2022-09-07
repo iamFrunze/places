@@ -10,6 +10,7 @@ class AppAssets {
   static const settingsFill = 'res/svg/settings_fill_icon.svg';
 
   static const calendar = 'res/svg/calendar_icon.svg';
+  static const calendarFill = 'res/svg/calendar_fill_icon.svg';
   static const route = 'res/svg/route_icon.svg';
   static const close = 'res/svg/close_icon.svg';
   static const card = 'res/svg/card_icon.svg';

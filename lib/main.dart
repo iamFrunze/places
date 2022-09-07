@@ -13,7 +13,6 @@ import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
-import 'package:places/ui/screen/splash/splash_screen.dart';
 import 'package:places/ui/screen/splash/splash_settings.dart';
 import 'package:places/utils/routes/router.dart';
 import 'package:places/utils/routes/routes.dart';
@@ -43,7 +42,10 @@ void main() async {
           create: (_) => AddSightSettings(repository: mockSights),
         ),
         ChangeNotifierProvider<SightDetailsSettings>(
-          create: (_) => SightDetailsSettings(repository: mockSights),
+          create: (_) => SightDetailsSettings(
+            repository: mockSights,
+            wantVisitRepository: MockWantVisitSights(),
+          ),
         ),
         ChangeNotifierProvider<OnBoardingSettings>(
           create: (_) => OnBoardingSettings(),

@@ -127,7 +127,7 @@ class _Card extends StatelessWidget {
           style: theme.textTheme.titleSmall,
         ),
         Text(
-          'Запланировано на 12 окт. 2020',
+          'Запланировано на ${sight.planningDate}',
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.tertiary),
         ),

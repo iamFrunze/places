@@ -35,6 +35,7 @@ class BodyTextWidget extends StatelessWidget {
             const SizedBox(height: 24),
             const Divider(),
             const BottomButtonsWidget(),
+            const SizedBox(height: 60),
           ],
         ),
       ),
