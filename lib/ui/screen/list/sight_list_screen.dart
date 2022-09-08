@@ -64,10 +64,17 @@ class _SightListScreenState extends State<SightListScreen> {
         child: CustomScrollView(
           slivers: [
             const _SliverAppBar(),
-            SliverList(
+            SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => cards[index],
                 childCount: cards.length,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: AppDimensions.aspectRatio3to2,
+                crossAxisCount:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 1
+                        : 2,
               ),
             ),
           ],
