@@ -9,6 +9,8 @@ abstract class SightRepository {
 
   void updateHistory(List<String> sights);
 
+  void updateSight(SightModel sight);
+
   void removeSight(SightModel sight);
 
   void removeSightFromHistory(String nameSight);

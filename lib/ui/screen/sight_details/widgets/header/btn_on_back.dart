@@ -8,24 +8,26 @@ class BtnOnBackWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: AppDimensions.iconBorderSize,
-      width: AppDimensions.iconBorderSize,
-      margin: const EdgeInsets.only(
-        top: AppDimensions.margin32,
-        left: AppDimensions.margin16,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(AppDimensions.cornerRadius10),
+    return Positioned(
+      right: 1,
+      child: Container(
+        height: AppDimensions.iconCloseSize,
+        width: AppDimensions.iconCloseSize,
+        margin: const EdgeInsets.only(
+          top: AppDimensions.margin32,
+          right: AppDimensions.margin16,
         ),
-        color: Theme.of(context).primaryColor,
-      ),
-      child: InkWell(
-        onTap: () => Navigator.pop(context),
-        child: SvgPicture.asset(
-          AppAssets.back,
-          color: Theme.of(context).colorScheme.onPrimary,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).primaryColor,
+        ),
+        child: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: SvgPicture.asset(
+            AppAssets.close,
+            fit: BoxFit.none,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );

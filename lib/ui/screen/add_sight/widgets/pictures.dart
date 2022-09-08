@@ -4,6 +4,7 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
+import 'package:places/ui/screen/add_sight/widgets/cupertino_add_picture.dart';
 import 'package:provider/provider.dart';
 
 class Pictures extends StatefulWidget {
@@ -52,7 +53,10 @@ class _PicturesState extends State<Pictures> {
         scrollDirection: Axis.horizontal,
         children: [
           GestureDetector(
-            onTap: provider.addImage,
+            onTap: () async => showDialog(
+              context: context,
+              builder: (context) => const CupertinoAddImage(),
+            ),
             child: Container(
               height: AppDimensions.imagePickerSize,
               width: AppDimensions.imagePickerSize,

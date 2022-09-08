@@ -11,7 +11,7 @@ const range = RangeValues(rangeStart, rangeEnd);
 
 final mocks = [sight1, sight2, sight3, sight4, sight5];
 final visitedSightsMock = [sight1, sight2, sight3, sight4, sight5];
-final wantToVisitSightsMock = [sight1, sight2, sight3, sight4, sight5];
+final wantToVisitSightsMock = [sight1];
 final historyMock = <String>[];
 
 final sight1 = SightModel(
@@ -19,6 +19,7 @@ final sight1 = SightModel(
   name: 'КОФЕЙНОЕ МЕСТО ',
   lat: 48.59288,
   lon: 45.71948,
+  planningDate: '22 Окт. 22',
   url: 'https://10619-2.s.cdn12.com/rests/small/w285/109_511274391.jpg',
   details: '«Кофейное место» - варим ароматный кофе из свежеобжаренных зёрен!'
       'Новый виток в освоении космоса связан с именем 2-х летней дворняжки Лайки, '

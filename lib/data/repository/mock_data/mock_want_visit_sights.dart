@@ -16,4 +16,7 @@ class MockWantVisitSights extends WantToVisitSightsRepository {
   void updateSights(List<SightModel> sights) => wantToVisitSightsMock
     ..clear()
     ..addAll(sights);
+
+  @override
+  void add(SightModel sight) => wantToVisitSightsMock.add(sight);
 }

@@ -63,8 +63,14 @@ class AppStrings {
   static const title2 = 'Построй маршрут и отправляйся в путь';
   static const subtitle2 = 'Достигай цели максимально быстро и комфортно.';
   static const title3 = 'Добавляй места, которые нашёл сам';
-  static const subtitle3 = 'Делись самыми интересными и помоги нам стать лучше!';
+  static const subtitle3 =
+      'Делись самыми интересными и помоги нам стать лучше!';
   static const onStart = 'на старт';
+
+  /// Cupertino action sheet
+  static const camera = 'Камера';
+  static const file = 'Файл';
+  static const picture = 'Фотография';
 
   static String show(int value) => 'показать ($value)';
 }

@@ -26,4 +26,16 @@ class MockSights extends SightRepository {
 
   @override
   void addSightToHistory(String sight) => historyMock.add(sight);
+
+  @override
+  void updateSight(SightModel sight) {
+    final index = mocks.indexWhere((element) => element.id == sight.id);
+    if (index != -1) {
+      mocks
+        ..removeAt(index)
+        ..insert(index, sight);
+    } else {
+      throw Exception('Sight not found');
+    }
+  }
 }

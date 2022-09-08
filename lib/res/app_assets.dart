@@ -10,6 +10,7 @@ class AppAssets {
   static const settingsFill = 'res/svg/settings_fill_icon.svg';
 
   static const calendar = 'res/svg/calendar_icon.svg';
+  static const calendarFill = 'res/svg/calendar_fill_icon.svg';
   static const route = 'res/svg/route_icon.svg';
   static const close = 'res/svg/close_icon.svg';
   static const card = 'res/svg/card_icon.svg';
@@ -49,4 +50,11 @@ class AppAssets {
 
   /// Splash
   static const splash = 'res/svg/splash_icon.svg';
+
+  static const minimize = 'res/svg/minimize_icon.svg';
+
+  /// Cupertino action sheet
+  static const file = 'res/svg/file_icon.svg';
+  static const picture = 'res/svg/picture_icon.svg';
+  static const camera = 'res/svg/camera_icon.svg';
 }

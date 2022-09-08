@@ -19,14 +19,13 @@ class BodyTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.margin16,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimensions.margin16,
+      ),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          [
             Text(
               sight.details,
               style: theme.textTheme.bodyMedium,
@@ -36,6 +35,7 @@ class BodyTextWidget extends StatelessWidget {
             const SizedBox(height: 24),
             const Divider(),
             const BottomButtonsWidget(),
+            const SizedBox(height: 60),
           ],
         ),
       ),

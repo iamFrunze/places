@@ -74,6 +74,10 @@ class DarkThemeData extends AppTheme {
       extensions: extensions,
       inputDecorationTheme: buildInputDecorationTheme(),
       textSelectionTheme: buildTextSelectionTheme(),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.transparent,
+        modalBackgroundColor: Colors.transparent,
+      ),
     );
   }
 
@@ -137,6 +141,7 @@ class DarkThemeData extends AppTheme {
       surface: AppColors.dmSurfaceColor,
       onSurface: AppColors.dmOnSurfaceColor,
       tertiary: AppColors.dmGreenColorKit,
+      secondary: AppColors.dmSecondaryColorKit,
     );
   }
 

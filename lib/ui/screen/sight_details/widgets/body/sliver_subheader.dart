@@ -19,8 +19,8 @@ class SliverSubHeader extends StatelessWidget {
     return SliverPersistentHeader(
       pinned: true,
       delegate: SliverAppBarDelegate(
-        minHeight: 110,
-        maxHeight: 120,
+        minHeight: 90,
+        maxHeight: 90,
         child: Container(
           color: theme.colorScheme.primary,
           padding: const EdgeInsets.symmetric(
@@ -32,7 +32,7 @@ class SliverSubHeader extends StatelessWidget {
             children: [
               Text(
                 sight.name,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.headlineSmall,
               ),
