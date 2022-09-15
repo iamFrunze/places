@@ -1,12 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:places/app_settings.dart';
+import 'package:places/settings/app_settings.dart';
 import 'package:places/data/repository/mock_data/mock_sights.dart';
 import 'package:places/data/repository/mock_data/mock_visited_sights.dart';
 import 'package:places/data/repository/mock_data/mock_want_visit_sights.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
+import 'package:places/settings/dio_settings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
@@ -20,6 +22,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   final mockSights = MockSights();
+
   runApp(
     MultiProvider(
       providers: [
@@ -67,6 +70,19 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    testGet();
+  }
+
+  final dioSettings = DioSettings();
+
+  Future<void> testGet() async {
+    final a = await dioSettings.dio.get<Response>('');
+    debugPrint('$a');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppSettings>(

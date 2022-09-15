@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/app_settings.dart';
+import 'package:places/settings/app_settings.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/category_model.dart';
 import 'package:places/data/repository/sights_repository.dart';

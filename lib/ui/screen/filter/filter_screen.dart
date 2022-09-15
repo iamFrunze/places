@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/app_settings.dart';
+import 'package:places/settings/app_settings.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/filter_model.dart';
 import 'package:places/res/app_assets.dart';
