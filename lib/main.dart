@@ -71,19 +71,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
-  void initState() {
-    super.initState();
-    testGet();
-  }
-
-  final dioSettings = DioSettings();
-
-  Future<void> testGet() async {
-    final a = await dioSettings.dio.get<Response>('');
-    debugPrint('$a');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<AppSettings>(
       builder: (context, model, child) {
