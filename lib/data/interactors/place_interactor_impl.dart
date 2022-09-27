@@ -1,4 +1,4 @@
-import 'package:places/data/interactor/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
 import 'package:places/data/repository/place_repository.dart';

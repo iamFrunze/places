@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:places/data/interactor/place_interactor_impl.dart';
-import 'package:places/data/interactor/search_interactor.dart';
+import 'package:places/data/interactors/place_interactor_impl.dart';
+import 'package:places/data/interactors/search_interactor.dart';
+import 'package:places/data/interactors/settings_interactor.dart';
 import 'package:places/data/repository/data/place_repository_remote.dart';
 import 'package:places/data/repository/mock_data/mock_sights.dart';
 import 'package:places/res/app_colors.dart';
@@ -32,7 +33,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AppSettings>(
-          create: (_) => AppSettings(),
+          create: (_) => AppSettings(SettingsInteractor()),
         ),
         ChangeNotifierProvider<SightListSettings>(
           create: (_) => SightListSettings(interactor),
@@ -76,23 +77,12 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Consumer<AppSettings>(
       builder: (context, model, child) {
-        final isDarkMode = model.isDarkMode;
-        final systemUiOverlayStyle = !isDarkMode
-            ? SystemUiOverlayStyle.light.copyWith(
-                systemNavigationBarColor: AppColors.lmPrimaryColor,
-                statusBarColor: Colors.transparent,
-              )
-            : SystemUiOverlayStyle.dark.copyWith(
-                systemNavigationBarColor: AppColors.dmMainColorKit,
-                statusBarColor: Colors.transparent,
-              );
+        final systemUiOverlayStyle = model.systemUiOverlayStyle();
 
         SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
         return MaterialApp(
-          theme: !isDarkMode
-              ? LightThemeData().buildTheme()
-              : DarkThemeData().buildTheme(),
+          theme: model.theme(),
           onGenerateRoute: RouterFactory.generateRoute,
           initialRoute: Routes.toSplash,
         );

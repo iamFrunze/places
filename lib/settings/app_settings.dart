@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:places/data/interactors/settings_interactor.dart';
 
 class AppSettings extends ChangeNotifier {
-  bool isDarkMode = false;
+  final SettingsInteractor _interactor;
 
-  void changeAppMode({bool value = false}) {
-    isDarkMode = value;
-    notifyListeners();
-  }
+  AppSettings(this._interactor);
+
+  SystemUiOverlayStyle systemUiOverlayStyle() =>
+      _interactor.systemUiOverlayStyle();
+
+  ThemeData theme() => _interactor.theme();
+
+  void changeAppMode() => changeAppMode();
 }

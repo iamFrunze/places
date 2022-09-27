@@ -1,6 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:places/data/interactor/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 
 class SightDetailsSettings extends ChangeNotifier {

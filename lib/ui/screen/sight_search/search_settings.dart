@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/interactor/search_interactor.dart';
+import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 
 class SearchSettings extends ChangeNotifier {

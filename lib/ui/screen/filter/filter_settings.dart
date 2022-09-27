@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/interactor/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/mocks.dart';
 import 'package:places/settings/constants.dart';
@@ -50,7 +50,6 @@ class FilterSettings extends ChangeNotifier {
   void _fetchNearSights() {
     final nearPlaces = _places.where(_isNear).where(_isSelected).toList();
     _countNearSights = nearPlaces.length;
-    debugPrint('near $_countNearSights');
     notifyListeners();
   }
 
