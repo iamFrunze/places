@@ -1,15 +1,14 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/sight_details/widgets/header/sliver_app_bar_delegate.dart';
 
 class SliverSubHeader extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const SliverSubHeader({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -31,7 +30,7 @@ class SliverSubHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                sight.name,
+                place.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.headlineSmall,
@@ -40,7 +39,7 @@ class SliverSubHeader extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    sight.type.toLowerCase(),
+                    place.placeType.toLowerCase(),
                     style: theme.textTheme.bodyLarge,
                   ),
                   const SizedBox(width: 16),

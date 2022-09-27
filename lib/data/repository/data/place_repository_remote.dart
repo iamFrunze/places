@@ -8,18 +8,18 @@ import 'package:places/data/repository/place_repository.dart';
 import 'package:places/settings/dio_settings.dart';
 import 'package:places/utils/status_codes.dart';
 
-class PlaceRepositoryImpl implements PlaceRepository {
+class PlaceRepositoryRemote implements PlaceRepository {
   final DioSettings _dioSettings;
 
-  PlaceRepositoryImpl(DioSettings dioSettings) : _dioSettings = dioSettings;
+  PlaceRepositoryRemote(this._dioSettings);
 
   @override
-  Future<List<PlaceModel>> postFilteredPlaces(
-    PostFilteredPlacesRequestModel model,
-  ) async {
-    final response = await _dioSettings.dio.post<List<PlaceModel>>(
+  Future<List<PlaceModel>> postFilteredPlaces({
+    PostFilteredPlacesRequestModel? model,
+  }) async {
+    final response = await _dioSettings.dio.post<List<dynamic>>(
       '/filtered_places',
-      data: model.toJson(),
+      data: model?.toJson(),
     );
 
     if (response.statusCode == invalidRequest) {
@@ -27,10 +27,13 @@ class PlaceRepositoryImpl implements PlaceRepository {
     }
     if (response.statusCode == successCode) {
       final data = response.data;
-      if (data != null && data.isNotEmpty) {
-        return data;
+      if (data != null) {
+        return List<PlaceModel>.from(
+          data.map<PlaceModel>((dynamic value) =>
+              PlaceModel.fromJson(value as Map<String, dynamic>)),
+        );
       } else {
-        throw Exception('Data is empty');
+        throw Exception('Data is null');
       }
     } else {
       throw Exception('Callback cannt fetch data');
@@ -61,31 +64,27 @@ class PlaceRepositoryImpl implements PlaceRepository {
 
   @override
   Future<List<PlaceModel>> getPlace({
-    required GetPlaceRequestModel model,
+    GetPlaceRequestModel? model,
   }) async {
-    final response = await _dioSettings.dio.get<List<PlaceModel>>(
+    final response = await _dioSettings.dio.get<List<dynamic>>(
       '/place',
-      queryParameters: model.toJson(),
+      queryParameters: model?.toJson(),
     );
+    final data = response.data;
 
-    if (response.statusCode == invalidRequest) {
-      throw Exception('Invalid request');
-    }
-    if (response.statusCode == successCode) {
-      final data = response.data;
-      if (data != null && data.isNotEmpty) {
-        return data;
-      } else {
-        throw Exception('Data is empty');
-      }
+    if (data != null) {
+      return List<PlaceModel>.from(
+        data.map<PlaceModel>((dynamic value) =>
+            PlaceModel.fromJson(value as Map<String, dynamic>)),
+      );
     } else {
-      throw Exception('Callback cannt fetch data');
+      throw Exception('Data is null');
     }
   }
 
   @override
   Future<PlaceModel> getPlaceId({required String id}) async {
-    final response = await _dioSettings.dio.get<PlaceModel>(
+    final response = await _dioSettings.dio.get<Map<String, dynamic>>(
       '/place/$id',
     );
 
@@ -98,7 +97,9 @@ class PlaceRepositoryImpl implements PlaceRepository {
     if (response.statusCode == successCode) {
       final data = response.data;
       if (data != null) {
-        return data;
+        final model = PlaceModel.fromJson(data);
+
+        return model;
       } else {
         throw Exception('Data is null');
       }

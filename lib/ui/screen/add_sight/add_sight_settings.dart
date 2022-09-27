@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:places/data/repository/sights_repository.dart';
+import 'package:places/data/interactor/place_interactor.dart';
+import 'package:places/data/model/place_model.dart';
 
 class AddSightSettings extends ChangeNotifier {
-  final SightRepository repository;
   final mockImages = [
     'https://www.treehugger.com/thmb/Yz5imFySskfzWEEFphWtqDIqdcE=/768x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-166152657-cb61ca0fd49e453cb4f1a60b50d281e7.jpg',
     'https://www.birdlife.org/wp-content/uploads/2021/06/Owl-in-tree-by-Philip-Brown-1-1024x576.jpg',
@@ -12,10 +14,16 @@ class AddSightSettings extends ChangeNotifier {
     'https://chorus.stimg.co/23256340/merlin_34760037.jpg?fit=crop&crop=faces',
     'https://worldbirds.com/wp-content/uploads/2020/02/how-to-attract-owls.jpg',
   ];
+  final PlaceInteractor _interactor;
 
-  AddSightSettings({
-    required this.repository,
-  });
+  double? _lat;
+  double? _lng;
+  String? _name;
+  List<String>? _urls;
+  String? _placeType;
+  String? _description;
+
+  AddSightSettings(this._interactor);
 
   void removeImage(String image) {
     mockImages.remove(image);
@@ -27,6 +35,20 @@ class AddSightSettings extends ChangeNotifier {
       0,
       'https://chorus.stimg.co/23256340/merlin_34760037.jpg?fit=crop&crop=faces',
     );
+    notifyListeners();
+  }
+
+  Future<void> addPlace() async {
+    final place = PlaceModel(
+      id: Random.secure().nextInt(1000),
+      lat: _lat ?? 0,
+      lng: _lng ?? 0,
+      name: _name ?? '',
+      urls: _urls ?? [],
+      placeType: _placeType ?? '',
+      description: _description ?? '',
+    );
+    await _interactor.addNewPlace(place);
     notifyListeners();
   }
 }

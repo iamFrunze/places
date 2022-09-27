@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_typography.dart';
 import 'package:places/ui/screen/sight_details/sight_details_screen.dart';
 
-class SightCard extends StatelessWidget {
-  final SightModel sight;
+class PlaceCard extends StatelessWidget {
+  final PlaceModel place;
   final List<Widget> actions;
   final List<Widget> details;
 
-  const SightCard({
+  const PlaceCard({
     Key? key,
-    required this.sight,
+    required this.place,
     required this.actions,
     required this.details,
   }) : super(key: key);
@@ -38,7 +38,7 @@ class SightCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: _ImageCardWidget(
-                    sight: sight,
+                    place: place,
                   ),
                 ),
                 Expanded(
@@ -72,7 +72,7 @@ class SightCard extends StatelessWidget {
                         topRight: Radius.circular(AppDimensions.cornerRadius16),
                       ),
                     ),
-                    builder: (context) => SightDetailsScreen(id: sight.id),
+                    builder: (context) => SightDetailsScreen(id: place.id),
                   ),
                 ),
               ),
@@ -84,7 +84,7 @@ class SightCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    sight.type.toLowerCase(),
+                    place.placeType.toLowerCase(),
                     style:
                         AppTypography.bodyLarge.copyWith(color: Colors.white),
                   ),
@@ -103,11 +103,11 @@ class SightCard extends StatelessWidget {
 }
 
 class _ImageCardWidget extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const _ImageCardWidget({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -124,7 +124,7 @@ class _ImageCardWidget extends StatelessWidget {
           ),
         ),
         child: Image.network(
-          sight.url,
+          place.urls.first,
           fit: BoxFit.cover,
           loadingBuilder: (context, child, loadingProgress) {
             return loadingProgress == null

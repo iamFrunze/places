@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_dimensions.dart';
 
 /// Widget, который отображается при переносе карточки
 /// для поля feedback виджета LongPressDraggable
 class DragItem extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
   final double parentWidth;
 
   const DragItem({
     Key? key,
-    required this.sight,
+    required this.place,
     required this.parentWidth,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class DragItem extends StatelessWidget {
                   ),
                 ),
                 child: Image.network(
-                  sight.url,
+                  place.urls.first,
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -49,7 +49,7 @@ class DragItem extends StatelessWidget {
                   horizontal: AppDimensions.margin16,
                 ),
                 child: Text(
-                  sight.name,
+                  place.name,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleSmall,
                 ),

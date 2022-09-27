@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class PlaceModel {
   final int id;
   final double lat;
@@ -21,18 +19,17 @@ class PlaceModel {
     this.distance,
   });
 
-  factory PlaceModel.fromJson(Map<String, dynamic> json) => PlaceModel(
-        id: json['id'] as int,
-        lat: json['lat'] as double,
-        lng: json['lng'] as double,
-        name: json['name'] as String,
-        urls: List<String>.from(
-          (json['urls'] as List<String>).map<String>((x) => x),
+  PlaceModel.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int,
+        lat = json['lat'] as double,
+        lng = json['lng'] as double,
+        name = json['name'] as String,
+        urls = List<String>.from(
+          (json['urls'] as List).map<String>((dynamic e) => e as String),
         ),
-        placeType: json['placeType'] as String,
-        description: json['description'] as String,
-        distance: json['distance'] as double,
-      );
+        placeType = json['placeType'] as String,
+        description = json['description'] as String,
+        distance = json['distance'] as double?;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
@@ -44,4 +41,26 @@ class PlaceModel {
         'description': description,
         'distance': distance,
       };
+
+  PlaceModel copyWith({
+    int? id,
+    double? lat,
+    double? lng,
+    String? name,
+    List<String>? urls,
+    String? placeType,
+    String? description,
+    double? distance,
+  }) {
+    return PlaceModel(
+      id: id ?? this.id,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      name: name ?? this.name,
+      urls: urls ?? this.urls,
+      placeType: placeType ?? this.placeType,
+      description: description ?? this.description,
+      distance: distance ?? this.distance,
+    );
+  }
 }

@@ -4,7 +4,6 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/screen/nav_screen.dart';
 import 'package:places/ui/screen/onboarding/onboarding_model.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/utils/routes/routes.dart';

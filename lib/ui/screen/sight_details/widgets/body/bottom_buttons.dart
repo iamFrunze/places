@@ -13,7 +13,8 @@ class BottomButtonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentSight = context.watch<SightDetailsSettings>().currentSight;
+    final planningDate = context.watch<SightDetailsSettings>().planningDate;
+    final isFavourite = context.watch<SightDetailsSettings>().isFavourite;
     final theme = Theme.of(context);
 
     return Row(
@@ -30,24 +31,23 @@ class BottomButtonsWidget extends StatelessWidget {
               );
             }
           },
-          icon: currentSight?.planningDate != null
+          icon: planningDate != null
               ? AppAssets.calendarFill
               : AppAssets.calendar,
-          color: currentSight?.planningDate != null
+          color: planningDate != null
               ? theme.colorScheme.tertiary
               : theme.colorScheme.secondary,
-          label: currentSight?.planningDate ?? AppStrings.plan,
-          labelStyle: currentSight?.planningDate != null
+          label: planningDate ?? AppStrings.plan,
+          labelStyle: planningDate != null
               ? theme.textTheme.bodyLarge
                   ?.copyWith(color: theme.colorScheme.tertiary)
               : theme.textTheme.bodyMedium,
         ),
         PlanningTextButton(
-          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tap on favourite')),
-          ),
+          onPressed: () =>
+              context.read<SightDetailsSettings>().addToFavourite(),
           color: theme.colorScheme.secondary,
-          icon: AppAssets.heart,
+          icon: isFavourite ? AppAssets.heartFill : AppAssets.heart,
           label: AppStrings.addToFavourite,
           labelStyle: theme.textTheme.bodyMedium,
         ),

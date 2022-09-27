@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/sight_details/widgets/header/btn_on_back.dart';
@@ -9,11 +9,11 @@ import 'package:places/ui/screen/sight_details/widgets/header/page_view_indicato
 import 'package:places/ui/screen/sight_details/widgets/header/sliver_app_bar_delegate.dart';
 
 class HeaderImageWidget extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const HeaderImageWidget({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -27,11 +27,11 @@ class HeaderImageWidget extends StatelessWidget {
         child: Stack(
           children: [
             PageViewImageWidget(
-              sight: sight,
+              place: place,
               pageController: pageController,
             ),
             PageViewIndicatorWidget(
-              width: MediaQuery.of(context).size.width / 7,
+              width: MediaQuery.of(context).size.width / place.urls.length,
             ),
             const BtnOnBackWidget(),
             Positioned(

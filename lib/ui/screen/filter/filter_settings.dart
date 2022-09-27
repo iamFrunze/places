@@ -1,114 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:places/settings/app_settings.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/category_model.dart';
-import 'package:places/data/repository/sights_repository.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/interactor/place_interactor.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/mocks.dart';
+import 'package:places/settings/constants.dart';
 import 'package:places/utils/distance_calc.dart';
 
 class FilterSettings extends ChangeNotifier {
-  final SightRepository repository;
-  final _booleanListOfCategories = List.generate(6, (index) => false);
-  final _selectedCategories = AppSettings.categories;
+  final categories = Constants.categories;
 
-  bool initializedSights = false;
+  final PlaceInteractor _interactor;
+
   ScreenState currentState = ScreenState.loading;
+  RangeValues rangeValue = Constants.rangeValue;
 
   int get countNearSights => _countNearSights;
-
-  RangeValues get rangeValue => _rangeValue;
-
-  List<CategoryModel> get selectedCategories => _selectedCategories;
-
   int _countNearSights = 0;
 
-  var _rangeValue = AppSettings.range;
+  late List<PlaceModel> _places;
 
-  late List<SightModel> _sights;
+  FilterSettings(this._interactor) {
+    Future<void>.microtask(_initData);
 
-  FilterSettings({required this.repository}) {
-    _initData();
-    currentState = initializedSights
-        ? _sights.isNotEmpty
-            ? ScreenState.success
-            : ScreenState.empty
-        : ScreenState.error;
     notifyListeners();
   }
 
   void selectSight({
-    required int index,
     required String type,
     required bool value,
   }) {
-    _selectedCategories[index].value = value;
-    _booleanListOfCategories[index] = value;
-    _sights
-        .where((element) => element.type == type)
-        .map((e) => e.isSelect = value)
-        .toList();
-
-    final selectedSights =
-        _sights.where((element) => element.isSelect).toList();
-
-    _fetchNearSights(selectedSights: selectedSights);
+    categories.firstWhere((element) => element.type == type).value = value;
+    _fetchNearSights();
   }
 
   void changeArea({
     required double start,
     required double end,
   }) {
-    _rangeValue = RangeValues(start, end);
-    final selectedSights =
-        _sights.where((element) => element.isSelect).toList();
-    _fetchNearSights(selectedSights: selectedSights);
+    rangeValue = RangeValues(start, end);
+    _fetchNearSights();
   }
 
   void clearData() {
-    _selectedCategories.map((e) => e.value = false).toList();
-    _rangeValue = AppSettings.range;
-    _fetchNearSights(selectedSights: _sights);
+    categories.map((e) => e.value = false).toList();
+    rangeValue = Constants.rangeValue;
+    _fetchNearSights();
   }
 
-  List<SightModel> _fetchNearSights({
-    required List<SightModel> selectedSights,
-  }) {
-    final mapSights = <SightModel>[];
-
-    if (_booleanListOfCategories.contains(true)) {
-      mapSights.addAll(selectedSights);
-    } else {
-      mapSights.addAll(_sights);
-    }
-
-    final nearSights = mapSights.where(_isNear).toList();
-
-    _countNearSights = nearSights.length;
+  void _fetchNearSights() {
+    final nearPlaces = _places.where(_isNear).where(_isSelected).toList();
+    _countNearSights = nearPlaces.length;
+    debugPrint('near $_countNearSights');
     notifyListeners();
-
-    return mapSights;
   }
 
-  bool _isNear(SightModel sight) {
-    final area = (_rangeValue.end - _rangeValue.start) * 1000;
+  bool _isNear(PlaceModel sight) {
+    final area = (rangeValue.end - rangeValue.start) * 1000;
 
     final dist = distanceBetween(
       mockLat,
       mockLot,
       sight.lat,
-      sight.lon,
+      sight.lng,
     );
 
     return dist < area;
   }
 
-  Future _initData() async {
-    final callback = repository.fetchSights();
-    if (callback != null) {
-      _sights = callback;
-      _countNearSights = callback.where(_isNear).toList().length;
-      initializedSights = true;
-    }
+  bool _isSelected(PlaceModel place) {
+    final isSelected = categories
+        .where((element) => element.value)
+        .map((e) => e.type)
+        .toList();
+    if (isSelected.isEmpty) return true;
+
+    return isSelected.contains(place.placeType);
+  }
+
+  Future<void> _initData() async {
+    _places = await _interactor.getPlaces();
+    _countNearSights = _places.where(_isNear).toList().length;
+
+    currentState = _places.isNotEmpty ? ScreenState.success : ScreenState.empty;
+
+    notifyListeners();
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/settings/app_settings.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/filter_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
+import 'package:places/settings/app_settings.dart';
+import 'package:places/settings/constants.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/filter/widgets/filter_custom_chip.dart';
 import 'package:places/ui/widgets/appbar.dart';
@@ -41,23 +42,26 @@ class _FilterScreenState extends State<FilterScreen> {
                           theme.textTheme.bodySmall?.copyWith(fontSize: 12.0),
                     ),
                     const SizedBox(height: AppDimensions.margin32),
-                    GridView.count(
+                    GridView.builder(
                       shrinkWrap: true,
-                      crossAxisCount: 3,
-                      children: AppSettings.categories.map((category) {
-                        final index = AppSettings.categories.indexOf(category);
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                      itemCount: model.categories.length,
+                      itemBuilder: (context, index) {
+                        final chip = model.categories[index];
 
                         return FilterCustomChip(
-                          label: category.type,
-                          icon: category.icon,
-                          value: model.selectedCategories[index].value,
+                          label: chip.type,
+                          icon: chip.icon,
+                          value: chip.value,
                           onChanged: (value) => model.selectSight(
-                            index: index,
-                            type: model.selectedCategories[index].type,
+                            type: chip.type,
                             value: !value,
                           ),
                         );
-                      }).toList(),
+                      },
                     ),
                     const SizedBox(height: AppDimensions.margin48),
                     Row(
@@ -77,12 +81,15 @@ class _FilterScreenState extends State<FilterScreen> {
                     ),
                     RangeSlider(
                       values: model.rangeValue,
-                      max: AppSettings.rangeEnd,
-                      onChangeEnd: (value) =>
-                          model.changeArea(start: value.start, end: value.end),
-                      onChanged: (value) {
-                        model.changeArea(start: value.start, end: value.end);
-                      },
+                      max: Constants.rangeValueEnd,
+                      onChangeEnd: (value) => model.changeArea(
+                        start: value.start,
+                        end: value.end,
+                      ),
+                      onChanged: (value) => model.changeArea(
+                        start: value.start,
+                        end: value.end,
+                      ),
                     ),
                     Expanded(child: Container()),
                     SizedBox(
@@ -91,12 +98,11 @@ class _FilterScreenState extends State<FilterScreen> {
                       child: ElevatedButton(
                         onPressed: () async {
                           final filter = FilterModel(
-                            category: model.selectedCategories
-                                .map((e) => e.type)
-                                .toList(),
+                            category:
+                                model.categories.map((e) => e.type).toList(),
                             rangeValues: model.rangeValue,
                           );
-                          Navigator.of(context).pop(filter);
+                          Navigator.of(context).pop<FilterModel>(filter);
                         },
                         child: Text(
                           AppStrings.show(model.countNearSights).toUpperCase(),

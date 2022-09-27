@@ -20,10 +20,18 @@ class SightDetailsScreen extends StatefulWidget {
 
 class _SightDetailsScreenState extends State<SightDetailsScreen> {
   @override
-  Widget build(BuildContext context) {
-    final sight = context.read<SightDetailsSettings>().fetchSight(widget.id);
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => context.read<SightDetailsSettings>().fetchPlace(widget.id),
+    );
+  }
 
-    return sight != null
+  @override
+  Widget build(BuildContext context) {
+    final place = context.watch<SightDetailsSettings>().place;
+
+    return place != null
         ? DraggableScrollableSheet(
             maxChildSize: 0.9,
             initialChildSize: 0.9,
@@ -40,9 +48,9 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                 shrinkWrap: true,
                 controller: scrollController,
                 slivers: [
-                  HeaderImageWidget(sight: sight),
-                  SliverSubHeader(sight: sight),
-                  BodyTextWidget(sight: sight),
+                  HeaderImageWidget(place: place),
+                  SliverSubHeader(place: place),
+                  BodyTextWidget(place: place),
                 ],
               ),
             ),
