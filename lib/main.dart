@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:places/app_settings.dart';
+
+import 'package:places/data/interactors/place_interactor_impl.dart';
+import 'package:places/data/interactors/search_interactor.dart';
+import 'package:places/data/interactors/settings_interactor.dart';
+import 'package:places/data/repository/data/place_repository_remote.dart';
 import 'package:places/data/repository/mock_data/mock_sights.dart';
-import 'package:places/data/repository/mock_data/mock_visited_sights.dart';
-import 'package:places/data/repository/mock_data/mock_want_visit_sights.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
+import 'package:places/settings/app_settings.dart';
+import 'package:places/settings/dio_settings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
+import 'package:places/ui/screen/list/sight_list_settings.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
@@ -19,33 +24,34 @@ import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  final mockSights = MockSights();
+  final dioSettings = DioSettings();
+  final remoteRepository = PlaceRepositoryRemote(dioSettings);
+  final interactor = PlaceInteractorImpl(remoteRepository);
+  final searchInteractor = SearchInteractor(remoteRepository);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AppSettings>(
-          create: (_) => AppSettings(),
+          create: (_) => AppSettings(SettingsInteractor()),
+        ),
+        ChangeNotifierProvider<SightListSettings>(
+          create: (_) => SightListSettings(interactor),
         ),
         ChangeNotifierProvider<FilterSettings>(
-          create: (_) => FilterSettings(repository: mockSights),
+          create: (_) => FilterSettings(interactor),
         ),
         ChangeNotifierProvider<SearchSettings>(
-          create: (_) => SearchSettings(repository: mockSights),
+          create: (_) => SearchSettings(searchInteractor),
         ),
         ChangeNotifierProvider<FavouriteSettings>(
-          create: (_) => FavouriteSettings(
-            visitedSightsRepository: MockVisitedSights(),
-            wantVisitSightsRepository: MockWantVisitSights(),
-          ),
+          create: (_) => FavouriteSettings(interactor),
         ),
         ChangeNotifierProvider<AddSightSettings>(
-          create: (_) => AddSightSettings(repository: mockSights),
+          create: (_) => AddSightSettings(interactor),
         ),
         ChangeNotifierProvider<SightDetailsSettings>(
-          create: (_) => SightDetailsSettings(
-            repository: mockSights,
-            wantVisitRepository: MockWantVisitSights(),
-          ),
+          create: (_) => SightDetailsSettings(interactor),
         ),
         ChangeNotifierProvider<OnBoardingSettings>(
           create: (_) => OnBoardingSettings(),
@@ -71,23 +77,12 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return Consumer<AppSettings>(
       builder: (context, model, child) {
-        final isDarkMode = model.isDarkMode;
-        final systemUiOverlayStyle = !isDarkMode
-            ? SystemUiOverlayStyle.light.copyWith(
-                systemNavigationBarColor: AppColors.lmPrimaryColor,
-                statusBarColor: Colors.transparent,
-              )
-            : SystemUiOverlayStyle.dark.copyWith(
-                systemNavigationBarColor: AppColors.dmMainColorKit,
-                statusBarColor: Colors.transparent,
-              );
+        final systemUiOverlayStyle = model.systemUiOverlayStyle();
 
         SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
         return MaterialApp(
-          theme: !isDarkMode
-              ? LightThemeData().buildTheme()
-              : DarkThemeData().buildTheme(),
+          theme: model.theme(),
           onGenerateRoute: RouterFactory.generateRoute,
           initialRoute: Routes.toSplash,
         );

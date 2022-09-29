@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
@@ -8,11 +8,11 @@ import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/svg_picture_colors.dart';
 
 class BodyTextWidget extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const BodyTextWidget({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class BodyTextWidget extends StatelessWidget {
         delegate: SliverChildListDelegate(
           [
             Text(
-              sight.details,
+              place.description,
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),

@@ -17,16 +17,15 @@ class Pictures extends StatefulWidget {
 class _PicturesState extends State<Pictures> {
   @override
   Widget build(BuildContext context) {
-    final images =
-        Provider.of<AddSightSettings>(context, listen: true).mockImages;
-    final provider = Provider.of<AddSightSettings>(context, listen: false);
+    final images = context.watch<AddSightSettings>().mockImages;
     final theme = Theme.of(context);
 
     final imageWidgets = images
         .map((image) => Dismissible(
               key: UniqueKey(),
               direction: DismissDirection.up,
-              onDismissed: (direction) => provider.removeImage(image),
+              onDismissed: (direction) =>
+                  context.read<AddSightSettings>().removeImage(image),
               background: Column(
                 children: [
                   Expanded(

@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:places/data/category_model.dart';
-import 'package:places/data/sight_model.dart';
-import 'package:places/mocks.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/ui/screen/add_sight/category_list_screen.dart';
+import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
 import 'package:places/ui/screen/add_sight/widgets/categories.dart';
 import 'package:places/ui/screen/add_sight/widgets/coordinates.dart';
 import 'package:places/ui/screen/add_sight/widgets/create_btn.dart';
@@ -17,6 +13,7 @@ import 'package:places/ui/screen/add_sight/widgets/pictures.dart';
 import 'package:places/ui/screen/add_sight/widgets/show_on_map.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:places/utils/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class AddSightScreen extends StatefulWidget {
   const AddSightScreen({Key? key}) : super(key: key);
@@ -95,9 +92,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 onChangedLon: (value) {},
               ),
               const ShowOnMapButtonWidget(),
-              const SizedBox(
-                height: 28,
-              ),
+              const SizedBox(height: 28),
               DescriptionFieldWidget(
                 controller: descController,
                 focusNode: descriptionFN,
@@ -105,28 +100,12 @@ class _AddSightScreenState extends State<AddSightScreen> {
                     fieldFocusChange(context, descriptionFN, createBtnFN),
                 onChanged: (value) {},
               ),
-              const SizedBox(
-                height: 28,
-              ),
+              const SizedBox(height: 28),
               CreateButtonWidget(
                 focusNode: createBtnFN,
                 onPressed: hasEmptyTextField()
                     ? null
-                    : () {
-                        mocks.add(
-                          SightModel(
-                            id: Random.secure().nextInt(100),
-                            name: nameSightController.text,
-                            lat: double.parse(latController.text),
-                            lon: double.parse(lonController.text),
-                            url: '',
-                            details: descController.text,
-                            type: selectedCategory != null
-                                ? selectedCategory!.type
-                                : AppStrings.notSelected,
-                          ),
-                        );
-                      },
+                    : () => context.read<AddSightSettings>().addPlace(),
               ),
             ],
           ),

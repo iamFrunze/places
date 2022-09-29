@@ -1,116 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/repository/visited_sights_repository.dart';
-import 'package:places/data/repository/want_visit_sights_repository.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/model/place_model.dart';
 
 class FavouriteSettings extends ChangeNotifier {
-  final VisitedSightsRepository visitedSightsRepository;
-  final WantToVisitSightsRepository wantVisitSightsRepository;
-  ScreenState currentStateWantVisit = ScreenState.loading;
+  final PlaceInteractor _interactor;
+  ScreenState currentStateFavourite = ScreenState.loading;
   ScreenState currentStateVisited = ScreenState.loading;
 
-  bool isInitializedWantVisitDone = false;
-  bool isInitializedVisitedDone = false;
+  List<PlaceModel> get favouritesPlaces => _favouritesPlaces;
 
-  List<SightModel> get wantVisitSights => _wantVisitSights;
+  List<PlaceModel> get visitingPlaces => _visitingPlaces;
 
-  List<SightModel> get visitedSights => _visitedSights;
+  late List<PlaceModel> _favouritesPlaces;
+  late List<PlaceModel> _visitingPlaces;
 
-  late List<SightModel> _wantVisitSights;
-  late List<SightModel> _visitedSights;
-
-  FavouriteSettings({
-    required this.visitedSightsRepository,
-    required this.wantVisitSightsRepository,
-  }) {
-    _initVisitedData();
-    _initWantVisitData();
-    currentStateWantVisit = isInitializedWantVisitDone
-        ? _wantVisitSights.isNotEmpty
-            ? ScreenState.success
-            : ScreenState.empty
-        : ScreenState.error;
-    currentStateVisited = isInitializedVisitedDone
-        ? _visitedSights.isNotEmpty
-            ? ScreenState.success
-            : ScreenState.empty
-        : ScreenState.error;
+  FavouriteSettings(this._interactor) {
+    debugPrint('as');
+    Future.microtask(_initVisitingPlaces);
+    Future.microtask(_initFavouritePlaces);
   }
 
-  void removeWantVisitData(SightModel sight) {
-    wantVisitSightsRepository.remove(sight);
-    if (_wantVisitSights.isEmpty) {
-      currentStateWantVisit = ScreenState.empty;
+  void removeFromFavourites(PlaceModel place) {
+    _interactor.removeFromFavourites(place);
+    _favouritesPlaces.remove(place);
+    if (_favouritesPlaces.isEmpty) {
+      currentStateFavourite = ScreenState.empty;
     }
     notifyListeners();
   }
 
-  void removeWantVisitDataAt(int index) {
-    wantVisitSightsRepository.removeAt(index);
-    if (_wantVisitSights.isEmpty) {
-      currentStateWantVisit = ScreenState.empty;
+  void removeFromFavouritesAt(int index) {
+    final place = _favouritesPlaces[index];
+    _interactor.removeFromFavourites(place);
+    _favouritesPlaces.remove(place);
+    if (_favouritesPlaces.isEmpty) {
+      currentStateFavourite = ScreenState.empty;
     }
     notifyListeners();
   }
 
-  void removeVisitedSight(SightModel sight) {
-    visitedSightsRepository.remove(sight);
-    if (_visitedSights.isEmpty) {
+  void removeFromVisitingPlaces(PlaceModel place) {
+    _visitingPlaces.remove(place);
+    if (_visitingPlaces.isEmpty) {
       currentStateVisited = ScreenState.empty;
     }
     notifyListeners();
   }
 
-  void removeVisitedSightAt(int index) {
-    visitedSightsRepository.removeAt(index);
-    if (_visitedSights.isEmpty) {
+  void removeFromVisitingPlacesAt(int index) {
+    _visitingPlaces.removeAt(index);
+    if (_visitingPlaces.isEmpty) {
       currentStateVisited = ScreenState.empty;
     }
     notifyListeners();
   }
 
-  void changePositionVisitedSight(SightModel sight, int index) {
-    _visitedSights.insert(index, sight);
+  void changePositionVisitingPlace(PlaceModel place, int index) {
+    _visitingPlaces.insert(index, place);
     notifyListeners();
   }
 
-  void changePositionWantVisitSight(SightModel sight, int index) {
-    _wantVisitSights.insert(index, sight);
+  void changePositionFavouritePlace(PlaceModel place, int index) {
+    _favouritesPlaces.insert(index, place);
     notifyListeners();
   }
 
-  void onAcceptWantVisitSights(SightModel sight, int index) {
-    _wantVisitSights
-      ..remove(sight)
-      ..insert(index, sight);
-    // final newList = _wantVisitSights;
-    // wantVisitSightsRepository.updateSights(newList);
-    // debugPrint('new $newList \n s $_wantVisit');
+  void onAcceptDragFavouritePlace(PlaceModel place, int index) {
+    _favouritesPlaces
+      ..remove(place)
+      ..insert(index, place);
     notifyListeners();
   }
 
-  void onAcceptVisitedSights(SightModel sight, int index) {
-    _visitedSights
-      ..remove(sight)
-      ..insert(index, sight);
-    // visitedSightsRepository.updateSights(_visitedSights);
+  void onAcceptDragVisitingPlace(PlaceModel place, int index) {
+    _visitingPlaces
+      ..remove(place)
+      ..insert(index, place);
     notifyListeners();
   }
 
-  Future _initWantVisitData() async {
-    final callbackWantToVisit = wantVisitSightsRepository.fetchSights();
-    if (callbackWantToVisit != null) {
-      _wantVisitSights = callbackWantToVisit;
-      isInitializedWantVisitDone = true;
-    }
+  Future<void> _initFavouritePlaces() async {
+    _favouritesPlaces = await _interactor.getFavouritesPlaces();
+    currentStateFavourite = ScreenState.success;
+    notifyListeners();
   }
 
-  Future _initVisitedData() async {
-    final callbackVisitedSights = visitedSightsRepository.fetchSights();
-    if (callbackVisitedSights != null) {
-      _visitedSights = callbackVisitedSights;
-      isInitializedVisitedDone = true;
-    }
+  Future<void> _initVisitingPlaces() async {
+    _visitingPlaces = await _interactor.getVisitPlaces();
+    currentStateVisited = ScreenState.success;
+    notifyListeners();
   }
 }

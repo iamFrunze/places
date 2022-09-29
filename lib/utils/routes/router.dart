@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/data/filter_model.dart';
 import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
 import 'package:places/ui/screen/add_sight/category_list_screen.dart';
 import 'package:places/ui/screen/filter/filter_screen.dart';
@@ -18,44 +19,44 @@ class RouterFactory {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.toMain:
-        return MaterialPageRoute<MainScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const MainScreen(),
         );
       case Routes.toSplash:
-        return MaterialPageRoute<SplashScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const SplashScreen(),
         );
       case Routes.toOnBoarding:
-        return MaterialPageRoute<OnBoardingScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const OnBoardingScreen(),
         );
       case Routes.toMap:
-        return MaterialPageRoute<MapScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const MapScreen(),
         );
       case Routes.toSettings:
-        return MaterialPageRoute<SettingsScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const SettingsScreen(),
         );
       case Routes.toAddSight:
-        return MaterialPageRoute<AddSightScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const AddSightScreen(),
         );
       case Routes.toCategoriesList:
-        return MaterialPageRoute<CategoryListScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const CategoryListScreen(),
         );
       case Routes.toFilters:
-        return MaterialPageRoute<FilterScreen>(
+        return MaterialPageRoute<FilterModel>(
           builder: (context) => const FilterScreen(),
         );
       case Routes.toDetails:
         final id = settings.arguments as int;
-        return MaterialPageRoute<SightDetailsScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => SightDetailsScreen(id: id),
         );
       default:
-        return MaterialPageRoute<MapScreen>(
+        return MaterialPageRoute<void>(
           builder: (context) => const UnknownScreen(),
         );
     }

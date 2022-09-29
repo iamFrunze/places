@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/app_settings.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
+import 'package:places/settings/app_settings.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +18,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        Provider.of<AppSettings>(context, listen: true).isDarkMode;
+    final isDarkMode = context.watch<AppSettings>().isDarkMode;
 
     final theme = Theme.of(context);
 

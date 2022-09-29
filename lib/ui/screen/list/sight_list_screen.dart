@@ -1,15 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/mocks.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
+import 'package:places/ui/screen/list/sight_list_settings.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/utils/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class SightListScreen extends StatefulWidget {
   const SightListScreen({Key? key}) : super(key: key);
@@ -23,16 +24,18 @@ class _SightListScreenState extends State<SightListScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final cards = mocks
+    final cards = context
+        .watch<SightListSettings>()
+        .places
         .map(
-          (sight) => Padding(
+          (place) => Padding(
             padding: const EdgeInsets.only(
               top: AppDimensions.margin16,
               left: AppDimensions.margin16,
               right: AppDimensions.margin16,
             ),
-            child: SightCard(
-              sight: sight,
+            child: PlaceCard(
+              place: place,
               actions: [
                 InkWell(
                   onTap: () => ScaffoldMessenger.of(context).showSnackBar(
@@ -43,12 +46,12 @@ class _SightListScreenState extends State<SightListScreen> {
               ],
               details: [
                 Text(
-                  sight.name,
+                  place.name,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleSmall,
                 ),
                 Text(
-                  sight.details,
+                  place.description,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: theme.textTheme.bodySmall,
@@ -93,6 +96,7 @@ class _SliverAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
+      automaticallyImplyLeading: false,
       expandedHeight: kToolbarHeight +
           AppDimensions.margin64 +
           AppDimensions.searchBarHeight50,

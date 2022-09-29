@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
@@ -26,7 +26,7 @@ class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
       switch (model.currentStateVisited) {
         case ScreenState.success:
           return _Page(
-            sights: model.visitedSights,
+            places: model.visitingPlaces,
           );
         case ScreenState.loading:
           return const Center(
@@ -46,35 +46,35 @@ class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
 }
 
 class _Page extends StatelessWidget {
-  final List<SightModel> sights;
+  final List<PlaceModel> places;
 
-  const _Page({Key? key, required this.sights}) : super(key: key);
+  const _Page({Key? key, required this.places}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final provider = context.read<FavouriteSettings>();
-    final sightWidgets = sights
+    final sightWidgets = places
         .mapIndexed(
-          (i, sight) => LongPressDraggable<SightModel>(
+          (i, place) => LongPressDraggable<PlaceModel>(
             key: ValueKey(i),
-            data: sight,
+            data: place,
             feedback: DragItem(
-              sight: sight,
+              place: place,
               parentWidth: MediaQuery.of(context).size.width,
             ),
             childWhenDragging: Container(),
-            child: DragTarget<SightModel>(
-              onAccept: (sight) => provider.onAcceptVisitedSights(sight, i),
+            child: DragTarget<PlaceModel>(
+              onAccept: (place) => provider.onAcceptDragVisitingPlace(place, i),
               builder: (
                 context,
                 candidateData,
                 rejectedData,
               ) {
                 return DraggableBuilderWidget(
-                  sight: sight,
-                  card: _Card(sight: sight),
+                  card: _Card(place: place),
                   candidateData: candidateData,
-                  onDismissed: (data) => provider.removeVisitedSight(sight),
+                  onDismissed: (data) =>
+                      provider.removeFromVisitingPlaces(place),
                 );
               },
             ),
@@ -90,11 +90,11 @@ class _Page extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const _Card({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -102,8 +102,8 @@ class _Card extends StatelessWidget {
     final provider = context.read<FavouriteSettings>();
     final theme = Theme.of(context);
 
-    return SightCard(
-      sight: sight,
+    return PlaceCard(
+      place: place,
       actions: [
         InkWell(
           onTap: () => ScaffoldMessenger.of(context).showSnackBar(
@@ -115,13 +115,13 @@ class _Card extends StatelessWidget {
         ),
         const SizedBox(width: AppDimensions.margin16),
         InkWell(
-          onTap: () => provider.removeVisitedSight(sight),
+          onTap: () => provider.removeFromVisitingPlaces(place),
           child: const IconSvg(icon: AppAssets.close),
         ),
       ],
       details: [
         Text(
-          sight.name,
+          place.name,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.titleSmall,
         ),

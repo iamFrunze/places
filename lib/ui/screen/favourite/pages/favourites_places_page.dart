@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
@@ -23,10 +23,10 @@ class _WantToVisitPageState extends State<WantToVisitPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<FavouriteSettings>(builder: (context, model, child) {
-      switch (model.currentStateWantVisit) {
+      switch (model.currentStateFavourite) {
         case ScreenState.success:
           return _Page(
-            sights: model.wantVisitSights,
+            place: model.favouritesPlaces,
           );
         case ScreenState.loading:
           return const Center(
@@ -46,38 +46,38 @@ class _WantToVisitPageState extends State<WantToVisitPage> {
 }
 
 class _Page extends StatelessWidget {
-  final List<SightModel> sights;
+  final List<PlaceModel> place;
 
   const _Page({
     Key? key,
-    required this.sights,
+    required this.place,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final provider = context.read<FavouriteSettings>();
-    final sightWidgets = sights
+    final sightWidgets = place
         .mapIndexed(
-          (i, sight) => LongPressDraggable<SightModel>(
+          (i, place) => LongPressDraggable<PlaceModel>(
             key: UniqueKey(),
-            data: sight,
+            data: place,
             feedback: DragItem(
-              sight: sight,
+              place: place,
               parentWidth: MediaQuery.of(context).size.width,
             ),
             childWhenDragging: Container(),
-            child: DragTarget<SightModel>(
-              onAccept: (sight) => provider.onAcceptWantVisitSights(sight, i),
+            child: DragTarget<PlaceModel>(
+              onAccept: (sight) =>
+                  provider.onAcceptDragFavouritePlace(place, i),
               builder: (
                 context,
                 candidateData,
                 rejectedData,
               ) {
                 return DraggableBuilderWidget(
-                  sight: sight,
-                  card: _Card(sight: sight),
+                  card: _Card(place: place),
                   candidateData: candidateData,
-                  onDismissed: (data) => provider.removeWantVisitDataAt(i),
+                  onDismissed: (data) => provider.removeFromFavouritesAt(i),
                 );
               },
             ),
@@ -93,11 +93,11 @@ class _Page extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
 
   const _Card({
     Key? key,
-    required this.sight,
+    required this.place,
   }) : super(key: key);
 
   @override
@@ -105,8 +105,8 @@ class _Card extends StatelessWidget {
     final provider = context.read<FavouriteSettings>();
     final theme = Theme.of(context);
 
-    return SightCard(
-      sight: sight,
+    return PlaceCard(
+      place: place,
       actions: [
         InkWell(
           onTap: () => ScaffoldMessenger.of(context).showSnackBar(
@@ -116,18 +116,19 @@ class _Card extends StatelessWidget {
         ),
         const SizedBox(width: AppDimensions.margin16),
         InkWell(
-          onTap: () => provider.removeVisitedSight(sight),
+          onTap: () => provider.removeFromVisitingPlaces(place),
           child: const IconSvg(icon: AppAssets.close),
         ),
       ],
       details: [
         Text(
-          sight.name,
+          place.name,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.titleSmall,
         ),
         Text(
-          'Запланировано на ${sight.planningDate}',
+          /// Непонятно
+          'Запланировано на ',
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.tertiary),
         ),

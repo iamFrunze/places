@@ -3,11 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
-import 'package:places/ui/screen/sight_search/search_settings.dart';
-import 'package:places/ui/screen/splash/splash_settings.dart';
-import 'package:places/utils/routes/router.dart';
 import 'package:places/utils/routes/routes.dart';
-import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

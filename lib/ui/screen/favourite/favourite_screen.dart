@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
+import 'package:places/ui/screen/favourite/pages/favourites_places_page.dart';
 import 'package:places/ui/screen/favourite/pages/visited_places_page.dart';
-import 'package:places/ui/screen/favourite/pages/want_to_visit_places_page.dart';
 import 'package:places/ui/widgets/appbar.dart';
 
 const _tabBarHeight = 52.0;

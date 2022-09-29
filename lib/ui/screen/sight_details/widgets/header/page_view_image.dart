@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
+
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:provider/provider.dart';
 
 class PageViewImageWidget extends StatelessWidget {
-  final SightModel sight;
+  final PlaceModel place;
   final PageController pageController;
 
   const PageViewImageWidget({
     Key? key,
-    required this.sight,
+    required this.place,
     required this.pageController,
   }) : super(key: key);
 
@@ -23,11 +24,11 @@ class PageViewImageWidget extends StatelessWidget {
       ),
       child: PageView.builder(
         controller: pageController,
-        itemCount: 7,
+        itemCount: place.urls.length,
         onPageChanged: context.read<SightDetailsSettings>().onPageChange,
         itemBuilder: (context, index) {
           return Image.network(
-            sight.url,
+            place.urls[index],
             loadingBuilder: (context, child, loadingProgress) {
               return loadingProgress == null
                   ? child

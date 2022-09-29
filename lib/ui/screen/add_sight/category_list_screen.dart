@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/app_settings.dart';
 import 'package:places/data/category_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
+import 'package:places/settings/constants.dart';
 import 'package:places/ui/widgets/appbar.dart';
 
 class CategoryListScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class CategoryListScreen extends StatefulWidget {
 }
 
 class _CategoryListScreenState extends State<CategoryListScreen> {
-  final _categories = AppSettings.categories;
+  final _categories = Constants.categories;
   bool isSelected = false;
   CategoryModel? _selectCategory;
 

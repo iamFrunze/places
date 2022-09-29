@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/sight_model.dart';
+import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/widgets/dismissible_card.dart';
 
 /// Widget для формирования builder у LongPressDraggable
 class DraggableBuilderWidget extends StatelessWidget {
-  final SightModel sight;
   final Widget card;
-  final List<SightModel?> candidateData;
+  final List<PlaceModel?> candidateData;
   final DismissDirectionCallback onDismissed;
-
 
   const DraggableBuilderWidget({
     Key? key,
-    required this.sight,
     required this.card,
     required this.candidateData,
     required this.onDismissed,
