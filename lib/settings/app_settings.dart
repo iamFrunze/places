@@ -4,6 +4,9 @@ import 'package:places/data/interactors/settings_interactor.dart';
 
 class AppSettings extends ChangeNotifier {
   final SettingsInteractor _interactor;
+  bool get isDarkMode => _isDarkMode;
+
+  var _isDarkMode = false;
 
   AppSettings(this._interactor);
 
@@ -12,5 +15,9 @@ class AppSettings extends ChangeNotifier {
 
   ThemeData theme() => _interactor.theme();
 
-  void changeAppMode() => changeAppMode();
+  void changeAppMode() {
+    _interactor.chageAppMode();
+    _isDarkMode = _interactor.isDarkMode;
+    notifyListeners();
+  }
 }
