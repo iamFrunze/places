@@ -42,8 +42,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 CupertinoSwitch(
                   value: isDarkMode,
                   onChanged: (value) =>
-                      Provider.of<AppSettings>(context, listen: false)
-                          .changeAppMode(value: value),
+                      context.read<AppSettings>().changeAppMode(),
                 ),
               ],
             ),

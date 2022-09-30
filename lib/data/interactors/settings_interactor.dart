@@ -5,7 +5,9 @@ import 'package:places/res/themes/dark_theme.dart';
 import 'package:places/res/themes/light_theme.dart';
 
 class SettingsInteractor {
-  bool _isDarkMode = false;
+  bool get isDarkMode => _isDarkMode;
+
+  var _isDarkMode = false;
 
   SystemUiOverlayStyle systemUiOverlayStyle() => !_isDarkMode
       ? SystemUiOverlayStyle.light.copyWith(
@@ -21,5 +23,5 @@ class SettingsInteractor {
       ? LightThemeData().buildTheme()
       : DarkThemeData().buildTheme();
 
-  void changeAppMode() => _isDarkMode = !_isDarkMode;
+  void chageAppMode() => _isDarkMode = !isDarkMode;
 }
