@@ -47,7 +47,9 @@ class BottomButtonsWidget extends StatelessWidget {
           onPressed: () =>
               context.read<SightDetailsSettings>().addToFavourite(),
           color: theme.colorScheme.secondary,
-          icon: isFavourite ? AppAssets.heartFill : AppAssets.heart,
+          icon: context.watch<SightDetailsSettings>().isFavourite
+              ? AppAssets.heartFill
+              : AppAssets.heart,
           label: AppStrings.addToFavourite,
           labelStyle: theme.textTheme.bodyMedium,
         ),

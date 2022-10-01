@@ -11,10 +11,11 @@ class SightDetailsSettings extends ChangeNotifier {
   String? get planningDate => _planningDate;
   bool get isFavourite => _isFavourite;
 
+  bool _isFavourite = false;
+
   String? _planningDate;
   PlaceModel? _place;
   int _currentIndex = 0;
-  bool _isFavourite = false;
 
   SightDetailsSettings(this._interactor);
 
@@ -35,27 +36,25 @@ class SightDetailsSettings extends ChangeNotifier {
 
   Future<void> fetchPlace(int id) async {
     final place = await _interactor.getPlaceDetails(id);
+    final favouritePlace = await _interactor.getFavouritesPlaces();
+    _isFavourite = favouritePlace.map((e) => e.id).contains(place.id);
     _updateData(place);
     notifyListeners();
   }
 
   Future<void> addToFavourite() async {
     final favouritePlace = _place;
-    if (!_isFavourite) {
-      if (favouritePlace != null) {
+
+    if (favouritePlace != null) {
+      if (!isFavourite) {
         await _interactor.addToFavourites(favouritePlace);
-        _isFavourite = true;
       } else {
-        throw Exception('Place not found');
+        await _interactor.removeFromFavourites(favouritePlace);
       }
     } else {
-      if (favouritePlace != null) {
-        await _interactor.removeFromFavourites(favouritePlace);
-        _isFavourite = false;
-      } else {
-        throw Exception('Place not found');
-      }
+      throw Exception('Place not found');
     }
+    notifyListeners();
   }
 
   void _updateData(PlaceModel model) {
@@ -63,7 +62,6 @@ class SightDetailsSettings extends ChangeNotifier {
       _currentIndex = 0;
       _place = model;
       _planningDate = null;
-      _isFavourite = false;
     }
   }
 }
