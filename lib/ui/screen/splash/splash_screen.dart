@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
+import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/utils/routes/routes.dart';
 
 class SplashScreen extends StatefulWidget {

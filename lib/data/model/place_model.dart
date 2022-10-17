@@ -31,6 +31,9 @@ class PlaceModel {
         description = json['description'] as String,
         distance = json['distance'] as double?;
 
+  @override
+  String toString() => 'PlaceModel(name: $name)';
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'lat': lat,
