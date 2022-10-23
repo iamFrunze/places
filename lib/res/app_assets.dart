@@ -17,6 +17,7 @@ class AppAssets {
   static const share = 'res/svg/share_icon.svg';
   static const go = 'res/svg/go_icon.svg';
   static const back = 'res/svg/back_icon.svg';
+  static const error = 'res/svg/error_icon.svg';
 
   /// Chips
   static const cafe = 'res/svg/chips/cafe_icon.svg';

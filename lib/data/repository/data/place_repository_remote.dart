@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:places/data/exceptions/network_exception.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
 import 'package:places/data/model/request_model/post_filtered_places_request_model.dart';
 import 'package:places/data/repository/place_repository.dart';
+import 'package:places/res/app_strings.dart';
 import 'package:places/settings/dio_settings.dart';
 import 'package:places/utils/status_codes.dart';
 
@@ -17,48 +19,57 @@ class PlaceRepositoryRemote implements PlaceRepository {
   Future<List<PlaceModel>> postFilteredPlaces({
     PostFilteredPlacesRequestModel? model,
   }) async {
-    final response = await _dioSettings.dio.post<List<dynamic>>(
-      '/filtered_places',
-      data: model?.toJson(),
-    );
-
-    if (response.statusCode == invalidRequest) {
-      throw Exception('Invalid request');
-    }
-    if (response.statusCode == successCode) {
+    try {
+      final response = await _dioSettings.dio.post<List<dynamic>>(
+        AppStrings.filteredPlacesPath,
+        data: model?.toJson(),
+      );
       final data = response.data;
       if (data != null) {
         return List<PlaceModel>.from(
-          data.map<PlaceModel>((dynamic value) =>
-              PlaceModel.fromJson(value as Map<String, dynamic>)),
+          data.map<PlaceModel>(
+            (dynamic value) => PlaceModel.fromJson(value as Map<String, dynamic>),
+          ),
         );
       } else {
-        throw Exception('Data is null');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.filteredPlacesPath,
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.filteredPlacesPath,
+        nameError: e.type.name,
+      );
     }
   }
 
   @override
   Future<PlaceModel> postPlace(PlaceModel model) async {
-    final response = await _dioSettings.dio.post<PlaceModel>(
-      '/place',
-      data: model.toJson(),
-    );
-
-    if (response.statusCode == invalidRequest) {
-      throw Exception('Invalid request');
-    }
-    if (response.statusCode == successCode) {
+    try {
+      final response = await _dioSettings.dio.post<PlaceModel>(
+        AppStrings.placePath,
+        data: model.toJson(),
+      );
       final data = response.data;
       if (data != null) {
         return data;
       } else {
-        throw Exception('Data is null');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.placePath,
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.placePath,
+        nameError: e.type.name,
+      );
     }
   }
 
@@ -66,127 +77,176 @@ class PlaceRepositoryRemote implements PlaceRepository {
   Future<List<PlaceModel>> getPlace({
     GetPlaceRequestModel? model,
   }) async {
-    final response = await _dioSettings.dio.get<List<dynamic>>(
-      '/place',
-      queryParameters: model?.toJson(),
-    );
-    final data = response.data;
-
-    if (data != null) {
-      return List<PlaceModel>.from(
-        data.map<PlaceModel>((dynamic value) =>
-            PlaceModel.fromJson(value as Map<String, dynamic>)),
+    try {
+      final response = await _dioSettings.dio.get<List<dynamic>>(
+        AppStrings.placePath,
+        queryParameters: model?.toJson(),
       );
-    } else {
-      throw Exception('Data is null');
+      final data = response.data;
+      if (data != null) {
+        return List<PlaceModel>.from(
+          data.map<PlaceModel>(
+            (dynamic value) => PlaceModel.fromJson(value as Map<String, dynamic>),
+          ),
+        );
+      } else {
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.placePath,
+          nameError: DioErrorType.response.toString(),
+        );
+      }
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.placePath,
+        nameError: e.type.name,
+      );
     }
   }
 
   @override
   Future<PlaceModel> getPlaceId({required String id}) async {
-    final response = await _dioSettings.dio.get<Map<String, dynamic>>(
-      '/place/$id',
-    );
-
-    if (response.statusCode == invalidRequest) {
-      throw Exception('Invalid request');
-    }
-    if (response.statusCode == alreadyExists) {
-      throw Exception('Object already exists');
-    }
-    if (response.statusCode == successCode) {
+    try {
+      final response = await _dioSettings.dio.get<Map<String, dynamic>>(
+        AppStrings.placeIdPath(int.parse(id)),
+      );
       final data = response.data;
       if (data != null) {
         final model = PlaceModel.fromJson(data);
 
         return model;
       } else {
-        throw Exception('Data is null');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.placeIdPath(int.parse(id)),
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.placeIdPath(int.parse(id)),
+        nameError: e.type.name,
+      );
     }
   }
 
   @override
   Future<bool> deletePlace({required String id}) async {
-    final response = await _dioSettings.dio.delete<void>('/place/$id');
+    try {
+      final response = await _dioSettings.dio.delete<void>(AppStrings.placeIdPath(int.parse(id)));
 
-    return response.statusCode == successCode;
+      return response.statusCode == successCode;
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.placeIdPath(int.parse(id)),
+        nameError: e.type.name,
+      );
+    }
   }
 
   @override
   Future<bool> putPlace(PlaceModel model) async {
-    final response = await _dioSettings.dio.put<void>(
-      '/place/${model.id}',
-      data: model.toJson(),
-    );
+    try {
+      final response = await _dioSettings.dio.put<void>(
+        AppStrings.placeIdPath(model.id),
+        data: model.toJson(),
+      );
 
-    return response.statusCode == successCode;
+      return response.statusCode == successCode;
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.placeIdPath(model.id),
+        nameError: e.type.name,
+      );
+    }
   }
 
   @override
   Future<List<String>> postUploadFile(File file) async {
-    _dioSettings.dio.options.headers['Content-Type'] = 'multipart/form-data';
-    final fileName = file.path.split('/').last;
-    final formData = FormData.fromMap(<String, MultipartFile>{
-      'file': await MultipartFile.fromFile(file.path, filename: fileName),
-    });
-    final response = await _dioSettings.dio.post<List<String>>(
-      '/upload_file',
-      data: formData,
-    );
+    try {
+      _dioSettings.dio.options.headers['Content-Type'] = 'multipart/form-data';
+      final fileName = file.path.split('/').last;
+      final formData = FormData.fromMap(<String, MultipartFile>{
+        'file': await MultipartFile.fromFile(file.path, filename: fileName),
+      });
+      final response = await _dioSettings.dio.post<List<String>>(
+        AppStrings.uploadFilePath,
+        data: formData,
+      );
 
-    if (response.statusCode == invalidRequest) {
-      throw Exception('Invalid request');
-    }
-    if (response.statusCode == successCode) {
       final data = response.data;
       if (data != null) {
         return data;
       } else {
-        throw Exception('Data is null');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.uploadFilePath,
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.uploadFilePath,
+        nameError: e.type.name,
+      );
     }
   }
 
   @override
   Future<String> getClient(String path) async {
-    final response = await _dioSettings.dio.get<String>(
-      '/client',
-      queryParameters: <String, String>{'path': path},
-    );
+    try {
+      final response = await _dioSettings.dio.get<String>(
+        AppStrings.clientPath,
+        queryParameters: <String, String>{'path': path},
+      );
 
-    if (response.statusCode == successCode) {
       final data = response.data;
       if (data != null && data.isNotEmpty) {
         return data;
       } else {
-        throw Exception('Data is empty');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.clientPath,
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.clientPath,
+        nameError: e.type.name,
+      );
     }
   }
 
   @override
   Future<String> getFiles(String filePath) async {
-    final response = await _dioSettings.dio.get<String>(
-      '/files',
-      queryParameters: <String, String>{'path': filePath},
-    );
-
-    if (response.statusCode == successCode) {
+    try {
+      final response = await _dioSettings.dio.get<String>(
+        AppStrings.filesPath,
+        queryParameters: <String, String>{'path': filePath},
+      );
       final data = response.data;
       if (data != null && data.isNotEmpty) {
         return data;
       } else {
-        throw Exception('Data is empty');
+        throw NetworkException(
+          code: 404,
+          nameRequest: AppStrings.filesPath,
+          nameError: DioErrorType.response.toString(),
+        );
       }
-    } else {
-      throw Exception('Callback cannt fetch data');
+    } on DioError catch (e) {
+      throw NetworkException(
+        code: e.response?.statusCode ?? -1,
+        nameRequest: AppStrings.filesPath,
+        nameError: e.type.name,
+      );
     }
   }
 }
