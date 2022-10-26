@@ -13,6 +13,7 @@ class ErrorPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset(
           AppAssets.error,
