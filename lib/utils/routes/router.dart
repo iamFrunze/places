@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/data/category_model.dart';
 import 'package:places/data/filter_model.dart';
 import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
 import 'package:places/ui/screen/add_sight/category_list_screen.dart';
@@ -43,7 +44,7 @@ class RouterFactory {
           builder: (context) => const AddSightScreen(),
         );
       case Routes.toCategoriesList:
-        return MaterialPageRoute<void>(
+        return MaterialPageRoute<CategoryModel>(
           builder: (context) => const CategoryListScreen(),
         );
       case Routes.toFilters:

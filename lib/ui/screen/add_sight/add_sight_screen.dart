@@ -105,7 +105,13 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 focusNode: createBtnFN,
                 onPressed: hasEmptyTextField()
                     ? null
-                    : () => context.read<AddSightSettings>().addPlace(),
+                    : () => context
+                        .read<AddSightSettings>()
+                        .addPlace()
+                        .catchError((Object e) =>
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            )),
               ),
             ],
           ),

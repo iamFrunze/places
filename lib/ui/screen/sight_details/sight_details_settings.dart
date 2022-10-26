@@ -7,8 +7,9 @@ class SightDetailsSettings extends ChangeNotifier {
   final PlaceInteractor _interactor;
 
   int get currentIndex => _currentIndex;
-  PlaceModel? get place => _place;
+
   String? get planningDate => _planningDate;
+
   bool get isFavourite => _isFavourite;
 
   bool _isFavourite = false;
@@ -34,12 +35,13 @@ class SightDetailsSettings extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchPlace(int id) async {
+  Stream<PlaceModel> fetchPlace(int id) async* {
     final place = await _interactor.getPlaceDetails(id);
     final favouritePlace = await _interactor.getFavouritesPlaces();
     _isFavourite = favouritePlace.map((e) => e.id).contains(place.id);
     _updateData(place);
     notifyListeners();
+    yield place;
   }
 
   Future<void> addToFavourite() async {

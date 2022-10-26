@@ -9,6 +9,7 @@ import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/ui/screen/list/sight_list_settings.dart';
+import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
@@ -26,6 +27,7 @@ class SightListScreen extends StatefulWidget {
 class _SightListScreenState extends State<SightListScreen> {
   final streamController = StreamController<List<PlaceModel>>();
   final scrollController = ScrollController();
+
   @override
   void dispose() {
     super.dispose();
@@ -118,13 +120,16 @@ class _SightListScreenState extends State<SightListScreen> {
                   ),
                 ],
               );
-            } else {
-              return const Center(
-                child: GreenCircleProgressIndicator(
-                  size: 30,
-                ),
-              );
             }
+            if (snapshot.hasError) {
+              return const Center(child: ErrorPage());
+            }
+
+            return const Center(
+              child: GreenCircleProgressIndicator(
+                size: 30,
+              ),
+            );
           },
         ),
       ),
