@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:places/data/interactors/place_interactor_impl.dart';
 import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/interactors/settings_interactor.dart';
 import 'package:places/data/repository/data/place_repository_remote.dart';
-import 'package:places/data/repository/mock_data/mock_sights.dart';
-import 'package:places/res/app_colors.dart';
-import 'package:places/res/themes/dark_theme.dart';
-import 'package:places/res/themes/light_theme.dart';
 import 'package:places/settings/app_settings.dart';
 import 'package:places/settings/dio_settings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';

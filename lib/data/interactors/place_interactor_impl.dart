@@ -1,3 +1,4 @@
+import 'package:places/data/exceptions/network_exception.dart';
 import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
@@ -33,18 +34,26 @@ class PlaceInteractorImpl implements PlaceInteractor {
 
   @override
   Future<PlaceModel> getPlaceDetails(int id) async {
-    final response = await _repository.getPlaceId(id: '$id');
+    try {
+      final response = await _repository.getPlaceId(id: '$id');
 
-    return response;
+      return response;
+    } on NetworkException catch (_) {
+      rethrow;
+    }
   }
 
   @override
   Future<List<PlaceModel>> getPlaces({
     GetPlaceRequestModel? model,
   }) async {
-    final response = await _repository.getPlace(model: model);
+    try {
+      final response = await _repository.getPlace(model: model);
 
-    return response;
+      return response;
+    } on NetworkException catch (_) {
+      rethrow;
+    }
   }
 
   @override

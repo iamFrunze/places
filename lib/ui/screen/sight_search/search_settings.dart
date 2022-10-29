@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
+import 'package:places/data/exceptions/network_exception.dart';
 import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 
@@ -30,7 +31,12 @@ class SearchSettings extends ChangeNotifier {
       _fetchHistorySight();
     } else {
       _interactor.saveSearchRequest(text);
-      final places = await _interactor.searchPlaces(text);
+      final places = <PlaceModel>[];
+      try {
+        places.addAll(await _interactor.searchPlaces(text));
+      } on NetworkException catch (_) {
+        currentState = ScreenState.error;
+      }
       foundSights
         ..clear()
         ..addAll(

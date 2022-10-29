@@ -13,6 +13,7 @@ import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/ui/screen/sight_search/widgets/history_list_tile.dart';
 import 'package:places/ui/screen/sight_search/widgets/search_list_tile.dart';
 import 'package:places/ui/widgets/appbar.dart';
+import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
               );
             case ScreenState.error:
               return const Center(
-                child: Text('Error'),
+                child: ErrorPage(),
               );
             case ScreenState.empty:
               return const _BodyEmptyList();

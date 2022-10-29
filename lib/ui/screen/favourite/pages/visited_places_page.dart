@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:places/data/callback_state.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
@@ -8,6 +9,8 @@ import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/favourite/widgets/drag_item.dart';
 import 'package:places/ui/screen/favourite/widgets/draggable_builder_widget.dart';
 import 'package:places/ui/widgets/empty_page.dart';
+import 'package:places/ui/widgets/error_page.dart';
+import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:provider/provider.dart';
@@ -20,28 +23,44 @@ class VisitedPlacesPage extends StatefulWidget {
 }
 
 class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
+  final streamController = StreamController<List<PlaceModel>>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    streamController.close();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<FavouriteSettings>().initVisitingPlaces().listen((event) {
+      streamController.sink.add(event);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<FavouriteSettings>(builder: (context, model, child) {
-      switch (model.currentStateVisited) {
-        case ScreenState.success:
-          return _Page(
-            places: model.visitingPlaces,
-          );
-        case ScreenState.loading:
+    return StreamBuilder<List<PlaceModel>>(
+      stream: streamController.stream,
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.green,
+            child: GreenCircleProgressIndicator(
+              size: 30,
             ),
           );
-        case ScreenState.empty:
-          return const EmptyPage(state: EmptyPageState.visitedSights);
-        default:
-          return const Center(
-            child: Text('Error screen'),
-          );
-      }
-    });
+        }
+
+        if (snapshot.hasData) {
+          return snapshot.data!.isNotEmpty
+              ? _Page(places: snapshot.data!)
+              : const EmptyPage(state: EmptyPageState.wantToVisitSights);
+        }
+
+        return const ErrorPage();
+      },
+    );
   }
 }
 
@@ -73,8 +92,12 @@ class _Page extends StatelessWidget {
                 return DraggableBuilderWidget(
                   card: _Card(place: place),
                   candidateData: candidateData,
-                  onDismissed: (data) =>
-                      provider.removeFromVisitingPlaces(place),
+                  onDismissed: (data) => provider
+                      .removeFromVisitingPlaces(place)
+                      .catchError((Object e) =>
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())),
+                          )),
                 );
               },
             ),
@@ -115,7 +138,11 @@ class _Card extends StatelessWidget {
         ),
         const SizedBox(width: AppDimensions.margin16),
         InkWell(
-          onTap: () => provider.removeFromVisitingPlaces(place),
+          onTap: () => provider.removeFromVisitingPlaces(place).catchError(
+                (Object e) => ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(e.toString())),
+                ),
+              ),
           child: const IconSvg(icon: AppAssets.close),
         ),
       ],
