@@ -27,11 +27,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<PlaceInteractorImpl>(create: (_) => interactor),
         ChangeNotifierProvider<AppSettings>(
           create: (_) => AppSettings(SettingsInteractor()),
-        ),
-        ChangeNotifierProvider<SightListSettings>(
-          create: (_) => SightListSettings(interactor),
         ),
         ChangeNotifierProvider<FilterSettings>(
           create: (_) => FilterSettings(interactor),

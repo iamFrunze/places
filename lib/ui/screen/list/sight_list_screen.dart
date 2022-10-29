@@ -1,14 +1,14 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/data/model/place_model.dart';
+import 'package:mobx/mobx.dart';
+import 'package:places/data/interactors/place_interactor_impl.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/screen/list/sight_list_settings.dart';
+import 'package:places/ui/screen/list/stores/sight_list_store.dart';
 import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
@@ -25,22 +25,20 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
-  final streamController = StreamController<List<PlaceModel>>();
   final scrollController = ScrollController();
+  late final SightListStore _store;
 
   @override
   void dispose() {
     super.dispose();
-    streamController.close();
     scrollController.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    context.read<SightListSettings>().fetchData().listen((event) {
-      streamController.sink.add(event);
-    });
+    _store = SightListStore(context.read<PlaceInteractorImpl>());
+    _store.fetchData();
   }
 
   @override
@@ -49,89 +47,94 @@ class _SightListScreenState extends State<SightListScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: StreamBuilder<List<PlaceModel>>(
-          stream: streamController.stream,
-          builder: (_, snapshot) {
-            if (snapshot.hasData) {
-              final cards = snapshot.data!
-                  .map(
-                    (place) => Padding(
-                      padding: const EdgeInsets.only(
-                        top: AppDimensions.margin16,
-                        left: AppDimensions.margin16,
-                        right: AppDimensions.margin16,
-                      ),
-                      child: PlaceCard(
-                        place: place,
-                        actions: [
-                          InkWell(
-                            onTap: () => context
-                                .read<SightListSettings>()
-                                .addToFavourite(place),
-                            child: context
-                                    .watch<SightListSettings>()
-                                    .isFavourite(place)
-                                ? Ink(
-                                    child: const IconSvg(
-                                      icon: AppAssets.heartFill,
-                                    ),
-                                  )
-                                : Ink(
-                                    child: const IconSvg(
-                                      icon: AppAssets.heart,
-                                    ),
-                                  ),
-                          ),
-                        ],
-                        details: [
-                          Text(
-                            place.name,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.titleSmall,
-                          ),
-                          Text(
-                            place.description,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList();
+        child: Observer(builder: (_) {
+          switch (_store.places.status) {
+            case FutureStatus.fulfilled:
+              final placesValues = _store.places.value;
+              final favouritePlacesValues = _store.favouritePlaces.value;
 
-              return CustomScrollView(
-                controller: scrollController,
-                slivers: [
-                  const _SliverAppBar(),
-                  SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => cards[index],
-                      childCount: cards.length,
+              if (placesValues != null && favouritePlacesValues != null) {
+                if (placesValues.isEmpty) {
+                  return const Center(
+                    child: GreenCircleProgressIndicator(size: 30),
+                  );
+                }
+                final cards = placesValues
+                    .map(
+                      (place) => Padding(
+                        padding: const EdgeInsets.only(
+                          top: AppDimensions.margin16,
+                          left: AppDimensions.margin16,
+                          right: AppDimensions.margin16,
+                        ),
+                        child: PlaceCard(
+                          place: place,
+                          actions: [
+                            InkWell(
+                              onTap: () => _store.addToFavourite(place),
+                              child: favouritePlacesValues.contains(place)
+                                  ? Ink(
+                                      child: const IconSvg(
+                                        icon: AppAssets.heartFill,
+                                      ),
+                                    )
+                                  : Ink(
+                                      child: const IconSvg(
+                                        icon: AppAssets.heart,
+                                      ),
+                                    ),
+                            ),
+                          ],
+                          details: [
+                            Text(
+                              place.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.titleSmall,
+                            ),
+                            Text(
+                              place.description,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList();
+
+                return CustomScrollView(
+                  controller: scrollController,
+                  slivers: [
+                    const _SliverAppBar(),
+                    SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => cards[index],
+                        childCount: cards.length,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: AppDimensions.aspectRatio3to2,
+                        crossAxisCount: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? 1
+                            : 2,
+                      ),
                     ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: AppDimensions.aspectRatio3to2,
-                      crossAxisCount: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 1
-                          : 2,
-                    ),
-                  ),
-                ],
+                  ],
+                );
+              } else {
+                return const ErrorPage();
+              }
+            case FutureStatus.rejected:
+              return const ErrorPage();
+            case FutureStatus.pending:
+              return const Center(
+                child: GreenCircleProgressIndicator(size: 30),
               );
-            }
-            if (snapshot.hasError) {
-              return const Center(child: ErrorPage());
-            }
-
-            return const Center(
-              child: GreenCircleProgressIndicator(
-                size: 30,
-              ),
-            );
-          },
-        ),
+            default:
+              return const ErrorPage();
+          }
+        }),
       ),
       floatingActionButton: const _FAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

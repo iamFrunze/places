@@ -30,7 +30,8 @@ class PlaceInteractorImpl implements PlaceInteractor {
   }
 
   @override
-  Future<List<PlaceModel>> getFavouritesPlaces() async => _favouritesPlaces;
+  Future<List<PlaceModel>> getFavouritesPlaces() async =>
+      _favouritesPlaces.toSet().toList();
 
   @override
   Future<PlaceModel> getPlaceDetails(int id) async {
