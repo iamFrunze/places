@@ -61,9 +61,9 @@ class PlaceInteractorImpl implements PlaceInteractor {
   Future<List<PlaceModel>> getVisitPlaces() async => _visitingPlaces;
 
   @override
-  Future<bool> removeFromFavourites(PlaceModel place) async {
+  Future<List<PlaceModel>> removeFromFavourites(PlaceModel place) async {
     _favouritesPlaces.remove(place);
 
-    return true;
+    return _favouritesPlaces;
   }
 }
