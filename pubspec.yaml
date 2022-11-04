@@ -14,8 +14,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   date_format: ^2.0.6
   dio: ^4.0.6
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
   flutter_mobx: ^2.0.6+3
   flutter_svg: ^1.1.0
   location: ^4.4.0

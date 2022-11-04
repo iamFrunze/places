@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/widgets/dismissible_card.dart';
@@ -7,32 +6,16 @@ import 'package:places/ui/screen/favourite/widgets/dismissible_card.dart';
 /// Widget для формирования builder у LongPressDraggable
 class DraggableBuilderWidget extends StatelessWidget {
   final Widget card;
-  final List<PlaceModel?> candidateData;
   final DismissDirectionCallback onDismissed;
 
   const DraggableBuilderWidget({
     Key? key,
     required this.card,
-    required this.candidateData,
     required this.onDismissed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (candidateData.isNotEmpty) {
-      return Column(
-        children: [
-          Container(
-            height: 100,
-          ),
-          _CardCustomizer(
-            card: card,
-            onDismissed: onDismissed,
-          ),
-        ],
-      );
-    }
-
     return _CardCustomizer(
       card: card,
       onDismissed: onDismissed,

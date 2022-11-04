@@ -7,9 +7,7 @@ import 'package:places/data/repository/data/place_repository_remote.dart';
 import 'package:places/settings/app_settings.dart';
 import 'package:places/settings/dio_settings.dart';
 import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
-import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
-import 'package:places/ui/screen/list/sight_list_settings.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
@@ -36,9 +34,6 @@ void main() async {
         ),
         ChangeNotifierProvider<SearchSettings>(
           create: (_) => SearchSettings(searchInteractor),
-        ),
-        ChangeNotifierProvider<FavouriteSettings>(
-          create: (_) => FavouriteSettings(interactor),
         ),
         ChangeNotifierProvider<AddSightSettings>(
           create: (_) => AddSightSettings(interactor),
