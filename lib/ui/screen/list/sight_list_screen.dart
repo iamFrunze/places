@@ -171,10 +171,8 @@ class _SliverAppBar extends StatelessWidget {
       ),
       bottom: SearchBarWidget(
         readOnly: true,
-        onTapSuffix: () => Navigator.of(
-          context,
-          rootNavigator: true,
-        ).pushNamed(Routes.toFilters),
+        request: '',
+        onTapClearSearchBar: false,
         onTap: () => Navigator.pushNamed(context, Routes.toSearch),
         suffixIcon: AppAssets.filter,
       ),
