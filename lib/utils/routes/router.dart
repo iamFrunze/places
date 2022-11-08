@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mwwm/mwwm.dart';
 import 'package:places/data/category_model.dart';
 import 'package:places/data/filter_model.dart';
-import 'package:places/ui/screen/add_sight/add_sight_screen.dart';
-import 'package:places/ui/screen/add_sight/category_list_screen.dart';
+import 'package:places/data/interactors/place_interactor_impl.dart';
+import 'package:places/ui/screen/add_place/add_place_screen.dart';
+import 'package:places/ui/screen/add_place/add_place_widget_model.dart';
+import 'package:places/ui/screen/add_place/category_list_screen.dart';
 import 'package:places/ui/screen/filter/filter_screen.dart';
 import 'package:places/ui/screen/list/sight_list_screen.dart';
 import 'package:places/ui/screen/map/map_screen.dart';
@@ -14,6 +17,7 @@ import 'package:places/ui/screen/sight_search/sight_search_screen.dart';
 import 'package:places/ui/screen/splash/splash_screen.dart';
 import 'package:places/ui/screen/unknown/unknown_screen.dart';
 import 'package:places/utils/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class RouterFactory {
   // ignore: long-method
@@ -41,7 +45,12 @@ class RouterFactory {
         );
       case Routes.toAddSight:
         return MaterialPageRoute<void>(
-          builder: (context) => const AddSightScreen(),
+          builder: (context) => AddPlaceScreen(
+            widgetModelBuilder: (context) => AddPlaceWM(
+              const WidgetModelDependencies(),
+              context.read<PlaceInteractorImpl>(),
+            ),
+          ),
         );
       case Routes.toCategoriesList:
         return MaterialPageRoute<CategoryModel>(

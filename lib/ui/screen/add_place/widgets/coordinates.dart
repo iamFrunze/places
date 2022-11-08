@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/screen/add_sight/widgets/template_field.dart';
+import 'package:places/ui/screen/add_place/widgets/template_field.dart';
 import 'package:places/ui/widgets/custom_text_form_field.dart';
 
 class CoordinatesFieldsWidget extends StatefulWidget {

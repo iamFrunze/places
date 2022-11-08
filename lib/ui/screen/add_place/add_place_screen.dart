@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:mwwm/mwwm.dart';
 import 'package:places/data/category_model.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/ui/screen/add_sight/add_sight_settings.dart';
-import 'package:places/ui/screen/add_sight/widgets/categories.dart';
-import 'package:places/ui/screen/add_sight/widgets/coordinates.dart';
-import 'package:places/ui/screen/add_sight/widgets/create_btn.dart';
-import 'package:places/ui/screen/add_sight/widgets/description.dart';
-import 'package:places/ui/screen/add_sight/widgets/name_sight.dart';
-import 'package:places/ui/screen/add_sight/widgets/pictures.dart';
-import 'package:places/ui/screen/add_sight/widgets/show_on_map.dart';
+import 'package:places/ui/screen/add_place/add_place_widget_model.dart';
+import 'package:places/ui/screen/add_place/widgets/categories.dart';
+import 'package:places/ui/screen/add_place/widgets/coordinates.dart';
+import 'package:places/ui/screen/add_place/widgets/create_btn.dart';
+import 'package:places/ui/screen/add_place/widgets/description.dart';
+import 'package:places/ui/screen/add_place/widgets/name_sight.dart';
+import 'package:places/ui/screen/add_place/widgets/pictures.dart';
+import 'package:places/ui/screen/add_place/widgets/show_on_map.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:places/utils/routes/routes.dart';
-import 'package:provider/provider.dart';
 
-class AddSightScreen extends StatefulWidget {
-  const AddSightScreen({Key? key}) : super(key: key);
+class AddPlaceScreen extends CoreMwwmWidget<AddPlaceWM> {
+  const AddPlaceScreen({
+    Key? key,
+    required WidgetModelBuilder<AddPlaceWM> widgetModelBuilder,
+  }) : super(key: key, widgetModelBuilder: widgetModelBuilder);
 
   @override
-  State<AddSightScreen> createState() => _AddSightScreenState();
+  WidgetState<AddPlaceScreen, AddPlaceWM> createWidgetState() =>
+      _AddPlaceScreenState();
 }
 
-class _AddSightScreenState extends State<AddSightScreen> {
+class _AddPlaceScreenState extends WidgetState<AddPlaceScreen, AddPlaceWM> {
   final nameSightController = TextEditingController();
   final lonController = TextEditingController();
   final latController = TextEditingController();
@@ -50,7 +54,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Pictures(),
+              Pictures(
+                removeImage: wm.removeImage,
+                streamImages: wm.picturesStreamController.stream,
+              ),
               CategoriesWidget(
                 title: selectedCategory != null
                     ? selectedCategory!.type
@@ -105,13 +112,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 focusNode: createBtnFN,
                 onPressed: hasEmptyTextField()
                     ? null
-                    : () => context
-                        .read<AddSightSettings>()
-                        .addPlace()
-                        .catchError((Object e) =>
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(e.toString())),
-                            )),
+                    : () => wm.addPlace().catchError((Object e) =>
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(e.toString())),
+                        )),
               ),
             ],
           ),

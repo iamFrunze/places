@@ -58,4 +58,6 @@ class AppAssets {
   static const file = 'res/svg/file_icon.svg';
   static const picture = 'res/svg/picture_icon.svg';
   static const camera = 'res/svg/camera_icon.svg';
+
+  static const placeholder = 'res/png/placeholder.png';
 }
