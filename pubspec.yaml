@@ -19,10 +19,12 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_mobx: ^2.0.6+3
+  flutter_redux: ^0.10.0
   flutter_svg: ^1.1.0
   location: ^4.4.0
   mobx: ^2.1.1
   provider: ^6.0.3
+  redux: ^5.0.0
   surf_lint_rules: ^1.5.0
 
 dev_dependencies:

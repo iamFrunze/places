@@ -37,7 +37,9 @@ class SearchInteractor {
     _history.clear();
   }
 
-  void removeSearchRequest(String name) {
+  LinkedHashSet<String> removeSearchRequest(String name) {
     _history.remove(name);
+
+    return _history;
   }
 }
