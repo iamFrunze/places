@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
-import 'package:places/ui/screen/favourite/bloc/bloc_visited/visited_place_bloc.dart';
+import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/favourite/widgets/draggable_builder_widget.dart';
 import 'package:places/ui/widgets/empty_page.dart';
 import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';
+import 'package:provider/provider.dart';
 
 class VisitedPlacesPage extends StatefulWidget {
   const VisitedPlacesPage({Key? key}) : super(key: key);
@@ -19,21 +21,42 @@ class VisitedPlacesPage extends StatefulWidget {
 }
 
 class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
+  final streamController = StreamController<List<PlaceModel>>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    streamController.close();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<FavouriteSettings>().initVisitingPlaces().listen((event) {
+      streamController.sink.add(event);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: context.read<VisitedPlaceBloc>(),
-      builder: (_, state) {
-        if (state is VisitedPlaceLoadingSuccessState) {
-          return state.visitedPlaces.isNotEmpty
-              ? _Page(places: state.visitedPlaces)
-              : const EmptyPage(state: EmptyPageState.visitedSights);
-        }
-        if (state is VisitedPlaceLoadingFailureState) {
-          const ErrorPage();
+    return StreamBuilder<List<PlaceModel>>(
+      stream: streamController.stream,
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: GreenCircleProgressIndicator(
+              size: 30,
+            ),
+          );
         }
 
-        return const Center(child: GreenCircleProgressIndicator(size: 30));
+        if (snapshot.hasData) {
+          return snapshot.data!.isNotEmpty
+              ? _Page(places: snapshot.data!)
+              : const EmptyPage(state: EmptyPageState.wantToVisitSights);
+        }
+
+        return const ErrorPage();
       },
     );
   }
@@ -51,26 +74,18 @@ class _Page extends StatefulWidget {
 class _PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
-    final places = widget.places
+    final placesWidget = widget.places
         .map((place) => DraggableBuilderWidget(
               card: _Card(place: place),
               onDismissed: (direction) => context
-                  .read<VisitedPlaceBloc>()
-                  .add(VisitedPlaceRemoveEvent(place: place)),
+                  .read<FavouriteSettings>()
+                  .removeFromVisitingPlaces(place),
             ))
         .toList();
 
     return ReorderableListView(
-      children: places,
-      onReorder: (oldIndex, newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          final item = widget.places.removeAt(oldIndex);
-          widget.places.insert(newIndex, item);
-        });
-      },
+      children: placesWidget,
+      onReorder: context.read<FavouriteSettings>().reorderVisitingItems,
     );
   }
 }
@@ -85,6 +100,7 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<FavouriteSettings>();
     final theme = Theme.of(context);
 
     return PlaceCard(
@@ -100,9 +116,11 @@ class _Card extends StatelessWidget {
         ),
         const SizedBox(width: AppDimensions.margin16),
         InkWell(
-          onTap: () => context
-              .read<VisitedPlaceBloc>()
-              .add(VisitedPlaceRemoveEvent(place: place)),
+          onTap: () => provider.removeFromVisitingPlaces(place).catchError(
+                (Object e) => ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(e.toString())),
+                ),
+              ),
           child: const IconSvg(icon: AppAssets.close),
         ),
       ],
