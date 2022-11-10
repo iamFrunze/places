@@ -1,23 +1,22 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:places/data/callback_state.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
-import 'package:places/ui/screen/sight_search/redux/actions.dart';
-import 'package:places/ui/screen/sight_search/redux/search_state.dart';
+import 'package:places/ui/screen/sight_search/search_settings.dart';
 import 'package:places/ui/screen/sight_search/widgets/history_list_tile.dart';
 import 'package:places/ui/screen/sight_search/widgets/search_list_tile.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:places/ui/widgets/error_page.dart';
-import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/utils/routes/routes.dart';
+import 'package:provider/provider.dart';
 
 class SightSearchScreen extends StatefulWidget {
   const SightSearchScreen({Key? key}) : super(key: key);
@@ -31,39 +30,31 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: const _AppBar(),
-      body: StoreBuilder<SearchState>(
-        onInit: (store) => store.dispatch(ShowHistoryAction()),
-        builder: (context, store) {
-          if (store.state is LoadingState) {
-            return const Center(
-              child: GreenCircleProgressIndicator(
-                size: 30,
-              ),
-            );
+      appBar: _AppBar(
+        controller: Provider.of<SearchSettings>(context).searchController,
+      ),
+      body: Consumer<SearchSettings>(
+        builder: (context, model, child) {
+          switch (model.currentState) {
+            case ScreenState.success:
+              return _Body(places: model.foundSights);
+            case ScreenState.history:
+              return _BodyHistory(
+                history: model.historySights,
+              );
+            case ScreenState.error:
+              return const Center(
+                child: ErrorPage(),
+              );
+            case ScreenState.empty:
+              return const _BodyEmptyList();
+            default:
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.green,
+                ),
+              );
           }
-          if (store.state is ShowHistoryState) {
-            return _BodyHistory(
-              history: (store.state as ShowHistoryState).history,
-            );
-          }
-          if (store.state is ShowPlacesState) {
-            return _Body(places: (store.state as ShowPlacesState).places);
-          }
-          if (store.state is EmptyState) {
-            return const _BodyEmptyList();
-          }
-          if (store.state is ErrorState) {
-            return const Center(
-              child: ErrorPage(),
-            );
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.green,
-            ),
-          );
         },
       ),
     );
@@ -71,6 +62,8 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
 }
 
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  final TextEditingController controller;
+
   @override
   Size get preferredSize => const Size.fromHeight(
         kToolbarHeight + AppDimensions.searchBarHeight50,
@@ -78,37 +71,31 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const _AppBar({
     Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<SearchState>(
-      onInit: (store) => store.dispatch(ShowHistoryAction()),
-      builder: (ctx, store) {
-        if (store.state is ShowPlacesState) {
-          return AppBarWidget(
-            title: AppStrings.interestingPlaces,
-            bottomWidget: SearchBarWidget(
-              request: (store.state as ShowPlacesState).request,
-              onTapClearSearchBar: true,
-              suffixIcon: Theme.of(context).brightness == Brightness.light
-                  ? AppAssets.clearDark
-                  : AppAssets.clearWhite,
-            ),
-          );
-        }
+    final provider = context.read<SearchSettings>();
 
-        return AppBarWidget(
-          title: AppStrings.interestingPlaces,
-          bottomWidget: SearchBarWidget(
-            request: '',
-            onTapClearSearchBar: true,
-            suffixIcon: Theme.of(context).brightness == Brightness.light
-                ? AppAssets.clearDark
-                : AppAssets.clearWhite,
-          ),
-        );
-      },
+    return AppBarWidget(
+      title: AppStrings.interestingPlaces,
+      bottomWidget: SearchBarWidget(
+        onTapSuffix: provider.clearSearchBar,
+        onChanged: (value) async {
+          if (value.contains(' ')) {
+            await provider.fetchSight(text: value);
+          }
+        },
+        onFieldSubmitted: (value) async {
+          FocusScope.of(context).unfocus();
+          await provider.fetchSight(text: value);
+        },
+        controller: controller,
+        suffixIcon: Theme.of(context).brightness == Brightness.light
+            ? AppAssets.clearDark
+            : AppAssets.clearWhite,
+      ),
     );
   }
 }
@@ -128,11 +115,16 @@ class _BodyHistory extends StatefulWidget {
 class _BodyHistoryState extends State<_BodyHistory> {
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<SearchSettings>();
     final scrollController = ScrollController();
 
     final tiles = widget.history
         .map(
-          (e) => HistoryListTile(title: e),
+          (e) => HistoryListTile(
+            title: e,
+            onClearTap: () => provider.removeSightFromHistory(e),
+            onTap: () => provider.searchController.text = e,
+          ),
         )
         .toList();
 
@@ -167,21 +159,14 @@ class _BodyHistoryState extends State<_BodyHistory> {
             const SizedBox(
               height: AppDimensions.margin16,
             ),
-            StoreConnector<SearchState, VoidCallback>(
-              converter: (store) {
-                return () => store.dispatch(ClearHistoryAction());
-              },
-              builder: (ctx, callback) {
-                return TextButton(
-                  onPressed: callback,
-                  child: Text(
-                    AppStrings.clearHistory,
-                    style: AppTypography.textMedium16.copyWith(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                );
-              },
+            TextButton(
+              onPressed: provider.clearHistory,
+              child: Text(
+                AppStrings.clearHistory,
+                style: AppTypography.textMedium16.copyWith(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
             ),
           ],
         ),

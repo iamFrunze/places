@@ -1,13 +1,11 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:mwwm/mwwm.dart';
+import 'package:flutter/material.dart';
 import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
 
-class AddPlaceWM extends WidgetModel {
-  final picturesStreamController = StreamController<List<String>>();
-  final _mockImages = [
+class AddPlaceSettings extends ChangeNotifier {
+  final mockImages = [
     'https://www.treehugger.com/thmb/Yz5imFySskfzWEEFphWtqDIqdcE=/768x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-166152657-cb61ca0fd49e453cb4f1a60b50d281e7.jpg',
     'https://www.birdlife.org/wp-content/uploads/2021/06/Owl-in-tree-by-Philip-Brown-1-1024x576.jpg',
     'http://www.adoptananimalkits.com/files/547756/catitems/Barn_Owl-5ac510a90bff9b2cf198640d04e214bc.jpg',
@@ -16,7 +14,6 @@ class AddPlaceWM extends WidgetModel {
     'https://chorus.stimg.co/23256340/merlin_34760037.jpg?fit=crop&crop=faces',
     'https://worldbirds.com/wp-content/uploads/2020/02/how-to-attract-owls.jpg',
   ];
-
   final PlaceInteractor _interactor;
 
   double? _lat;
@@ -26,28 +23,19 @@ class AddPlaceWM extends WidgetModel {
   String? _placeType;
   String? _description;
 
-  AddPlaceWM(WidgetModelDependencies baseDependencies, this._interactor)
-      : super(baseDependencies) {
-    picturesStreamController.add(_mockImages);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    picturesStreamController.close();
-  }
+  AddPlaceSettings(this._interactor);
 
   void removeImage(String image) {
-    _mockImages.remove(image);
-    picturesStreamController.add(_mockImages);
+    mockImages.remove(image);
+    notifyListeners();
   }
 
   void addImage() {
-    _mockImages.insert(
+    mockImages.insert(
       0,
       'https://chorus.stimg.co/23256340/merlin_34760037.jpg?fit=crop&crop=faces',
     );
-    picturesStreamController.add(_mockImages);
+    notifyListeners();
   }
 
   Future<void> addPlace() async {
@@ -61,5 +49,6 @@ class AddPlaceWM extends WidgetModel {
       description: _description ?? '',
     );
     await _interactor.addNewPlace(place);
+    notifyListeners();
   }
 }

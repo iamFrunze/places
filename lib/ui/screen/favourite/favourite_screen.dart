@@ -1,36 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:places/data/interactors/place_interactor_impl.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/ui/screen/favourite/bloc/bloc_favourite/favourite_place_bloc.dart';
-import 'package:places/ui/screen/favourite/bloc/bloc_visited/visited_place_bloc.dart';
 import 'package:places/ui/screen/favourite/pages/favourites_places_page.dart';
 import 'package:places/ui/screen/favourite/pages/visited_places_page.dart';
 import 'package:places/ui/widgets/appbar.dart';
 
 const _tabBarHeight = 52.0;
 
-class FavouriteScreen extends StatefulWidget {
+class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FavouriteScreen> createState() => _FavouriteScreenState();
-}
-
-class _FavouriteScreenState extends State<FavouriteScreen> {
-  late final FavouritePlaceBloc _favouritePlaceBloc;
-  late final VisitedPlaceBloc _visitedPlaceBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _favouritePlaceBloc =
-        FavouritePlaceBloc(context.read<PlaceInteractorImpl>());
-    _favouritePlaceBloc.add(FavouritePlaceInitEvent());
-    _visitedPlaceBloc = VisitedPlaceBloc(context.read<PlaceInteractorImpl>());
-    _visitedPlaceBloc.add(VisitedPlaceInitEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +16,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       length: 2,
       child: Scaffold(
         appBar: _AppBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(AppDimensions.margin16),
+        body: const Padding(
+          padding: EdgeInsets.all(AppDimensions.margin16),
           child: TabBarView(
             children: [
-              BlocProvider(
-                create: (context) => _favouritePlaceBloc,
-                child: const WantToVisitPage(),
-              ),
-              BlocProvider(
-                create: (context) => _visitedPlaceBloc,
-                child: const VisitedPlacesPage(),
-              ),
+              WantToVisitPage(),
+              VisitedPlacesPage(),
             ],
           ),
         ),
