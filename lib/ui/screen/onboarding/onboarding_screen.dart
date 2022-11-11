@@ -32,11 +32,13 @@ class OnBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentPage = context.watch<OnBoardingSettings>().currentPage;
+
     final onBoardingWidget = onBoarding
         .map((e) => Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(e.img),
+                _AnimatedIcon(icon: e.img),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 58,
@@ -65,7 +67,6 @@ class OnBoardingScreen extends StatelessWidget {
             ))
         .toList();
 
-    final currentPage = context.watch<OnBoardingSettings>().currentPage;
     final isVisible = currentPage != onBoardingWidget.length - 1;
 
     return Scaffold(
@@ -82,6 +83,42 @@ class OnBoardingScreen extends StatelessWidget {
           _OnStartBtn(isVisible: !isVisible),
         ],
       ),
+    );
+  }
+}
+
+class _AnimatedIcon extends StatefulWidget {
+  final String icon;
+
+  const _AnimatedIcon({Key? key, required this.icon}) : super(key: key);
+
+  @override
+  State<_AnimatedIcon> createState() => _AnimatedIconState();
+}
+
+class _AnimatedIconState extends State<_AnimatedIcon>
+    with TickerProviderStateMixin {
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 2),
+  )..forward();
+
+  late final _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _animation,
+      child: SvgPicture.asset(widget.icon),
     );
   }
 }
