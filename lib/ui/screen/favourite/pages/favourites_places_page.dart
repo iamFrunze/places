@@ -6,6 +6,7 @@ import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/favourite/widgets/draggable_builder_widget.dart';
+import 'package:places/ui/widgets/adaptiveCalendar.dart';
 import 'package:places/ui/widgets/empty_page.dart';
 import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
@@ -21,44 +22,21 @@ class WantToVisitPage extends StatefulWidget {
 }
 
 class _WantToVisitPageState extends State<WantToVisitPage> {
-  final streamController = StreamController<List<PlaceModel>>();
-
-  @override
-  void dispose() {
-    super.dispose();
-    streamController.close();
-  }
-
   @override
   void initState() {
+    Future.microtask(
+      () => context.read<FavouriteSettings>().initFavouritePlaces(),
+    );
     super.initState();
-    context.read<FavouriteSettings>().initFavouritePlaces().listen((event) {
-      streamController.sink.add(event);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<PlaceModel>>(
-      stream: streamController.stream,
-      builder: (_, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: GreenCircleProgressIndicator(
-              size: 30,
-            ),
-          );
-        }
-
-        if (snapshot.hasData) {
-          return snapshot.data!.isNotEmpty
-              ? _Page(place: snapshot.data!)
-              : const EmptyPage(state: EmptyPageState.wantToVisitSights);
-        }
-
-        return const ErrorPage();
-      },
-    );
+    return Consumer<FavouriteSettings>(builder: (_, response, __) {
+      return response.favouritesPlaces.isEmpty
+          ? const EmptyPage(state: EmptyPageState.wantToVisitSights)
+          : _Page(place: response.favouritesPlaces);
+    });
   }
 }
 
@@ -105,25 +83,36 @@ class _Card extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<FavouriteSettings>();
     final theme = Theme.of(context);
+    DateTime? dateTime;
+    final isLoading = context.watch<FavouriteSettings>().isLoadData;
 
     return PlaceCard(
       place: place,
       actions: [
-        InkWell(
-          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tap on calendar')),
+        if (isLoading)
+          const GreenCircleProgressIndicator(size: 15)
+        else
+          InkWell(
+            onTap: () async {
+              dateTime = await showAdaptiveDatePicker(context);
+              if (dateTime != null) {
+                await Future<void>.microtask(
+                  () => context
+                      .read<FavouriteSettings>()
+                      .updatePlanningDateSight(dateTime!),
+                );
+              }
+            },
+            child: const IconSvg(icon: AppAssets.calendar),
           ),
-          child: const IconSvg(icon: AppAssets.calendar),
-        ),
         const SizedBox(width: AppDimensions.margin16),
-        InkWell(
-          onTap: () => provider.removeFromVisitingPlaces(place).catchError(
-                (Object e) => ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(e.toString())),
-                ),
-              ),
-          child: const IconSvg(icon: AppAssets.close),
-        ),
+        if (isLoading)
+          const GreenCircleProgressIndicator(size: 15)
+        else
+          InkWell(
+            onTap: () => provider.removeFromFavourites(place),
+            child: const IconSvg(icon: AppAssets.close),
+          ),
       ],
       details: [
         Text(
@@ -132,8 +121,7 @@ class _Card extends StatelessWidget {
           style: theme.textTheme.titleSmall,
         ),
         Text(
-          /// Непонятно
-          'Запланировано на ',
+          dateTime != null ? 'Запланировано на $dateTime' : 'Незапланировано',
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.tertiary),
         ),

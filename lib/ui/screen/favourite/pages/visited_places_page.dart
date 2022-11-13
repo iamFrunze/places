@@ -21,44 +21,20 @@ class VisitedPlacesPage extends StatefulWidget {
 }
 
 class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
-  final streamController = StreamController<List<PlaceModel>>();
-
-  @override
-  void dispose() {
-    super.dispose();
-    streamController.close();
-  }
-
   @override
   void initState() {
+    Future.microtask(
+        () => context.read<FavouriteSettings>().initVisitingPlaces(),);
     super.initState();
-    context.read<FavouriteSettings>().initVisitingPlaces().listen((event) {
-      streamController.sink.add(event);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<PlaceModel>>(
-      stream: streamController.stream,
-      builder: (_, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: GreenCircleProgressIndicator(
-              size: 30,
-            ),
-          );
-        }
-
-        if (snapshot.hasData) {
-          return snapshot.data!.isNotEmpty
-              ? _Page(places: snapshot.data!)
-              : const EmptyPage(state: EmptyPageState.wantToVisitSights);
-        }
-
-        return const ErrorPage();
-      },
-    );
+    return Consumer<FavouriteSettings>(builder: (_, response, __) {
+      return response.visitingPlaces.isEmpty
+          ? const EmptyPage(state: EmptyPageState.visitedSights)
+          : _Page(places: response.visitingPlaces);
+    });
   }
 }
 
@@ -107,9 +83,9 @@ class _Card extends StatelessWidget {
       place: place,
       actions: [
         InkWell(
-          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Tap on calendar')),
-          ),
+          onTap: () async {
+            /// Sharing
+          },
           child: const IconSvg(
             icon: AppAssets.calendar,
           ),

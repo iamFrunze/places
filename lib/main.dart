@@ -79,7 +79,7 @@ class _AppState extends State<App> {
         return MaterialApp(
           theme: model.theme(),
           onGenerateRoute: RouterFactory.generateRoute,
-          initialRoute: Routes.toOnBoarding,
+          initialRoute: Routes.toSplash,
         );
       },
     );

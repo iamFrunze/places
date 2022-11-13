@@ -31,7 +31,6 @@ class SightDetailsSettings extends ChangeNotifier {
       [dd, ' ', M, ' ', yy],
       locale: const RussianDateLocale(),
     );
-    debugPrint('plan date $planningDate');
     notifyListeners();
   }
 

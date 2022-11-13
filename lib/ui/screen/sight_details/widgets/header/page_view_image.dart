@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:places/data/model/place_model.dart';
+import 'package:places/res/app_assets.dart';
+import 'package:places/res/app_colors.dart';
 
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
@@ -27,22 +31,16 @@ class PageViewImageWidget extends StatelessWidget {
         itemCount: place.urls.length,
         onPageChanged: context.read<SightDetailsSettings>().onPageChange,
         itemBuilder: (context, index) {
-          return Image.network(
-            place.urls[index],
-            loadingBuilder: (context, child, loadingProgress) {
-              return loadingProgress == null
-                  ? child
-                  : Container(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-            },
+          return CachedNetworkImage(
             fit: BoxFit.cover,
+            imageUrl: place.urls[index],
+            placeholder: (ctx, url) => ColoredBox(
+              color: AppColors.placeholderCardBackground,
+              child: SvgPicture.asset(
+                AppAssets.placeholder,
+                fit: BoxFit.none,
+              ),
+            ),
           );
         },
       ),

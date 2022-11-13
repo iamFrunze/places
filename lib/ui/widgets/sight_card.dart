@@ -1,5 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:places/data/model/place_model.dart';
+import 'package:places/res/app_assets.dart';
+import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_typography.dart';
 import 'package:places/ui/screen/sight_details/sight_details_screen.dart';
@@ -23,9 +27,7 @@ class PlaceCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
-          Radius.circular(
-            AppDimensions.cornerRadius16,
-          ),
+          Radius.circular(AppDimensions.cornerRadius16),
         ),
         color: theme.colorScheme.surface,
       ),
@@ -36,31 +38,19 @@ class PlaceCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: _ImageCardWidget(
-                    place: place,
-                  ),
-                ),
-                Expanded(
-                  child: _TextCardWidget(
-                    details: details,
-                  ),
-                ),
+                Expanded(child: _ImageCardWidget(place: place)),
+                Expanded(child: _TextCardWidget(details: details)),
               ],
             ),
             Positioned.fill(
               child: Material(
                 type: MaterialType.transparency,
                 borderRadius: const BorderRadius.all(
-                  Radius.circular(
-                    AppDimensions.cornerRadius16,
-                  ),
+                  Radius.circular(AppDimensions.cornerRadius16),
                 ),
                 child: InkWell(
                   borderRadius: const BorderRadius.all(
-                    Radius.circular(
-                      AppDimensions.cornerRadius16,
-                    ),
+                    Radius.circular(AppDimensions.cornerRadius16),
                   ),
                   onTap: () => showModalBottomSheet<SightDetailsScreen>(
                     context: context,
@@ -123,21 +113,16 @@ class _ImageCardWidget extends StatelessWidget {
             AppDimensions.cornerRadius16,
           ),
         ),
-        child: Image.network(
-          place.urls.first,
+        child: CachedNetworkImage(
           fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            return loadingProgress == null
-                ? child
-                : Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-          },
+          imageUrl: place.urls.first,
+          placeholder: (ctx, url) => ColoredBox(
+            color: AppColors.placeholderCardBackground,
+            child: SvgPicture.asset(
+              AppAssets.placeholder,
+              fit: BoxFit.none,
+            ),
+          ),
         ),
       ),
     );
