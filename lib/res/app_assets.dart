@@ -59,5 +59,5 @@ class AppAssets {
   static const picture = 'res/svg/picture_icon.svg';
   static const camera = 'res/svg/camera_icon.svg';
 
-  static const placeholder = 'res/png/placeholder.png';
+  static const placeholder = 'res/svg/placeholder.svg';
 }

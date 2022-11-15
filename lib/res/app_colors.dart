@@ -53,4 +53,6 @@ class AppColors {
   /// splash gradient
   static const startGradientSplashColor = Color(0xff4CAF50);
   static const endGradientSplashColor = Color(0xffFCDD3D);
+
+  static const placeholderCardBackground = Color(0xff2E2E2E);
 }
