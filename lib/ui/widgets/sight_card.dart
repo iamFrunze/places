@@ -38,7 +38,12 @@ class PlaceCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _ImageCardWidget(place: place)),
+                Expanded(
+                  child: Hero(
+                    tag: 'card',
+                    child: _ImageCardWidget(place: place),
+                  ),
+                ),
                 Expanded(child: _TextCardWidget(details: details)),
               ],
             ),

@@ -36,9 +36,12 @@ class PageViewImageWidget extends StatelessWidget {
             imageUrl: place.urls[index],
             placeholder: (ctx, url) => ColoredBox(
               color: AppColors.placeholderCardBackground,
-              child: SvgPicture.asset(
-                AppAssets.placeholder,
-                fit: BoxFit.none,
+              child: Hero(
+                tag: 'card',
+                child: SvgPicture.asset(
+                  AppAssets.placeholder,
+                  fit: BoxFit.none,
+                ),
               ),
             ),
           );
