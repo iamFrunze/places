@@ -5,11 +5,11 @@ import 'package:places/data/filter_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
-import 'package:places/settings/app_settings.dart';
 import 'package:places/settings/constants.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/filter/widgets/filter_custom_chip.dart';
 import 'package:places/ui/widgets/appbar.dart';
+import 'package:places/ui/widgets/error_page.dart';
 import 'package:provider/provider.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _FilterScreenState extends State<FilterScreen> {
 
     return Consumer<FilterSettings>(builder: (context, model, child) {
       return model.currentState == ScreenState.error
-          ? const Center(child: Text('Error'))
+          ? const ErrorPage()
           : Scaffold(
               appBar: _AppBar(
                 onPressed: () => model.clearData(),

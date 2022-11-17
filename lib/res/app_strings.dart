@@ -7,7 +7,8 @@ class AppStrings {
   static const visited = 'Посетил';
   static const favourite = 'Избранное';
   static const empty = 'Пусто';
-  static const markFavouritePlaces = 'Отмечайте понравившиеся\nместа и они появиятся здесь.';
+  static const markFavouritePlaces =
+      'Отмечайте понравившиеся\nместа и они появиятся здесь.';
   static const completeRoute = 'Завершите маршрут,\nчтобы место попало сюда.';
   static const error = 'Ошибка';
   static const errorDescription = 'Что то пошло не так\nПопробуйте позже.';
@@ -64,7 +65,8 @@ class AppStrings {
   static const title2 = 'Построй маршрут и отправляйся в путь';
   static const subtitle2 = 'Достигай цели максимально быстро и комфортно.';
   static const title3 = 'Добавляй места, которые нашёл сам';
-  static const subtitle3 = 'Делись самыми интересными и помоги нам стать лучше!';
+  static const subtitle3 =
+      'Делись самыми интересными и помоги нам стать лучше!';
   static const onStart = 'на старт';
 
   /// Cupertino action sheet
@@ -78,6 +80,13 @@ class AppStrings {
   static const String uploadFilePath = '/upload_file';
   static const String clientPath = '/client';
   static const String filesPath = '/files';
+
+  /// Shared Preferences keys
+  static const String categoriesKey = 'categories_key';
+  static const String fromRangeValueKey = 'from_range_value_key';
+  static const String toRangeValueKey = 'to_range_value_key';
+  static const String appThemeKey = 'app_theme_key';
+  static const String firstLoginKey = 'first_login_key';
 
   static String show(int value) => 'показать ($value)';
 

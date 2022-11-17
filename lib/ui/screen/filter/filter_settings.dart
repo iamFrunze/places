@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
 import 'package:places/data/interactors/place_interactor.dart';
 import 'package:places/data/model/place_model.dart';
+import 'package:places/data/repository/local/shared_preferences/local_sp_impl.dart';
 import 'package:places/mocks.dart';
 import 'package:places/settings/constants.dart';
 import 'package:places/utils/distance_calc.dart';
@@ -10,6 +11,7 @@ class FilterSettings extends ChangeNotifier {
   final categories = Constants.categories;
 
   final PlaceInteractor _interactor;
+  final LocalSPImpl _prefs;
 
   ScreenState currentState = ScreenState.loading;
   RangeValues rangeValue = Constants.rangeValue;
@@ -19,7 +21,7 @@ class FilterSettings extends ChangeNotifier {
 
   late List<PlaceModel> _places;
 
-  FilterSettings(this._interactor) {
+  FilterSettings(this._interactor, this._prefs) {
     Future<void>.microtask(_initData);
 
     notifyListeners();
@@ -50,6 +52,12 @@ class FilterSettings extends ChangeNotifier {
   void _fetchNearSights() {
     final nearPlaces = _places.where(_isNear).where(_isSelected).toList();
     _countNearSights = nearPlaces.length;
+    _prefs
+      ..saveCategories(categories
+          .where((element) => element.value)
+          .map((e) => e.type)
+          .toList())
+      ..saveDistance(rangeValue);
     notifyListeners();
   }
 

@@ -19,6 +19,7 @@ dependencies:
   flutter_svg: ^1.1.0
   location: ^4.4.0
   provider: ^6.0.3
+  shared_preferences: ^2.0.15
   surf_lint_rules: ^1.5.0
 
 dev_dependencies:
