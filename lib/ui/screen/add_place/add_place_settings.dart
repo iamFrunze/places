@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:places/data/interactors/place_interactor_remote.dart';
+import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 
 class AddPlaceSettings extends ChangeNotifier {

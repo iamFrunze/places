@@ -8,7 +8,6 @@ import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/favourite/widgets/draggable_builder_widget.dart';
 import 'package:places/ui/widgets/adaptiveCalendar.dart';
 import 'package:places/ui/widgets/empty_page.dart';
-import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';

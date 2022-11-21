@@ -1,10 +1,12 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:places/data/interactors/place_interactor_remote.dart';
+import 'package:places/data/interactors/local/places_interactor_local_impl.dart';
+import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 
 class SightDetailsSettings extends ChangeNotifier {
-  final PlaceInteractorRemote _interactor;
+  final PlaceInteractorRemote _interactorRemote;
+  final PlacesInteractorLocalImpl _interactorLocal;
 
   int get currentIndex => _currentIndex;
 
@@ -18,7 +20,7 @@ class SightDetailsSettings extends ChangeNotifier {
   PlaceModel? _place;
   int _currentIndex = 0;
 
-  SightDetailsSettings(this._interactor);
+  SightDetailsSettings(this._interactorRemote, this._interactorLocal);
 
   void onPageChange(int index) {
     _currentIndex = index;
@@ -35,8 +37,8 @@ class SightDetailsSettings extends ChangeNotifier {
   }
 
   Stream<PlaceModel> fetchPlace(int id) async* {
-    final place = await _interactor.getPlaceDetails(id);
-    final favouritePlace = await _interactor.getFavouritesPlaces();
+    final place = await _interactorRemote.getPlaceDetails(id);
+    final favouritePlace = await _interactorLocal.fetchFavouritePlaces();
     _isFavourite = favouritePlace.map((e) => e.id).contains(place.id);
     _updateData(place);
     notifyListeners();
@@ -48,9 +50,9 @@ class SightDetailsSettings extends ChangeNotifier {
 
     if (favouritePlace != null) {
       if (!isFavourite) {
-        await _interactor.addToFavourites(favouritePlace);
+        await _interactorLocal.addToFavourite(favouritePlace);
       } else {
-        await _interactor.removeFromFavourites(favouritePlace);
+        await _interactorLocal.removeFromFavourite(favouritePlace.id);
       }
     } else {
       throw Exception('Place not found');

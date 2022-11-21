@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/interactors/place_interactor_remote.dart';
+import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/repository/local/shared_preferences/local_sp_impl.dart';
 import 'package:places/mocks.dart';
