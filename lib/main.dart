@@ -4,6 +4,7 @@ import 'package:places/data/interactors/place_interactor_impl.dart';
 import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/interactors/settings_interactor.dart';
 import 'package:places/data/repository/data/place_repository_remote.dart';
+import 'package:places/data/repository/local/shared_preferences/local_sp_impl.dart';
 import 'package:places/settings/app_settings.dart';
 import 'package:places/settings/dio_settings.dart';
 import 'package:places/ui/screen/add_place/add_place_settings.dart';
@@ -17,27 +18,32 @@ import 'package:places/ui/screen/splash/splash_settings.dart';
 import 'package:places/utils/routes/router.dart';
 import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final dioSettings = DioSettings();
   final remoteRepository = PlaceRepositoryRemote(dioSettings);
   final interactor = PlaceInteractorImpl(remoteRepository);
   final searchInteractor = SearchInteractor(remoteRepository);
+  final prefs = await SharedPreferences.getInstance();
+  final localSPImpl = LocalSPImpl(prefs);
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AppSettings>(
-          create: (_) => AppSettings(SettingsInteractor()),
+          create: (_) => AppSettings(SettingsInteractor(), localSPImpl),
         ),
         ChangeNotifierProvider<SightListSettings>(
           create: (_) => SightListSettings(interactor),
         ),
         ChangeNotifierProvider<FilterSettings>(
-          create: (_) => FilterSettings(interactor),
+          create: (_) => FilterSettings(interactor, localSPImpl),
         ),
         ChangeNotifierProvider<SearchSettings>(
-          create: (_) => SearchSettings(searchInteractor),
+          create: (_) => SearchSettings(searchInteractor, localSPImpl),
         ),
         ChangeNotifierProvider<FavouriteSettings>(
           create: (_) => FavouriteSettings(interactor),
@@ -52,7 +58,7 @@ void main() async {
           create: (_) => OnBoardingSettings(),
         ),
         ChangeNotifierProvider<SplashSettings>(
-          create: (_) => SplashSettings(),
+          create: (_) => SplashSettings(localSPImpl),
         ),
       ],
       child: const App(),

@@ -5,11 +5,14 @@ import 'package:places/data/callback_state.dart';
 import 'package:places/data/exceptions/network_exception.dart';
 import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/model/place_model.dart';
+import 'package:places/data/model/request_model/post_filtered_places_request_model.dart';
+import 'package:places/data/repository/local/shared_preferences/local_sp_impl.dart';
 
 class SearchSettings extends ChangeNotifier {
   final searchController = TextEditingController();
   final foundSights = <PlaceModel>[];
   final SearchInteractor _interactor;
+  final LocalSPImpl _prefs;
 
   bool initializedSights = false;
   ScreenState currentState = ScreenState.empty;
@@ -18,7 +21,7 @@ class SearchSettings extends ChangeNotifier {
 
   late LinkedHashSet<String> _historySights;
 
-  SearchSettings(this._interactor) {
+  SearchSettings(this._interactor, this._prefs) {
     Future.microtask(_fetchHistorySight);
   }
 
@@ -33,7 +36,20 @@ class SearchSettings extends ChangeNotifier {
       _interactor.saveSearchRequest(text);
       final places = <PlaceModel>[];
       try {
-        places.addAll(await _interactor.searchPlaces(text));
+        final savedCategories = _prefs.fetchCategories();
+        final savedDistance = _prefs.fetchDistance();
+        int? radius;
+        if (savedDistance != null) {
+          radius = (savedDistance.end - savedDistance.start).toInt() * 1000;
+        }
+        final postModel = PostFilteredPlacesRequestModel(
+          nameFilter: text,
+          typeFilter: savedCategories,
+
+          /// FIX: после добавления определения lng, lat
+          // radius: radius,
+        );
+        places.addAll(await _interactor.searchPlaces(postModel));
       } on NetworkException catch (_) {
         currentState = ScreenState.error;
       }

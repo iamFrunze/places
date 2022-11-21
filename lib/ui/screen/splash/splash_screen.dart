@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
-import 'package:places/utils/routes/routes.dart';
+import 'package:places/ui/screen/splash/splash_settings.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -29,14 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(seconds: 5),
-      () => Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.toMain,
-        (route) => false,
-      ),
-    );
+    context.read<SplashSettings>().navigateToNext(context);
   }
 
   @override

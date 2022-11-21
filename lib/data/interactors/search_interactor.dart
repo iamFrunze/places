@@ -12,11 +12,11 @@ class SearchInteractor {
 
   SearchInteractor(this._repository);
 
-  Future<List<PlaceModel>> searchPlaces(String name) async {
-    final places = await _repository.postFilteredPlaces(
-      model: PostFilteredPlacesRequestModel(nameFilter: name),
-    );
-    _history.add(name);
+  Future<List<PlaceModel>> searchPlaces(
+    PostFilteredPlacesRequestModel model,
+  ) async {
+    final places = await _repository.postFilteredPlaces(model: model);
+    _history.add(model.nameFilter ?? '');
 
     return places;
   }

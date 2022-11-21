@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = context.watch<AppSettings>().isDarkMode;
-
+    debugPrint('mode ::: $isDarkMode');
     final theme = Theme.of(context);
 
     return Scaffold(
