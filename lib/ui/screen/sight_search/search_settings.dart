@@ -31,9 +31,9 @@ class SearchSettings extends ChangeNotifier {
     currentState = ScreenState.loading;
     notifyListeners();
     if (text.isEmpty) {
-      _fetchHistorySight();
+      await _fetchHistorySight();
     } else {
-      _interactor.saveSearchRequest(text);
+      await _interactor.saveSearchRequest(text);
       final places = <PlaceModel>[];
       try {
         final savedCategories = _prefs.fetchCategories();
@@ -96,8 +96,9 @@ class SearchSettings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchHistorySight() {
+  Future<void> _fetchHistorySight() async {
     _historySights = _interactor.history;
+
     currentState =
         _historySights.isNotEmpty ? ScreenState.history : ScreenState.empty;
     notifyListeners();

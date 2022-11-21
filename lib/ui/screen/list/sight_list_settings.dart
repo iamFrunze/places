@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
 
 class SightListSettings extends ChangeNotifier {
-  final PlaceInteractor _interactor;
+  final PlaceInteractorRemote _interactor;
   final _favouritePlaces = <PlaceModel>[];
   bool isLoadData = false;
 

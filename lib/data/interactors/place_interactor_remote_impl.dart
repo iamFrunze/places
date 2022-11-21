@@ -1,10 +1,10 @@
 import 'package:places/data/exceptions/network_exception.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
 import 'package:places/data/repository/place_repository.dart';
 
-class PlaceInteractorImpl implements PlaceInteractor {
+class PlaceInteractorImpl implements PlaceInteractorRemote {
   final _favouritesPlaces = <PlaceModel>[];
   final _visitingPlaces = <PlaceModel>[];
   final PlaceRepository _repository;

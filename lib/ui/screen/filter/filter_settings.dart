@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/data/callback_state.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/repository/local/shared_preferences/local_sp_impl.dart';
 import 'package:places/mocks.dart';
@@ -10,7 +10,7 @@ import 'package:places/utils/distance_calc.dart';
 class FilterSettings extends ChangeNotifier {
   final categories = Constants.categories;
 
-  final PlaceInteractor _interactor;
+  final PlaceInteractorRemote _interactor;
   final LocalSPImpl _prefs;
 
   ScreenState currentState = ScreenState.loading;

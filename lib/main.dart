@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:places/data/interactors/place_interactor_impl.dart';
+import 'package:places/data/interactors/local/database.dart';
+import 'package:places/data/interactors/place_interactor_remote_impl.dart';
 import 'package:places/data/interactors/search_interactor.dart';
 import 'package:places/data/interactors/settings_interactor.dart';
 import 'package:places/data/repository/data/place_repository_remote.dart';
@@ -23,10 +24,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final db = Database();
   final dioSettings = DioSettings();
   final remoteRepository = PlaceRepositoryRemote(dioSettings);
   final interactor = PlaceInteractorImpl(remoteRepository);
-  final searchInteractor = SearchInteractor(remoteRepository);
+  final searchInteractor = SearchInteractor(remoteRepository, db);
   final prefs = await SharedPreferences.getInstance();
   final localSPImpl = LocalSPImpl(prefs);
 
