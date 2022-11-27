@@ -1,12 +1,10 @@
 import 'package:places/data/exceptions/network_exception.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/data/model/request_model/get_place_request_model.dart';
 import 'package:places/data/repository/place_repository.dart';
 
-class PlaceInteractorImpl implements PlaceInteractor {
-  final _favouritesPlaces = <PlaceModel>[];
-  final _visitingPlaces = <PlaceModel>[];
+class PlaceInteractorImpl implements PlaceInteractorRemote {
   final PlaceRepository _repository;
 
   PlaceInteractorImpl(this._repository);
@@ -14,24 +12,6 @@ class PlaceInteractorImpl implements PlaceInteractor {
   @override
   Future<bool> addNewPlace(PlaceModel place) async =>
       _repository.putPlace(place);
-
-  @override
-  Future<bool> addToFavourites(PlaceModel place) async {
-    _favouritesPlaces.add(place);
-
-    return true;
-  }
-
-  @override
-  Future<bool> addToVisitingPlaces(PlaceModel place) async {
-    _visitingPlaces.add(place);
-
-    return true;
-  }
-
-  @override
-  Future<List<PlaceModel>> getFavouritesPlaces() async =>
-      _favouritesPlaces.toSet().toList();
 
   @override
   Future<PlaceModel> getPlaceDetails(int id) async {
@@ -55,15 +35,5 @@ class PlaceInteractorImpl implements PlaceInteractor {
     } on NetworkException catch (_) {
       rethrow;
     }
-  }
-
-  @override
-  Future<List<PlaceModel>> getVisitPlaces() async => _visitingPlaces;
-
-  @override
-  Future<List<PlaceModel>> removeFromFavourites(PlaceModel place) async {
-    _favouritesPlaces.remove(place);
-
-    return _favouritesPlaces;
   }
 }

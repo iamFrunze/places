@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
 
 class AddPlaceSettings extends ChangeNotifier {
@@ -14,7 +14,7 @@ class AddPlaceSettings extends ChangeNotifier {
     'https://chorus.stimg.co/23256340/merlin_34760037.jpg?fit=crop&crop=faces',
     'https://worldbirds.com/wp-content/uploads/2020/02/how-to-attract-owls.jpg',
   ];
-  final PlaceInteractor _interactor;
+  final PlaceInteractorRemote _interactor;
 
   double? _lat;
   double? _lng;

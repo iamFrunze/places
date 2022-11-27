@@ -198,7 +198,9 @@ class _BodyState extends State<_Body> {
               Routes.toDetails,
               arguments: e,
             ),
-            url: e.urls.first,
+            url: e.urls.isEmpty
+                ? 'https://mosaicfest.ru/wp-content/uploads/2021/04/placeholder.png'
+                : e.urls.first,
             title: e.name,
             subtitle: e.placeType,
           ),

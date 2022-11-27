@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:places/data/interactors/place_interactor.dart';
+import 'package:places/data/interactors/local/places_interactor_local_impl.dart';
 import 'package:places/data/model/place_model.dart';
 
 class FavouriteSettings extends ChangeNotifier {
-  final PlaceInteractor _interactor;
+  final PlacesInteractorLocalImpl _interactorLocal;
 
   bool isLoadData = false;
 
@@ -20,7 +20,7 @@ class FavouriteSettings extends ChangeNotifier {
   List<PlaceModel> _favouritesPlaces = [];
   List<PlaceModel> _visitingPlaces = [];
 
-  FavouriteSettings(this._interactor);
+  FavouriteSettings(this._interactorLocal);
 
   void updatePlanningDateSight(DateTime date) {
     isLoadData = true;
@@ -36,9 +36,11 @@ class FavouriteSettings extends ChangeNotifier {
   Future<void> removeFromFavourites(PlaceModel place) async {
     isLoadData = true;
     notifyListeners();
+    _favouritesPlaces.remove(place);
 
+    await _interactorLocal.removeFromFavourite(place.id);
     await Future.delayed(const Duration(seconds: 5), () {});
-    _favouritesPlaces = await _interactor.removeFromFavourites(place);
+
     isLoadData = false;
     notifyListeners();
   }
@@ -69,14 +71,14 @@ class FavouriteSettings extends ChangeNotifier {
 
   Future<void> initFavouritePlaces() async {
     isLoadData = true;
-    _favouritesPlaces = await _interactor.getFavouritesPlaces();
+    _favouritesPlaces = await _interactorLocal.fetchFavouritePlaces();
     isLoadData = false;
     notifyListeners();
   }
 
   Future<void> initVisitingPlaces() async {
     isLoadData = true;
-    _visitingPlaces = await _interactor.getVisitPlaces();
+    _visitingPlaces = await _interactorLocal.fetchVisitedPlaces();
     isLoadData = false;
     notifyListeners();
   }

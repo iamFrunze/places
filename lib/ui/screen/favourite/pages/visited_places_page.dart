@@ -5,10 +5,7 @@ import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
-import 'package:places/ui/screen/favourite/widgets/draggable_builder_widget.dart';
 import 'package:places/ui/widgets/empty_page.dart';
-import 'package:places/ui/widgets/error_page.dart';
-import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +21,8 @@ class _VisitedPlacesPageState extends State<VisitedPlacesPage> {
   @override
   void initState() {
     Future.microtask(
-        () => context.read<FavouriteSettings>().initVisitingPlaces(),);
+      () => context.read<FavouriteSettings>().initVisitingPlaces(),
+    );
     super.initState();
   }
 
@@ -51,12 +49,9 @@ class _PageState extends State<_Page> {
   @override
   Widget build(BuildContext context) {
     final placesWidget = widget.places
-        .map((place) => DraggableBuilderWidget(
-              card: _Card(place: place),
-              onDismissed: (direction) => context
-                  .read<FavouriteSettings>()
-                  .removeFromVisitingPlaces(place),
-            ))
+        .map(
+          (place) => _Card(place: place),
+        )
         .toList();
 
     return ReorderableListView(
