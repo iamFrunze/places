@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/res/app_assets.dart';
@@ -17,33 +19,35 @@ class Pictures extends StatefulWidget {
 class _PicturesState extends State<Pictures> {
   @override
   Widget build(BuildContext context) {
-    final images = context.watch<AddPlaceSettings>().mockImages;
+    final images = context.watch<AddPlaceSettings>().images;
     final theme = Theme.of(context);
 
     final imageWidgets = images
-        .map((image) => Dismissible(
-              key: UniqueKey(),
-              direction: DismissDirection.up,
-              onDismissed: (direction) =>
-                  context.read<AddPlaceSettings>().removeImage(image),
-              background: Column(
-                children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  SvgPicture.asset(
-                    AppAssets.dismissible,
-                    color: theme.brightness == Brightness.light
-                        ? AppColors.lmMainColorKit
-                        : AppColors.dmWhiteColorKit,
-                  ),
-                ],
-              ),
-              child: Container(
-                margin: const EdgeInsets.only(right: AppDimensions.margin16),
-                child: _Image(image: image),
-              ),
-            ))
+        .map(
+          (image) => Dismissible(
+            key: UniqueKey(),
+            direction: DismissDirection.up,
+            onDismissed: (direction) =>
+                context.read<AddPlaceSettings>().removeImage(image),
+            background: Column(
+              children: [
+                Expanded(
+                  child: Container(),
+                ),
+                SvgPicture.asset(
+                  AppAssets.dismissible,
+                  color: theme.brightness == Brightness.light
+                      ? AppColors.lmMainColorKit
+                      : AppColors.dmWhiteColorKit,
+                ),
+              ],
+            ),
+            child: Container(
+              margin: const EdgeInsets.only(right: AppDimensions.margin16),
+              child: _Image(image: image),
+            ),
+          ),
+        )
         .toList();
 
     return SizedBox(
@@ -87,7 +91,7 @@ class _PicturesState extends State<Pictures> {
 }
 
 class _Image extends StatelessWidget {
-  final String image;
+  final File image;
 
   const _Image({
     Key? key,
@@ -107,7 +111,7 @@ class _Image extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(AppDimensions.cornerRadius12),
             ),
-            child: Image.network(
+            child: Image.file(
               image,
               fit: BoxFit.cover,
               colorBlendMode: BlendMode.colorBurn,
@@ -120,20 +124,34 @@ class _Image extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              loadingBuilder: (context, child, loadingProgress) {
-                return loadingProgress == null
-                    ? child
-                    : Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.green,
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-              },
             ),
+            // child: Image.network(
+            //   image,
+            //   fit: BoxFit.cover,
+            //   colorBlendMode: BlendMode.colorBurn,
+            //   color: const Color(0xFF252849).withOpacity(0.24),
+            //   errorBuilder: (context, image, stackTrace) => const ColoredBox(
+            //     color: Colors.red,
+            //     child: Text(
+            //       '404',
+            //       style: TextStyle(color: Colors.white),
+            //       textAlign: TextAlign.center,
+            //     ),
+            //   ),
+            //   loadingBuilder: (context, child, loadingProgress) {
+            //     return loadingProgress == null
+            //         ? child
+            //         : Center(
+            //             child: CircularProgressIndicator(
+            //               color: Colors.green,
+            //               value: loadingProgress.expectedTotalBytes != null
+            //                   ? loadingProgress.cumulativeBytesLoaded /
+            //                       loadingProgress.expectedTotalBytes!
+            //                   : null,
+            //             ),
+            //           );
+            //   },
+            // ),
           ),
         ),
         Positioned(

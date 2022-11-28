@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:places/data/exceptions/network_exception.dart';
 import 'package:places/data/interactors/remote/place_interactor_remote.dart';
 import 'package:places/data/model/place_model.dart';
@@ -32,6 +34,15 @@ class PlaceInteractorImpl implements PlaceInteractorRemote {
       final response = await _repository.getPlace(model: model);
 
       return response;
+    } on NetworkException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> uploadImages(List<File> images) async {
+    try {
+      await _repository.postUploadFile(images);
     } on NetworkException catch (_) {
       rethrow;
     }

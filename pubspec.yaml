@@ -17,6 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.0
+  image_picker: ^0.8.6
   location: ^4.4.0
   path: ^1.8.1
   path_provider: ^2.0.11

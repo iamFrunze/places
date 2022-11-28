@@ -28,7 +28,8 @@ class PlaceRepositoryRemote implements PlaceRepository {
       if (data != null) {
         return List<PlaceModel>.from(
           data.map<PlaceModel>(
-            (dynamic value) => PlaceModel.fromJson(value as Map<String, dynamic>),
+            (dynamic value) =>
+                PlaceModel.fromJson(value as Map<String, dynamic>),
           ),
         );
       } else {
@@ -86,7 +87,8 @@ class PlaceRepositoryRemote implements PlaceRepository {
       if (data != null) {
         return List<PlaceModel>.from(
           data.map<PlaceModel>(
-            (dynamic value) => PlaceModel.fromJson(value as Map<String, dynamic>),
+            (dynamic value) =>
+                PlaceModel.fromJson(value as Map<String, dynamic>),
           ),
         );
       } else {
@@ -135,7 +137,8 @@ class PlaceRepositoryRemote implements PlaceRepository {
   @override
   Future<bool> deletePlace({required String id}) async {
     try {
-      final response = await _dioSettings.dio.delete<void>(AppStrings.placeIdPath(int.parse(id)));
+      final response = await _dioSettings.dio
+          .delete<void>(AppStrings.placeIdPath(int.parse(id)));
 
       return response.statusCode == successCode;
     } on DioError catch (e) {
@@ -166,13 +169,16 @@ class PlaceRepositoryRemote implements PlaceRepository {
   }
 
   @override
-  Future<List<String>> postUploadFile(File file) async {
+  Future<List<String>> postUploadFile(List<File> files) async {
     try {
       _dioSettings.dio.options.headers['Content-Type'] = 'multipart/form-data';
-      final fileName = file.path.split('/').last;
-      final formData = FormData.fromMap(<String, MultipartFile>{
-        'file': await MultipartFile.fromFile(file.path, filename: fileName),
-      });
+      final filesData = files
+          .map((e) => MultipartFile.fromFile(e.path, filename: e.uri.path))
+          .toList();
+
+      final formData =
+          FormData.fromMap(<String, List<dynamic>>{'files': filesData});
+
       final response = await _dioSettings.dio.post<List<String>>(
         AppStrings.uploadFilePath,
         data: formData,

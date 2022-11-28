@@ -40,7 +40,7 @@ class PlaceCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Hero(
-                    tag: 'card',
+                    tag: 'card${place.id}',
                     child: _ImageCardWidget(place: place),
                   ),
                 ),
