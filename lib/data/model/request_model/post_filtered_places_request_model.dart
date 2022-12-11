@@ -1,7 +1,7 @@
 class PostFilteredPlacesRequestModel {
-  final int? lat;
-  final int? lng;
-  final int? radius;
+  final double? lat;
+  final double? lng;
+  final double? radius;
   final List<String>? typeFilter;
   final String? nameFilter;
 

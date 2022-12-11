@@ -6,14 +6,13 @@ class AppStrings {
   static const wantToVisit = 'Хочу посетить';
   static const visited = 'Посетил';
   static const favourite = 'Избранное';
+  static const map = 'Карта';
   static const empty = 'Пусто';
   static const markFavouritePlaces =
       'Отмечайте понравившиеся\nместа и они появиятся здесь.';
   static const completeRoute = 'Завершите маршрут,\nчтобы место попало сюда.';
   static const error = 'Ошибка';
   static const errorDescription = 'Что то пошло не так\nПопробуйте позже.';
-
-  static const heroTagCard = 'cardHero';
 
   /// App
   static const from = 'от';
