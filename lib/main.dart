@@ -13,6 +13,7 @@ import 'package:places/ui/screen/add_place/add_place_settings.dart';
 import 'package:places/ui/screen/favourite/favourite_settings.dart';
 import 'package:places/ui/screen/filter/filter_settings.dart';
 import 'package:places/ui/screen/list/sight_list_settings.dart';
+import 'package:places/ui/screen/map/map_settings.dart';
 import 'package:places/ui/screen/onboarding/onboarding_settings.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:places/ui/screen/sight_search/search_settings.dart';
@@ -21,9 +22,11 @@ import 'package:places/utils/routes/router.dart';
 import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AndroidYandexMap.useAndroidViewSurface = false;
 
   final db = Database();
   final dioSettings = DioSettings();
@@ -37,6 +40,12 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<MapSettings>(
+          create: (_) => MapSettings(
+            searchInteractor,
+            interactorLocal,
+          ),
+        ),
         ChangeNotifierProvider<AppSettings>(
           create: (_) => AppSettings(SettingsInteractor(), localSPImpl),
         ),
@@ -65,7 +74,7 @@ void main() async {
           create: (_) => OnBoardingSettings(),
         ),
         ChangeNotifierProvider<SplashSettings>(
-          create: (_) => SplashSettings(localSPImpl),
+          create: (_) => SplashSettings(localSPImpl, searchInteractor),
         ),
       ],
       child: const App(),

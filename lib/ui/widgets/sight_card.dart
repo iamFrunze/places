@@ -12,12 +12,14 @@ class PlaceCard extends StatelessWidget {
   final PlaceModel place;
   final List<Widget> actions;
   final List<Widget> details;
+  final ElevatedButton? navBtn;
 
   const PlaceCard({
     Key? key,
     required this.place,
     required this.actions,
     required this.details,
+    this.navBtn,
   }) : super(key: key);
 
   @override
@@ -31,66 +33,55 @@ class PlaceCard extends StatelessWidget {
         ),
         color: theme.colorScheme.surface,
       ),
-      child: AspectRatio(
-        aspectRatio: AppDimensions.aspectRatio3to2,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Hero(
-                    tag: 'card',
-                    child: _ImageCardWidget(place: place),
-                  ),
-                ),
-                Expanded(child: _TextCardWidget(details: details)),
-              ],
+      child: InkWell(
+        onTap: () => showModalBottomSheet<SightDetailsScreen>(
+          context: context,
+          useRootNavigator: true,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(AppDimensions.cornerRadius16),
+              topRight: Radius.circular(AppDimensions.cornerRadius16),
             ),
-            Positioned.fill(
-              child: Material(
-                type: MaterialType.transparency,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(AppDimensions.cornerRadius16),
-                ),
-                child: InkWell(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(AppDimensions.cornerRadius16),
-                  ),
-                  onTap: () => showModalBottomSheet<SightDetailsScreen>(
-                    context: context,
-                    useRootNavigator: true,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(AppDimensions.cornerRadius16),
-                        topRight: Radius.circular(AppDimensions.cornerRadius16),
-                      ),
-                    ),
-                    builder: (context) => SightDetailsScreen(id: place.id),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppDimensions.margin16),
-              child: Row(
+          ),
+          builder: (context) => SightDetailsScreen(id: place.id),
+        ),
+        child: AspectRatio(
+          aspectRatio: AppDimensions.aspectRatio3to2,
+          child: Stack(
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    place.placeType.toLowerCase(),
-                    style:
-                        AppTypography.bodyLarge.copyWith(color: Colors.white),
+                  Expanded(
+                    child: Hero(
+                      tag: 'card${place.id}',
+                      child: _ImageCardWidget(place: place),
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: actions,
-                  ),
+                  Expanded(child: _TextCardWidget(details: details)),
                 ],
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(AppDimensions.margin16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      place.placeType.toLowerCase(),
+                      style:
+                          AppTypography.bodyLarge.copyWith(color: Colors.white),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: actions,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

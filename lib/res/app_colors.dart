@@ -55,4 +55,6 @@ class AppColors {
   static const endGradientSplashColor = Color(0xffFCDD3D);
 
   static const placeholderCardBackground = Color(0xff2E2E2E);
+
+  static const animatedPosMark = Color(0xff4CAF50);
 }

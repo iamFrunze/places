@@ -17,7 +17,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.0
+  geolocator: ^9.0.2
+  image_picker: ^0.8.6
   location: ^4.4.0
+  map_launcher: ^2.4.0
   path: ^1.8.1
   path_provider: ^2.0.11
   provider: ^6.0.3
@@ -25,6 +28,7 @@ dependencies:
   sqlite3: ^1.8.0
   sqlite3_flutter_libs: ^0.5.12
   surf_lint_rules: ^1.5.0
+  yandex_mapkit: ^3.2.0
 
 dev_dependencies:
   build_runner: ^2.3.2
@@ -37,38 +41,39 @@ flutter:
 
   uses-material-design: true
   assets:
-    - res/svg/
-    - res/svg/chips/
-    - res/svg/onboarding/
+    - assets/svg/
+    - assets/png/
+    - assets/svg/chips/
+    - assets/svg/onboarding/
   fonts:
     - family: Roboto
       fonts:
-        - asset: res/fonts/roboto/Roboto-Black.ttf
+        - asset: assets/fonts/roboto/Roboto-Black.ttf
           weight: 900
-        - asset: res/fonts/roboto/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-BlackItalic.ttf
           weight: 900
           style: italic
-        - asset: res/fonts/roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
           weight: 700
-        - asset: res/fonts/roboto/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-BoldItalic.ttf
           weight: 700
           style: italic
-        - asset: res/fonts/roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
           style: italic
-        - asset: res/fonts/roboto/Roboto-Light.ttf
+        - asset: assets/fonts/roboto/Roboto-Light.ttf
           weight: 300
-        - asset: res/fonts/roboto/Roboto-LightItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-LightItalic.ttf
           weight: 300
           style: italic
-        - asset: res/fonts/roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
           weight: 500
-        - asset: res/fonts/roboto/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-MediumItalic.ttf
           weight: 500
           style: italic
-        - asset: res/fonts/roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
           weight: 400
-        - asset: res/fonts/roboto/Roboto-Thin.ttf
+        - asset: assets/fonts/roboto/Roboto-Thin.ttf
           weight: 100
-        - asset: res/fonts/roboto/Roboto-ThinItalic.ttf
+        - asset: assets/fonts/roboto/Roboto-ThinItalic.ttf
           weight: 100
           style: italic

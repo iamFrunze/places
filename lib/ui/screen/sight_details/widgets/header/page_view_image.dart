@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:places/data/model/place_model.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/res/app_colors.dart';
-
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/ui/screen/sight_details/sight_details_settings.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +36,7 @@ class PageViewImageWidget extends StatelessWidget {
             placeholder: (ctx, url) => ColoredBox(
               color: AppColors.placeholderCardBackground,
               child: Hero(
-                tag: 'card',
+                tag: 'card${place.id}',
                 child: SvgPicture.asset(
                   AppAssets.placeholder,
                   fit: BoxFit.none,

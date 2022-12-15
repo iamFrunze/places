@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:places/res/app_assets.dart';
 import 'package:places/ui/screen/favourite/favourite_screen.dart';
+import 'package:places/ui/screen/map/map_screen.dart';
 import 'package:places/ui/screen/settings/settings_screen.dart';
 import 'package:places/utils/routes/list_menu.dart';
 
@@ -14,11 +15,8 @@ class MainScreen extends StatefulWidget {
 
 class NavScreen extends State with SingleTickerProviderStateMixin {
   final _pages = [
-    // const SightListScreen(),
     const ListMenu(),
-    const Center(
-      child: Text('Map'),
-    ),
+    const MapScreen(),
     const FavouriteScreen(),
     const SettingsScreen(),
   ];

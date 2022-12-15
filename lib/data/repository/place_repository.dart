@@ -13,7 +13,7 @@ abstract class PlaceRepository {
   Future<PlaceModel> getPlaceId({required String id});
   Future<bool> deletePlace({required String id});
   Future<bool> putPlace(PlaceModel model);
-  Future<List<String>> postUploadFile(File file);
+  Future<List<String>> postUploadFile(List<File> file);
   Future<String> getFiles(String filePath);
   Future<String> getClient(String path);
 }

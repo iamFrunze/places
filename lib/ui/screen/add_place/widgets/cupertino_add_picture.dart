@@ -5,6 +5,8 @@ import 'package:places/res/app_colors.dart';
 import 'package:places/res/app_dimensions.dart';
 import 'package:places/res/app_strings.dart';
 import 'package:places/res/app_typography.dart';
+import 'package:places/ui/screen/add_place/add_place_settings.dart';
+import 'package:provider/provider.dart';
 
 class CupertinoAddImage extends StatelessWidget {
   const CupertinoAddImage({Key? key}) : super(key: key);
@@ -34,7 +36,9 @@ class CupertinoAddImage extends StatelessWidget {
                 children: [
                   SvgPicture.asset(AppAssets.camera),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => context
+                        .read<AddPlaceSettings>()
+                        .fetchPictureFromCamera(),
                     child: const Text(
                       AppStrings.camera,
                       style: AppTypography.cupertinoBottomSheet,
@@ -47,7 +51,9 @@ class CupertinoAddImage extends StatelessWidget {
                 children: [
                   SvgPicture.asset(AppAssets.picture),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => context
+                        .read<AddPlaceSettings>()
+                        .fetchPictureFromGallery(),
                     child: const Text(
                       AppStrings.picture,
                       style: AppTypography.cupertinoBottomSheet,
