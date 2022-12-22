@@ -85,10 +85,9 @@ void main() async {
 }
 
 void _defineEnvironment({required BuildConfig buildConfig}) {
-  Environment.init(buildConfig, BuildType.dev);
+  Environment.init(buildConfig, BuildType.prod);
 }
 
 BuildConfig _setUpConfig() {
-  return BuildConfig(
-  );
+  return BuildConfig();
 }

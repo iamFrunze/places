@@ -15,6 +15,8 @@ import 'package:places/ui/screen/sight_search/widgets/search_list_tile.dart';
 import 'package:places/ui/widgets/appbar.dart';
 import 'package:places/ui/widgets/error_page.dart';
 import 'package:places/ui/widgets/search_bar.dart';
+import 'package:places/utils/environment/build_type.dart';
+import 'package:places/utils/environment/environment.dart';
 import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -63,13 +65,14 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
 
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController controller;
+  final environment = Environment.instance();
 
   @override
   Size get preferredSize => const Size.fromHeight(
         kToolbarHeight + AppDimensions.searchBarHeight50,
       );
 
-  const _AppBar({
+  _AppBar({
     Key? key,
     required this.controller,
   }) : super(key: key);
@@ -79,7 +82,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     final provider = context.read<SearchSettings>();
 
     return AppBarWidget(
-      title: AppStrings.interestingPlaces,
+      title: AppStrings.interestingPlaces(environment.buildType != BuildType.prod),
       bottomWidget: SearchBarWidget(
         onTapSuffix: provider.clearSearchBar,
         onChanged: (value) async {
@@ -246,8 +249,7 @@ class _BodyEmptyList extends StatelessWidget {
           ),
           Text(
             AppStrings.tryChangeSearchParams,
-            style: AppTypography.bodyMedium
-                .copyWith(color: AppColors.inactiveColorKit),
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.inactiveColorKit),
           ),
         ],
       ),
