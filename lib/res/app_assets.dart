@@ -61,6 +61,10 @@ class AppAssets {
 
   static const placeholder = 'assets/svg/placeholder.svg';
 
+  /// App icons
+  static const devAppIcon = 'assets/svg/app_icons/dev_app_icon.png';
+  static const prodAppIcon = 'assets/svg/app_icons/prod_app_icon.png';
+
   static const refresh = 'assets/svg/refresh_icon.svg';
   static const geolocation = 'assets/svg/geolocation_icon.svg';
   static const userPlacemark = 'assets/png/user_placemark.png';

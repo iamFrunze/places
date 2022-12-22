@@ -16,6 +16,7 @@ dependencies:
   dio: ^4.0.6
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
   flutter_svg: ^1.1.0
   geolocator: ^9.0.2
   image_picker: ^0.8.6
@@ -37,12 +38,18 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  image_path: "assets/svg/app_icons/dev_app_icon.png"
+  android: true
+  ios: false
+
 flutter:
 
   uses-material-design: true
   assets:
     - assets/svg/
     - assets/png/
+    - assets/svg/app_icons/
     - assets/svg/chips/
     - assets/svg/onboarding/
   fonts:
