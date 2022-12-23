@@ -14,6 +14,8 @@ import 'package:places/ui/widgets/green_circle_progress_indicator.dart';
 import 'package:places/ui/widgets/icon_svg.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
+import 'package:places/utils/environment/build_type.dart';
+import 'package:places/utils/environment/environment.dart';
 import 'package:places/utils/routes/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -104,7 +106,7 @@ class _SightListScreenState extends State<SightListScreen> {
               return CustomScrollView(
                 controller: scrollController,
                 slivers: [
-                  const _SliverAppBar(),
+                  _SliverAppBar(),
                   SliverGrid(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => cards[index],
@@ -140,7 +142,9 @@ class _SightListScreenState extends State<SightListScreen> {
 }
 
 class _SliverAppBar extends StatelessWidget {
-  const _SliverAppBar({Key? key}) : super(key: key);
+  final environment = Environment.instance();
+
+  _SliverAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +163,7 @@ class _SliverAppBar extends StatelessWidget {
           right: 16,
         ),
         title: AutoSizeText(
-          AppStrings.interestingPlaces,
+          AppStrings.interestingPlaces(environment.buildType != BuildType.prod),
           maxLines: 2,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,

@@ -2,14 +2,15 @@ class AppStrings {
   static const btnRoute = 'ПОСТРОИТЬ МАРШРУТ';
   static const plan = 'Запланировать';
   static const addToFavourite = 'В избранное';
-  static const interestingPlaces = 'Список интересных мест';
+
+  static String interestingPlaces(bool isDebugMode) =>
+      isDebugMode ? 'Список интересных мест' : 'Список интересных мест Debug сборка приложения';
   static const wantToVisit = 'Хочу посетить';
   static const visited = 'Посетил';
   static const favourite = 'Избранное';
   static const map = 'Карта';
   static const empty = 'Пусто';
-  static const markFavouritePlaces =
-      'Отмечайте понравившиеся\nместа и они появиятся здесь.';
+  static const markFavouritePlaces = 'Отмечайте понравившиеся\nместа и они появиятся здесь.';
   static const completeRoute = 'Завершите маршрут,\nчтобы место попало сюда.';
   static const error = 'Ошибка';
   static const errorDescription = 'Что то пошло не так\nПопробуйте позже.';
@@ -64,8 +65,7 @@ class AppStrings {
   static const title2 = 'Построй маршрут и отправляйся в путь';
   static const subtitle2 = 'Достигай цели максимально быстро и комфортно.';
   static const title3 = 'Добавляй места, которые нашёл сам';
-  static const subtitle3 =
-      'Делись самыми интересными и помоги нам стать лучше!';
+  static const subtitle3 = 'Делись самыми интересными и помоги нам стать лучше!';
   static const onStart = 'на старт';
 
   /// Cupertino action sheet
